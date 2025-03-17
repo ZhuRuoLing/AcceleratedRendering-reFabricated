@@ -1,27 +1,38 @@
 package com.github.argon4w.acceleratedrendering;
 
+import com.github.argon4w.acceleratedrendering.compat.iris.programs.IrisPrograms;
 import com.github.argon4w.acceleratedrendering.configs.FeatureConfig;
-import com.mojang.logging.LogUtils;
-import net.neoforged.api.distmarker.Dist;
+import com.github.argon4w.acceleratedrendering.core.programs.ComputeShaderPrograms;
+import com.github.argon4w.acceleratedrendering.features.culling.NormalCullingPrograms;
+import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeConfigRegistry;
+import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import org.slf4j.Logger;
 
-@Mod(
-		value	= AcceleratedRenderingModEntry	.MOD_ID,
-		dist	= Dist							.CLIENT
-)
-public class AcceleratedRenderingModEntry {
+public class AcceleratedRenderingModEntry implements ClientModInitializer {
 
-	public static final String MOD_ID = "acceleratedrendering";
-	public static final Logger LOGGER = LogUtils.getLogger();
+    public static final String MODID = "acceleratedrendering";
+    private ModContainer container;
 
-	public AcceleratedRenderingModEntry(IEventBus modEventBus, ModContainer modContainer) {
-		modContainer.registerConfig			(ModConfig.Type.CLIENT,			FeatureConfig.SPEC);
-		modContainer.registerExtensionPoint	(IConfigScreenFactory.class,	ConfigurationScreen::new);
-	}
+    public static ResourceLocation location(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
+    }
+
+    @Override
+    public void onInitializeClient() {
+        NeoForgeConfigRegistry.INSTANCE.register(MODID, ModConfig.Type.CLIENT, FeatureConfig.SPEC);
+        this.container = ModLoader.createModContainer(MODID);
+        IEventBus eventBus = container.getModEventBus();
+        eventBus.register(IrisPrograms.class);
+        eventBus.register(ComputeShaderPrograms.class);
+        eventBus.register(NormalCullingPrograms.class);
+        conditionalInitialize(container.getModEventBus());
+    }
+
+    public void conditionalInitialize(IEventBus modEventBus) {
+        //intentionally empty
+    }
 }

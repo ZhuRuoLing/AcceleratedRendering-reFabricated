@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "${mod_id}",
+	"version": "${mod_version}",
+	"name": "${mod_name}",
+	"description": "${mod_description}",
+	"authors": [
+		"${mod_authors}"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "${mod_license}",
+	"environment": "*",
+	"entrypoints": {
+		"client": [
+			"com.github.argon4w.acceleratedrendering.AcceleratedRenderingModEntry"
+		]
+	},
+	"mixins": [
+		"acceleratedrendering.compat.iris.mixins.json",
+		"acceleratedrendering.core.mixins.json",
+		"acceleratedrendering.feature.culling.mixins.json",
+		"acceleratedrendering.feature.entities.mixins.json",
+		"acceleratedrendering.feature.items.mixins.json",
+		"acceleratedrendering.feature.modelparts.mixins.json",
+		"acceleratedrendering.feature.text.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.10",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
