@@ -8,15 +8,11 @@ import com.github.argon4w.acceleratedrendering.core.programs.transform.FixedTran
 import com.github.argon4w.acceleratedrendering.core.programs.transform.LoadTransformProgramSelectorEvent;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 
 import java.util.function.UnaryOperator;
 
-@EventBusSubscriber(modid = AcceleratedRenderingModEntry.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ComputeShaderPrograms {
 
     public static final ResourceLocation CORE_ENTITY_VERTEX_TRANSFORM_KEY = AcceleratedRenderingModEntry.location("core_entity_vertex_transform");
@@ -89,10 +85,5 @@ public class ComputeShaderPrograms {
         event.loadFor(DefaultVertexFormat.POSITION_TEX_COLOR, UnaryOperator.identity());
         event.loadFor(DefaultVertexFormat.POSITION_TEX, UnaryOperator.identity());
         event.loadFor(DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, UnaryOperator.identity());
-    }
-
-    @SubscribeEvent
-    public static void onRegisterResourceReloadListeners(RegisterClientReloadListenersEvent event) {
-        event.registerReloadListener(ComputeShaderProgramLoader.INSTANCE);
     }
 }

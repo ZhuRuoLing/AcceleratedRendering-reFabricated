@@ -34,7 +34,7 @@ public abstract class LevelRendererMixin {
             PoseStack pPoseStack,
             MultiBufferSource pBufferSource,
             Operation<Void> original,
-            @Local(name = "flag2") LocalBooleanRef flag2
+            @Local(index = 23) LocalBooleanRef flag2
     ) {
         if (!AcceleratedEntityRenderingFeature.isEnabled()) {
             original.call(
@@ -84,9 +84,9 @@ public abstract class LevelRendererMixin {
             return;
         }
 
-        if (pEntity.hasCustomOutlineRendering(minecraft.player)) {
-            flag2.set(true);
-        }
+//        if (pEntity.hasCustomOutlineRendering(minecraft.player)) {
+//            flag2.set(true);
+//        }
 
         original.call(
                 instance,

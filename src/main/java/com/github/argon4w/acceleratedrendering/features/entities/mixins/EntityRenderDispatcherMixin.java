@@ -12,10 +12,12 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.LevelReader;
 import org.joml.Quaternionf;
+import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(EntityRenderDispatcher.class)
 public class EntityRenderDispatcherMixin {
@@ -30,8 +32,8 @@ public class EntityRenderDispatcherMixin {
             LevelReader pLevel,
             float pSize,
             CallbackInfo ci,
-            @Local(name = "posestack$pose") PoseStack.Pose pose,
-            @Local(name = "vertexconsumer") VertexConsumer vertexConsumer
+            @Local(index = 20) PoseStack.Pose pose,
+            @Local(index = 21) VertexConsumer vertexConsumer
     ) {
         ((IAcceleratedVertexConsumer) vertexConsumer).beginTransform(pose.pose(), pose.normal());
     }
@@ -46,7 +48,7 @@ public class EntityRenderDispatcherMixin {
             LevelReader pLevel,
             float pSize,
             CallbackInfo ci,
-            @Local(name = "vertexconsumer") VertexConsumer vertexConsumer
+            @Local(index = 21) VertexConsumer vertexConsumer
     ) {
         ((IAcceleratedVertexConsumer) vertexConsumer).endTransform();
     }
@@ -58,22 +60,25 @@ public class EntityRenderDispatcherMixin {
             Entity pEntity,
             Quaternionf pQuaternion,
             CallbackInfo ci,
-            @Local(name = "posestack$pose") PoseStack.Pose pose,
-            @Local(name = "vertexconsumer") VertexConsumer vertexConsumer
+            @Local(index = 15) PoseStack.Pose pose,
+            @Local(index = 14) VertexConsumer vertexConsumer
     ) {
         ((IAcceleratedVertexConsumer) vertexConsumer).beginTransform(pose.pose(), pose.normal());
     }
 
-    @Inject(method = "renderFlame", at = @At(value = "TAIL"))
+    @Inject(method = "renderFlame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/EntityRenderDispatcher;fireVertex(Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lcom/mojang/blaze3d/vertex/VertexConsumer;FFFFF)V", ordinal = 3))
     public void endFlameTransform(
             PoseStack pPoseStack,
             MultiBufferSource pBuffer,
             Entity pEntity,
             Quaternionf pQuaternion,
             CallbackInfo ci,
-            @Local(name = "vertexconsumer") VertexConsumer vertexConsumer
+            @Local(index = 10) float i,
+            @Local(index = 14) VertexConsumer vertexConsumer
     ) {
-        ((IAcceleratedVertexConsumer) vertexConsumer).endTransform();
+        if (i - 0.45 < 0) {
+            ((IAcceleratedVertexConsumer) vertexConsumer).endTransform();
+        }
     }
 
     @Inject(method = "shadowVertex", at = @At("HEAD"), cancellable = true)

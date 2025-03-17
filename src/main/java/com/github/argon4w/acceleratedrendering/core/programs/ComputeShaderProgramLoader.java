@@ -22,7 +22,7 @@ import java.util.Optional;
 public class ComputeShaderProgramLoader extends SimplePreparableReloadListener<Map<ResourceLocation, ComputeShaderProgramLoader.ShaderSource>> {
 
     private static final Map<ResourceLocation, ComputeProgram> COMPUTE_SHADERS = new Object2ObjectOpenHashMap<>();
-    static final ComputeShaderProgramLoader INSTANCE = new ComputeShaderProgramLoader();
+    public static final ComputeShaderProgramLoader INSTANCE = new ComputeShaderProgramLoader();
 
     @Override
     protected Map<ResourceLocation, ComputeShaderProgramLoader.ShaderSource> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {

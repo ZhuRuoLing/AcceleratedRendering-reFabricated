@@ -3,6 +3,7 @@ package com.github.argon4w.acceleratedrendering.features.items.mixins;
 import com.github.argon4w.acceleratedrendering.core.buffers.builders.IAcceleratedVertexConsumer;
 import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.MeshCollector;
+import com.github.argon4w.acceleratedrendering.core.mixins.MCItemColorsAccessor;
 import com.github.argon4w.acceleratedrendering.core.utils.CullerUtils;
 import com.github.argon4w.acceleratedrendering.core.utils.TextureUtils;
 import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
@@ -20,6 +21,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.model.IQuadTransformer;
 import org.joml.Vector3f;
@@ -43,7 +45,7 @@ public class SimpleBakedModelMixin implements IAcceleratedBakedModel {
     @Override
     public void renderItemFast(ItemStack itemStack, PoseStack poseStack, IAcceleratedVertexConsumer extension, int combinedLight, int combinedOverlay) {
         PoseStack.Pose pose = poseStack.last();
-        ItemColor itemColor = ((ItemColorsAccessor) Minecraft.getInstance().getItemColors()).getItemColors().getOrDefault(itemStack.getItem(), EmptyItemColor.INSTANCE);
+        ItemColor itemColor = getItemColorOrDefault(itemStack);
 
         extension.beginTransform(pose.pose(), pose.normal());
 
@@ -172,5 +174,13 @@ public class SimpleBakedModelMixin implements IAcceleratedBakedModel {
     @Override
     public int getCustomColor() {
         return 0;
+    }
+
+    private static ItemColor getItemColorOrDefault(ItemStack itemStack){
+        MCItemColorsAccessor accessor = (MCItemColorsAccessor) Minecraft.getInstance();
+        int id = BuiltInRegistries.ITEM.getId(itemStack.getItem());
+        ItemColor color = ((ItemColorsAccessor) (accessor.getItemColors())).getItemColors().byId(id);
+        if (color == null)return EmptyItemColor.INSTANCE;
+        return color;
     }
 }

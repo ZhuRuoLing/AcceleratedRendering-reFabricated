@@ -7,12 +7,9 @@ import com.github.argon4w.acceleratedrendering.core.programs.culling.LoadCulling
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 
-@EventBusSubscriber(modid = AcceleratedRenderingModEntry.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class NormalCullingPrograms {
 
     public static final ResourceLocation CORE_POS_TEX_COLOR_QUAD_CULLING_KEY = AcceleratedRenderingModEntry.location("core_pos_tex_color_quad_culling");
