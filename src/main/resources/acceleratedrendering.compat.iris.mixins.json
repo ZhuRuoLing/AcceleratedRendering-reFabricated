@@ -9,9 +9,7 @@
     "acceleratedrendering.AcceleratedBufferSourceMixin",
     "acceleratedrendering.AcceleratedRenderingModEntryMixin",
     "acceleratedrendering.CoreBuffersMixin",
-    "acceleratedrendering.FlattenMeshInfoCacheMixin",
     "acceleratedrendering.IBufferEnvironmentPresetsMixin",
-    "acceleratedrendering.SimpleMeshInfoMixin",
     "acceleratedrendering.MeshUploaderMixin",
     "acceleratedrendering.MeshUploadingProgramDispatcherMixin",
     "acceleratedrendering.RenderTypeUtilsMixin",
@@ -26,5 +24,9 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "acceleratedrendering.FlattenVarHandleMeshInfoCacheMixin",
+    "acceleratedrendering.MeshInfoMixin"
+  ]
 }

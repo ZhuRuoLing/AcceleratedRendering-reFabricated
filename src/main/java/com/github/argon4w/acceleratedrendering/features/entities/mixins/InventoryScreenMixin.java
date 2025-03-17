@@ -16,21 +16,21 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(InventoryScreen.class)
 public class InventoryScreenMixin {
 
-	@WrapMethod(method = "lambda$renderEntityInInventory$1")
-	private static void renderEntityInInventoryFast(
-			EntityRenderDispatcher	entityrenderdispatcher,
-			LivingEntity			entity,
-			GuiGraphics				guiGraphics,
-			Operation<Void>			operation
+	@WrapMethod(method = "method_29977")
+	private static void startRenderingGui(
+        EntityRenderDispatcher	entityrenderdispatcher,
+        LivingEntity			entity,
+        GuiGraphics				guiGraphics,
+        Operation<Void> operation
 	) {
 		CoreFeature.setRenderingGui();
+
 
 		if (CoreFeature.isGuiBatching()) {
 			CoreFeature.forceSetDefaultLayer				(2);
 			CoreFeature.forceSetDefaultLayerBeforeFunction	(Lighting::setupForEntityInInventory);
 			CoreFeature.forceSetDefaultLayerAfterFunction	(Lighting::setupFor3DItems);
 		}
-
 		operation.call(
 				entityrenderdispatcher,
 				entity,
