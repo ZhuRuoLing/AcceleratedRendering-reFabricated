@@ -40,7 +40,7 @@ public abstract class AbstractContainerScreenMixin {
 			method	= "render",
 			at		= @At("HEAD")
 	)
-	public void startBackgroundBatching(
+	public void startBatching(
 			GuiGraphics		guiGraphics,
 			int				mouseX,
 			int				mouseY,
@@ -54,51 +54,11 @@ public abstract class AbstractContainerScreenMixin {
 			method	= "render",
 			at		= @At(
 					value	= "INVOKE",
-					target	= "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V",
-					shift	= At.Shift.BEFORE
-			)
-	)
-	public void flushBackgroundBatching(
-			GuiGraphics		guiGraphics,
-			int				mouseX,
-			int				mouseY,
-			float			partialTick,
-			CallbackInfo	ci
-	) {
-		if (!AcceleratedItemRenderingFeature.shouldMergeGuiItemBatches()) {
-			GuiBatchingController.INSTANCE.flushBatching(guiGraphics);
-		}
-	}
-
-	@Inject(
-			method	= "render",
-			at		= @At(
-					value	= "INVOKE",
-					target	= "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V",
-					shift	= At.Shift.AFTER
-			)
-	)
-	public void startItemBatching(
-			GuiGraphics		guiGraphics,
-			int				mouseX,
-			int				mouseY,
-			float			partialTick,
-			CallbackInfo	ci
-	) {
-		if (!AcceleratedItemRenderingFeature.shouldMergeGuiItemBatches()) {
-			GuiBatchingController.INSTANCE.startBatching(guiGraphics);
-		}
-	}
-
-	@Inject(
-			method	= "render",
-			at		= @At(
-					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;renderLabels(Lnet/minecraft/client/gui/GuiGraphics;II)V",
 					shift	= At.Shift.AFTER
 			)
 	)
-	public void flushItemBatching(
+	public void flushBatching(
 			GuiGraphics		guiGraphics,
 			int				mouseX,
 			int				mouseY,
@@ -108,14 +68,9 @@ public abstract class AbstractContainerScreenMixin {
 		GuiBatchingController.INSTANCE.flushBatching(guiGraphics);
 	}
 
-	@WrapMethod(method = "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;IIII)V")
+	@WrapMethod(method = "renderSlotHighlight")
 	private static void startRenderHighlight(
-			GuiGraphics		guiGraphics,
-			int				highlightX,
-			int				highLightY,
-			int				blitOffset,
-			int				color,
-			Operation<Void>	original
+        GuiGraphics guiGraphics, int x, int y, int blitOffset, Operation<Void> original
 	) {
 		if (		!	CoreFeature.isLoaded				()
 				||	!	CoreFeature.isGuiBatching			()
@@ -123,10 +78,9 @@ public abstract class AbstractContainerScreenMixin {
 		) {
 			original.call(
 					guiGraphics,
-					highlightX,
-					highLightY,
-					blitOffset,
-					color
+                	x,
+					y,
+					blitOffset
 			);
 			return;
 		}
@@ -136,8 +90,8 @@ public abstract class AbstractContainerScreenMixin {
 		GuiBatchingController.INSTANCE.submitHighlight(
 				last.pose	(),
 				last.normal	(),
-				highlightX,
-				highLightY,
+				x,
+				y,
 				blitOffset,
 				color
 		);
