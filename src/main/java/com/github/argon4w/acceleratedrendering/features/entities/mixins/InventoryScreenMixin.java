@@ -38,6 +38,7 @@ public class InventoryScreenMixin {
 		}
 
 
+
 		if (CoreFeature.isGuiBatching()) {
 			CoreFeature.forceSetDefaultLayer				(2);
 			CoreFeature.forceSetDefaultLayerBeforeFunction	(Lighting::setupForEntityInInventory);
