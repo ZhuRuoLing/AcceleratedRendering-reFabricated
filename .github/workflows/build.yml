@@ -24,6 +24,7 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew build
+          rm -rf ./build/libs/*sources*
           VERSION_IDENTIFIER=SNAPSHOT+${{ steps.short-sha.outputs.sha }}
           FILE_NAME="$(ls ./build/libs -1 | head -n 1)"
           NEW_NAME="${FILE_NAME%.jar}-${VERSION_IDENTIFIER}.jar"
