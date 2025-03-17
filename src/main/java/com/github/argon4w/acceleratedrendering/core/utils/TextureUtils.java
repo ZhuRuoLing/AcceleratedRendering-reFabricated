@@ -1,6 +1,5 @@
 package com.github.argon4w.acceleratedrendering.core.utils;
 
-import com.github.argon4w.acceleratedrendering.AcceleratedRenderingModEntry;
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.mojang.blaze3d.platform.NativeImage;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
@@ -9,32 +8,19 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import org.lwjgl.system.MemoryStack;
 
 import static org.lwjgl.opengl.GL46.*;
 
-@EventBusSubscriber(
-		modid	= AcceleratedRenderingModEntry	.MOD_ID,
-	 	bus		= EventBusSubscriber.Bus		.MOD,
-		value	= Dist							.CLIENT
-)
+
 public class TextureUtils implements ResourceManagerReloadListener {
 
-	private	static final TextureUtils													INSTANCE	= new TextureUtils						();
-	private	static final Object2ObjectLinkedOpenHashMap<ResourceLocation, NativeImage>	IMAGE_CACHE	= new Object2ObjectLinkedOpenHashMap<>	();
+	public 	static	final TextureUtils													INSTANCE	= new TextureUtils						();
+	private	static	final Object2ObjectLinkedOpenHashMap<ResourceLocation, NativeImage> IMAGE_CACHE	= new Object2ObjectLinkedOpenHashMap<>	();
 
 	@Override
 	public void onResourceManagerReload(ResourceManager resourceManager) {
 		IMAGE_CACHE.clear();
-	}
-
-	@SubscribeEvent
-	public static void onRegisterClientReloadListener(RegisterClientReloadListenersEvent event) {
-		event.registerReloadListener(INSTANCE);
 	}
 
 	public static NativeImage downloadTexture(RenderType renderType, int mipmapLevel) {

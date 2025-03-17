@@ -21,7 +21,6 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.experimental.ExtensionMethod;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraft.core.Direction;
@@ -29,7 +28,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.IQuadTransformer;
-import net.neoforged.neoforge.client.model.data.ModelData;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -77,9 +75,7 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 			IAcceleratedVertexConsumer	extension,
 			int							combinedLight,
 			int							combinedOverlay,
-			int							color,
-			ModelData					data,
-			RenderType					renderType
+			int							color
 	) {
 		extension.doRender(
 				this,
@@ -156,6 +152,16 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 					var normalOffset	= vertexOffset	+ IQuadTransformer.NORMAL;
 					var packedNormal	= data[normalOffset];
 
+                    float normalX = ((byte) (packedNormal & 0xFF)) / 127.0f;
+                    float normalY = ((byte) ((packedNormal >> 8) & 0xFF)) / 127.0f;
+                    float normalZ = ((byte) ((packedNormal >> 16) & 0xFF)) / 127.0f;
+
+                    if (normalX == 0 && normalY == 0 && normalZ == 0) {
+                        normalX = quad.getDirection().getNormal().getX();
+                        normalY = quad.getDirection().getNormal().getY();
+                        normalZ = quad.getDirection().getNormal().getZ();
+                    }
+
 					meshBuilder.addVertex(
 							Float			.intBitsToFloat	(data[posOffset + 0]),
 							Float			.intBitsToFloat	(data[posOffset + 1]),
@@ -165,9 +171,9 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 							Float			.intBitsToFloat	(data[uv0Offset + 1]),
 							-1,
 							data[uv2Offset],
-							((byte) (	packedNormal		& 0xFF)) / 127.0f,
-							((byte) ((	packedNormal >> 8)	& 0xFF)) / 127.0f,
-							((byte) ((	packedNormal >> 16)	& 0xFF)) / 127.0f
+                        	normalX,
+                        	normalY,
+                        	normalZ
 					);
 				}
 			}

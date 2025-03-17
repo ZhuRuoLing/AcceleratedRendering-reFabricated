@@ -4,6 +4,9 @@
   "package": "com.github.argon4w.acceleratedrendering.features.items.mixins",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "ItemRendererMixin",
+    "MCItemColorsAccessor",
+    "ModelBlockRendererMixin",
     "accessors.BlockColorsAccessor",
     "accessors.ItemColorsAccessor",
     "compatibility.ClientHooksMixin",
@@ -12,16 +15,11 @@
     "gui.GameRendererMixin",
     "gui.GuiGraphicsMixin",
     "gui.GuiMixin",
-    "gui.ItemDecorationHandlerMixin",
-    "models.BakedCompositeModelMixin",
     "models.BakedModelMixin",
     "models.BakedQuadMixin",
-    "models.BakedSeparateTransformsModelMixin",
     "models.MultipartBakedModelMixin",
     "models.SimpleBakedModelMixin",
-    "models.WeightedBakedModelMixin",
-    "ItemRendererMixin",
-    "ModelBlockRendererMixin"
+    "models.WeightedBakedModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1

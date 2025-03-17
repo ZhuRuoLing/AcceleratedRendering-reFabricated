@@ -1,10 +1,8 @@
 package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
-import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.world.inventory.Slot;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,54 +15,14 @@ public abstract class AbstractContainerScreenMixin {
 			method	= "render",
 			at		= @At("HEAD")
 	)
-	public void startBackgroundBatching(
+	public void startBatching(
 			GuiGraphics		guiGraphics,
 			int				mouseX,
 			int				mouseY,
 			float			partialTick,
 			CallbackInfo	ci
 	) {
-		GuiBatchingController.INSTANCE.startBatching(guiGraphics);
-	}
-
-	@Inject(
-			method	= "render",
-			at		= @At(
-					value	= "INVOKE",
-					target	= "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V",
-					shift	= At.Shift.BEFORE
-			)
-	)
-	public void flushBackgroundBatching(
-			GuiGraphics		guiGraphics,
-			int				mouseX,
-			int				mouseY,
-			float			partialTick,
-			CallbackInfo	ci
-	) {
-		if (!AcceleratedItemRenderingFeature.shouldMergeGuiItemBatches()) {
-			GuiBatchingController.INSTANCE.flushBatching(guiGraphics);
-		}
-	}
-
-	@Inject(
-			method	= "render",
-			at		= @At(
-					value	= "INVOKE",
-					target	= "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V",
-					shift	= At.Shift.AFTER
-			)
-	)
-	public void startItemBatching(
-			GuiGraphics		guiGraphics,
-			int				mouseX,
-			int				mouseY,
-			float			partialTick,
-			CallbackInfo	ci
-	) {
-		if (!AcceleratedItemRenderingFeature.shouldMergeGuiItemBatches()) {
-			GuiBatchingController.INSTANCE.startBatching(guiGraphics);
-		}
+		GuiBatchingController.INSTANCE.startBatching();
 	}
 
 	@Inject(
@@ -75,7 +33,7 @@ public abstract class AbstractContainerScreenMixin {
 					shift	= At.Shift.BEFORE
 			)
 	)
-	public void flushItemBatching(
+	public void flushBatching(
 			GuiGraphics		guiGraphics,
 			int				mouseX,
 			int				mouseY,
@@ -86,32 +44,22 @@ public abstract class AbstractContainerScreenMixin {
 	}
 
 	@Inject(
-			method	= "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;IIF)V",
+			method	= "renderSlotHighlight",
 			at		= @At("HEAD")
 	)
-	public void startRenderHighlight(
-			GuiGraphics		guiGraphics,
-			Slot			slot,
-			int				mouseX,
-			int				mouseY,
-			float			partialTick,
-			CallbackInfo	ci
-	) {
-		GuiBatchingController.INSTANCE.useOverlayTarget(guiGraphics);
+    private static void startRenderHighlight(
+        GuiGraphics guiGraphics, int x, int y, int blitOffset, CallbackInfo ci
+    ) {
+        GuiBatchingController.INSTANCE.useOverlayTarget();
 	}
 
 	@Inject(
-			method	= "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;IIF)V",
+			method	= "renderSlotHighlight",
 			at		= @At("TAIL")
 	)
-	public void stopRenderHighlight(
-			GuiGraphics		guiGraphics,
-			Slot			slot,
-			int				mouseX,
-			int				mouseY,
-			float			partialTick,
-			CallbackInfo	ci
-	) {
-		GuiBatchingController.INSTANCE.resetOverlayTarget();
+    private static void stopRenderHighlight(
+        GuiGraphics guiGraphics, int x, int y, int blitOffset, CallbackInfo ci
+    ) {
+        GuiBatchingController.INSTANCE.resetOverlayTarget();
 	}
 }

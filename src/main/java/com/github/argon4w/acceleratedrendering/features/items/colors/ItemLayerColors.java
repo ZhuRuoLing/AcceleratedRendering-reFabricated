@@ -12,7 +12,7 @@ public class ItemLayerColors implements ILayerColors {
 
 	public ItemLayerColors(ItemStack itemStack) {
 		this.itemStack = itemStack;
-		this.itemColor = ((ItemColorsAccessor) Minecraft.getInstance().getItemColors()).getItemColors().getOrDefault(this.itemStack.getItem(), EmptyItemColor.INSTANCE);
+		this.itemColor = ColorHelper.getItemColorOrDefault(itemStack);
 	}
 
 	@Override

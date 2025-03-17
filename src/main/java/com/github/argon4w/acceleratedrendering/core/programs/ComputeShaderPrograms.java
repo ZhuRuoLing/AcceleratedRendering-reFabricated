@@ -4,16 +4,8 @@ import com.github.argon4w.acceleratedrendering.AcceleratedRenderingModEntry;
 import com.github.argon4w.acceleratedrendering.core.backends.programs.BarrierFlags;
 import com.github.argon4w.acceleratedrendering.core.utils.ResourceLocationUtils;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 
-@EventBusSubscriber(
-		modid	= AcceleratedRenderingModEntry	.MOD_ID,
-		bus		= EventBusSubscriber.Bus		.MOD,
-		value	= Dist							.CLIENT
-)
 public class ComputeShaderPrograms {
 
 	public static final ResourceLocation CORE_BLOCK_VERTEX_TRANSFORM_KEY				= ResourceLocationUtils.create("core_block_vertex_transform");
@@ -118,10 +110,5 @@ public class ComputeShaderPrograms {
 				ResourceLocationUtils	.create("shaders/core/uploading/pos_color_tex_light_mesh_uploading_shader.compute"),
 				BarrierFlags			.SHADER_STORAGE
 		);
-	}
-
-	@SubscribeEvent
-	public static void onRegisterResourceReloadListeners(RegisterClientReloadListenersEvent event) {
-		event.registerReloadListener(ComputeShaderProgramLoader.INSTANCE);
 	}
 }
