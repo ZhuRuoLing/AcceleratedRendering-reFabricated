@@ -3,7 +3,6 @@ package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.world.inventory.Slot;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -45,32 +44,22 @@ public abstract class AbstractContainerScreenMixin {
 	}
 
 	@Inject(
-			method	= "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;IIF)V",
+			method	= "renderSlotHighlight",
 			at		= @At("HEAD")
 	)
-	public void startRenderHighlight(
-			GuiGraphics		guiGraphics,
-			Slot			slot,
-			int				mouseX,
-			int				mouseY,
-			float			partialTick,
-			CallbackInfo	ci
-	) {
-		GuiBatchingController.INSTANCE.useOverlayTarget();
+    private static void startRenderHighlight(
+        GuiGraphics guiGraphics, int x, int y, int blitOffset, CallbackInfo ci
+    ) {
+        GuiBatchingController.INSTANCE.useOverlayTarget();
 	}
 
 	@Inject(
-			method	= "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;IIF)V",
+			method	= "renderSlotHighlight",
 			at		= @At("TAIL")
 	)
-	public void stopRenderHighlight(
-			GuiGraphics		guiGraphics,
-			Slot			slot,
-			int				mouseX,
-			int				mouseY,
-			float			partialTick,
-			CallbackInfo	ci
-	) {
-		GuiBatchingController.INSTANCE.resetOverlayTarget();
+    private static void stopRenderHighlight(
+        GuiGraphics guiGraphics, int x, int y, int blitOffset, CallbackInfo ci
+    ) {
+        GuiBatchingController.INSTANCE.resetOverlayTarget();
 	}
 }

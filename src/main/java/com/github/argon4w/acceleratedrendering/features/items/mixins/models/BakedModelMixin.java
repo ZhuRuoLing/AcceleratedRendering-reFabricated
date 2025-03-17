@@ -3,12 +3,10 @@ package com.github.argon4w.acceleratedrendering.features.items.mixins.models;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IAcceleratedVertexConsumer;
 import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedBakedModel;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.data.ModelData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -37,9 +35,7 @@ public interface BakedModelMixin extends IAcceleratedBakedModel {
 			IAcceleratedVertexConsumer	extension,
 			int							light,
 			int							overlay,
-			int							color,
-			ModelData					data,
-			RenderType					renderType
+			int							color
 	) {
 		throw new UnsupportedOperationException("Unsupported Operation.");
 	}

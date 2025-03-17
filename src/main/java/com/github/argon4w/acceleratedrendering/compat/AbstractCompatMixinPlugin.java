@@ -1,6 +1,8 @@
 package com.github.argon4w.acceleratedrendering.compat;
 
-import net.neoforged.fml.loading.LoadingModList;
+import com.github.argon4w.acceleratedrendering.FabricUtils;
+import com.github.argon4w.acceleratedrendering.FabricUtils;
+import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -16,7 +18,7 @@ public abstract class AbstractCompatMixinPlugin implements IMixinConfigPlugin {
 		var shouldApply	= false;
 
 		for (var id : getModIDs()) {
-			if (LoadingModList.get().getModFileById(id) != null) {
+			if (FabricUtils.modExists(id)) {
 				shouldApply = true;
 			}
 		}
@@ -25,6 +27,11 @@ public abstract class AbstractCompatMixinPlugin implements IMixinConfigPlugin {
 	}
 
 	protected abstract List<String> getModIDs();
+
+	@Override
+	public void onLoad(String mixinPackage) {
+
+	}
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
@@ -36,38 +43,33 @@ public abstract class AbstractCompatMixinPlugin implements IMixinConfigPlugin {
 		return null;
 	}
 
-	@Override
-	public List<String> getMixins() {
-		return null;
-	}
+    @Override
+    public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
 
-	@Override
-	public void onLoad(String mixinPackage) {
+    }
 
-	}
+    @Override
+    public List<String> getMixins() {
+        return null;
+    }
 
-	@Override
-	public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
+    @Override
+    public void preApply(
+            String targetClassName,
+            ClassNode targetClass,
+            String mixinClassName,
+            IMixinInfo mixinInfo
+    ) {
 
-	}
+    }
 
-	@Override
-	public void preApply(
-			String		targetClassName,
-			ClassNode	targetClass,
-			String		mixinClassName,
-			IMixinInfo	mixinInfo
-	) {
-
-	}
-
-	@Override
-	public void postApply(
-			String		targetClassName,
-			ClassNode	targetClass,
-			String		mixinClassName,
-			IMixinInfo	mixinInfo
-	) {
+    @Override
+    public void postApply(
+            String targetClassName,
+            ClassNode targetClass,
+            String mixinClassName,
+            IMixinInfo mixinInfo
+    ) {
 
 	}
 }

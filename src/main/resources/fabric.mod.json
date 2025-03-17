@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "${mod_id}",
+	"version": "${mod_version}",
+	"name": "${mod_name}",
+	"description": "${mod_description}",
+	"authors": [
+		"${mod_authors}"
+	],
+	"contact": {
+		"sources": "https://github.com/ZhuRuoLing/AcceleratedRendering-reFabricated"
+	},
+	"license": "${mod_license}",
+	"environment": "client",
+	"icon": "logo_fabric.png",
+	"accessWidener": "acceleratedrendering.accesswidener",
+	"entrypoints": {
+		"client": [
+			"com.github.argon4w.acceleratedrendering.AcceleratedRenderingModEntry"
+		],
+		"modmenu": [
+			"com.github.argon4w.acceleratedrendering.ARModMenu"
+		]
+	},
+	"mixins": [
+		"acceleratedrendering.compat.iris.mixins.json",
+		"acceleratedrendering.compat.immediatelyfast.mixins.json",
+		"acceleratedrendering.compat.tweakmore.mixins.json",
+		"acceleratedrendering.compat.trinkets.mixins.json",
+		"acceleratedrendering.core.mixins.json",
+		"acceleratedrendering.feature.entities.mixins.json",
+		"acceleratedrendering.feature.entitymodelfeature.mixins.json",
+		"acceleratedrendering.feature.filter.mixins.json",
+		"acceleratedrendering.feature.geckolib.mixins.json",
+		"acceleratedrendering.feature.items.mixins.json",
+		"acceleratedrendering.feature.modelparts.mixins.json",
+		"acceleratedrendering.feature.text.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.10",
+		"java": ">=21",
+		"minecraft": ["1.21", "1.21.1"],
+		"fabric-resource-loader-v0": "*",
+		"forgeconfigapiport": "*"
+	}
+}
