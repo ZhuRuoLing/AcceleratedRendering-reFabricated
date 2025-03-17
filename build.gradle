@@ -38,13 +38,6 @@ repositories {
             includeGroup "com.github.TartaricAcid"
         }
     }
-
-    maven {
-        url "https://cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
 }
 
 base {
@@ -144,17 +137,13 @@ dependencies {
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html54
-    implementation "maven.modrinth:sodium:mc1.21.1-0.6.13-neoforge"
+    implementation "maven.modrinth:sodium:mc1.21.1-0.6.9-neoforge"
     implementation "maven.modrinth:iris:1.8.8+1.21.1-neoforge"
-
-    compileOnly "maven.modrinth:entity-model-features:Z0UKemxw"
-    compileOnly "maven.modrinth:touhou-little-maid:3XPwCAVd"
-    compileOnly "maven.modrinth:geckolib:QEqpUJ1G"
-    compileOnly "maven.modrinth:immediatelyfast:1.6.6+1.21.1-neoforge"
-    compileOnly "maven.modrinth:curios:9.5.1+1.21.1"
-    compileOnly 'com.github.TartaricAcid:SimpleBedrockModel:neoforge-1.21.1-1.2.1-release'
+    implementation "maven.modrinth:touhou-little-maid:3XPwCAVd"
+    implementation 'com.github.TartaricAcid:SimpleBedrockModel:neoforge-1.21.1-1.2.1-release'
+    //compileOnly "maven.modrinth:geckolib:QEqpUJ1G"
+    //compileOnly "maven.modrinth:immediatelyfast:1.6.6+1.21.1-neoforge"
     compileOnly "org.projectlombok:lombok:1.18.38"
-
     annotationProcessor "org.projectlombok:lombok:1.18.38"
 }
 
