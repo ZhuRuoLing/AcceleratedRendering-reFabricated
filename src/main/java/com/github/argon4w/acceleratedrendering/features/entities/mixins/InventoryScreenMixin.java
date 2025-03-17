@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InventoryScreen.class)
 public class InventoryScreenMixin {
 
-	@Inject(method = "lambda$renderEntityInInventory$1", at = @At("HEAD"))
+	@Inject(method = "method_29977", at = @At("HEAD"))
 	private static void startRenderingGui(
 			EntityRenderDispatcher	entityrenderdispatcher,
 			LivingEntity			entity,
@@ -26,7 +26,7 @@ public class InventoryScreenMixin {
 		CoreFeature.setRenderingGui();
 	}
 
-	@Inject(method = "lambda$renderEntityInInventory$1", at = @At("TAIL"))
+	@Inject(method = "method_29977", at = @At("TAIL"))
 	private static void stopRenderingGui(
 			EntityRenderDispatcher	entityrenderdispatcher,
 			LivingEntity			entity,

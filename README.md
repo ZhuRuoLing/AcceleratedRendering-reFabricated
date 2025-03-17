@@ -1,5 +1,7 @@
 # 加速渲染 ([EN version](#english))
 
+**这里是加速渲染的Fabric移植，若阁下想要查看适用于NeoForge的加速渲染，请前往[本家](https://github.com/Argon4W/AcceleratedRendering)**
+
 加速渲染是一个客户端实体渲染优化MOD.
 目的是改善在渲染大量实体或拥有大量顶点的复杂MOD实体的情况下产生的渲染性能问题,
 与此同时尽可能与光影MOD和其他MOD及其自定义实体兼容.
@@ -7,7 +9,7 @@
 ![Benchmark](images/benchmark.jpg)
 
 ## 🍝赞助
-加速渲染基本由我一人完成, 花费了数千小时对其进行开发和测试, 才得以发布.
+加速渲染基本由我（Argon4W）一人完成, 花费了数千小时对其进行开发和测试, 才得以发布.
 来自广大玩家们的赞助将用于加速渲染后续的更快的开发, 创新和优化, 感谢所有支持者!
 如果你喜欢这个MOD, 并且想要支持加速渲染的开发, 请前往[爱发电](https://afdian.com/a/argon4w)为狐狸买一份意面
 
@@ -38,6 +40,8 @@ Minecraft拥有一个羸弱的, 继承使用OpenGL立即模式的老版本的渲
 <a id="english"></a>
 # AcceleratedRendering
 
+**This is the Fabric version of AcceleratedRendering, if you need the NeoForge supported version, please visit [here](https://github.com/Argon4W/AcceleratedRendering)**
+
 This is a client side only entity rendering optimization MOD, aiming at improving performance when rendering large amount of entities
 or complex modded entities with significant amount of vertices with compute shaders on GPU while being compatible with shader packs,
 other MODs and their entities.
@@ -46,7 +50,7 @@ other MODs and their entities.
 
 ## 🍝Sponsorship
 
-This MOD is almost done by myself and takes thousands of hours of my own time working and testing on it to be released.
+This MOD is almost done by myself (Argon4W) and takes thousands of hours of my own time working and testing on it to be released.
 Sponsorships from players can ensure the future development, innovation and optimization of this MOD. Thanks for everyone
 that support this MOD! If you like it and want to support my work on development of AcceleratedRendering, please consider sponsor me at [爱发电](https://afdian.com/a/argon4w)
 

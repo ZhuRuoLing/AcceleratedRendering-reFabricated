@@ -4,6 +4,7 @@
   "package": "com.github.argon4w.acceleratedrendering.core.mixins",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "AvoidLogSpamMixin",
     "BufferBuilderMixin",
     "BufferSourceMixin",
     "EntityOutlineGeneratorMixin",
@@ -15,7 +16,8 @@
     "SpriteCoordinateExpanderMixin",
     "VertexConsumerMixin",
     "VertexDoubleConsumerMixin",
-    "VertexMultipleConsumerMixin"
+    "VertexMultipleConsumerMixin",
+    "WindowMixin"
   ],
   "injectors": {
     "defaultRequire": 1
