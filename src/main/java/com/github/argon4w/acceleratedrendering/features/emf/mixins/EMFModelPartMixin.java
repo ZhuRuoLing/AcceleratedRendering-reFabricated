@@ -82,7 +82,8 @@ public class EMFModelPartMixin extends ModelPartMixin implements IEMFModelVarian
 	@Inject(
 			method		= "compile",
 			at			= @At("HEAD"),
-			cancellable	= true
+			cancellable	= true,
+			remap 		= false
 	)
 	public void compileFast(
 			PoseStack.Pose	pPose,

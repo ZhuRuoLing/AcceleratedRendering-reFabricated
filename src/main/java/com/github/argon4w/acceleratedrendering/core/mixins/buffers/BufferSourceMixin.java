@@ -4,6 +4,7 @@ import com.github.argon4w.acceleratedrendering.core.CoreBuffersProvider;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.IAcceleratedBufferSource;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IAcceleratableBufferSource;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.VertexConsumerExtension;
+import com.github.argon4w.acceleratedrendering.core.programs.ComputeShaderProgramLoader;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lombok.experimental.ExtensionMethod;
@@ -43,8 +44,11 @@ public class BufferSourceMixin implements IAcceleratableBufferSource {
 			at		= @At("RETURN")
 	)
 	public VertexConsumer initAcceleration(VertexConsumer original, RenderType renderType) {
-		return original
+		if (ComputeShaderProgramLoader.isProgramsLoaded()) {
+			return original
 				.getHolder			()
 				.initAcceleration	(renderType, bufferSource);
+		}
+		return original;
 	}
 }

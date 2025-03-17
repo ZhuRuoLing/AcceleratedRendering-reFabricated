@@ -9,10 +9,15 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.f
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.StagingBufferPool;
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryInterface;
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.VertexLayout;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.irisshaders.batchedentityrendering.impl.WrappableRenderType;
 import net.irisshaders.iris.uniforms.CapturedRenderingState;
 import net.irisshaders.iris.vertices.IrisVertexFormats;
+import net.minecraft.client.renderer.RenderType;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,6 +35,20 @@ public class AcceleratedBufferBuilderMixin implements IIrisAcceleratedBufferBuil
 
 	@Unique private			IMemoryInterface	entityIdOffset;
 	@Unique private			IMemoryInterface	entityOffset;
+
+	@WrapOperation(
+		method = "<init>",
+		at = @At(
+			value = "INVOKE",
+			target = "Lcom/github/argon4w/acceleratedrendering/core/buffers/accelerated/layers/LayerKey;renderType()Lnet/minecraft/client/renderer/RenderType;"
+		)
+	)
+	public RenderType unwrapIrisRenderType(
+		LayerKey 				instance,
+        Operation<RenderType> 	original
+    ) {
+		return (instance.renderType() instanceof WrappableRenderType wrapped) ?  wrapped.unwrap() : instance.renderType();
+	}
 
 	@Inject(
 			method	= "<init>",
@@ -93,7 +112,8 @@ public class AcceleratedBufferBuilderMixin implements IIrisAcceleratedBufferBuil
 					target	= "Lcom/github/argon4w/acceleratedrendering/core/buffers/memory/IMemoryInterface;putInt(JI)V",
 					ordinal	= 2,
 					shift	= At.Shift.AFTER
-			)
+			),
+			remap 	= false
 	)
 	public void addIrisMesh(CallbackInfo ci, @Local(name = "vertexAddress") long vertexAddress) {
 		addIrisData(vertexAddress);

@@ -2,7 +2,10 @@ package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
+import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -100,9 +103,7 @@ public abstract class AbstractContainerScreenMixin {
 			float			partialTick,
 			CallbackInfo	ci
 	) {
-		if (!AcceleratedItemRenderingFeature.shouldMergeGuiItemBatches()) {
-			GuiBatchingController.INSTANCE.startBatching(guiGraphics);
-		}
+		GuiBatchingController.INSTANCE.startBatching(guiGraphics);
 	}
 
 	@Inject(
@@ -147,14 +148,9 @@ public abstract class AbstractContainerScreenMixin {
 				);
 	}
 
-	@WrapMethod(method = "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;IIII)V")
-	private static void startRenderHighlight(
-			GuiGraphics		guiGraphics,
-			int				highlightX,
-			int				highLightY,
-			int				blitOffset,
-			int				color,
-			Operation<Void>	original
+    @WrapMethod(method = "renderSlotHighlight")
+    private static void startRenderHighlight(
+        GuiGraphics guiGraphics, int x, int y, int blitOffset, Operation<Void> original
 	) {
 		if (		!	CoreFeature.isLoaded				()
 				||	!	CoreFeature.isGuiBatching			()
@@ -162,10 +158,9 @@ public abstract class AbstractContainerScreenMixin {
 		) {
 			original.call(
 					guiGraphics,
-					highlightX,
-					highLightY,
-					blitOffset,
-					color
+                	x,
+					y,
+					blitOffset
 			);
 			return;
 		}
@@ -175,10 +170,10 @@ public abstract class AbstractContainerScreenMixin {
 		GuiBatchingController.INSTANCE.submitHighlight(
 				last.pose	(),
 				last.normal	(),
-				highlightX,
-				highLightY,
+				x,
+				y,
 				blitOffset,
-				color
+                -2130706433
 		);
 	}
 }
