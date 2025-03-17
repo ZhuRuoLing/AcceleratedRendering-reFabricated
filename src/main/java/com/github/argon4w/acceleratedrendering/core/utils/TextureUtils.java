@@ -10,9 +10,11 @@ import org.lwjgl.system.MemoryStack;
 
 import static org.lwjgl.opengl.GL46.*;
 
+
 public class TextureUtils {
 
-	private static final Object2ObjectLinkedOpenHashMap<ResourceLocation, NativeImage> IMAGE_CACHE = new Object2ObjectLinkedOpenHashMap<>();
+	public 	static	final TextureUtils													INSTANCE	= new TextureUtils						();
+	private	static	final Object2ObjectLinkedOpenHashMap<ResourceLocation, NativeImage> IMAGE_CACHE	= new Object2ObjectLinkedOpenHashMap<>	();
 
 	public static void reload() {
 		IMAGE_CACHE.clear();

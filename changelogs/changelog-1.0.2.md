@@ -1,3 +1,10 @@
+## 加速渲染 1.0.2-1.21.1 ALPHA 重织版
+- 添加对Trinkets模组的加速支持
+- 添加游戏内配置文件界面，可通过ModMenu模组访问
+- 现在加速渲染重织版强制要求OpenGL 4.6 可通过 `acceleratedrendering.bypassForceGlVersion` 系统属性跳过检查
+- 修复在Tweakmore环境下Tweakmore无法正常渲染更多提示文字的问题
+- 修复被Axiom误判为NeoForge环境的兼容性问题
+
 ## 加速渲染 1.0.2-1.21.1 ALPHA
 - 添加了新的Shader Overrides API功能, 以实现更好MOD兼容性.
 - 添加了新的Batching Layer API功能, 以实现更好的MOD兼容性.
@@ -10,6 +17,13 @@
 - 修复了在Iris环境下开启部分光影包时半透明模型与不透明模型合并渲染导致的半透明模型渲染异常
 - 修复了在ImmediatelyFast环境下渲染HUD时导致的渲染异常.
 - 修复了在机械动力环境下实体与机械动力方块/结构一同出现时导致的渲染异常.
+
+## Accelerated Rendering 1.0.2-1.21.1 ALPHA reFabricated
+- Add acceleration support for the Trinkets mod
+- Add an in-game configuration interface, accessible via the ModMenu mod
+- Accelerated Rendering reFabricated now enforces OpenGL 4.6; this check can be bypassed with the system property `acceleratedrendering.bypassForceGlVersion`
+- Fixes visual glitches on Text rendering when Tweakmore is installed.
+- Fix a compatibility issue where Axiom incorrectly determined current environment has NeoForge installed
 
 ## Accelerated Rendering 1.0.2-1.21.1 ALPHA
 - Adds Shader Overrides API to achieve better MODs compatibility.

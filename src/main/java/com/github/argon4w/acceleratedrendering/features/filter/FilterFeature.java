@@ -13,7 +13,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -87,9 +86,9 @@ public class FilterFeature {
 		return !PREDEFINED_ITEM_BLACKLIST_VALUES.contains(itemStack.getItem()) && getItemFilterType().test(ITEM_FILTER_VALUES, itemStack.getItem());
 	}
 
-	public static boolean testStage(RenderLevelStageEvent.Stage stage) {
-		return !PREDEFINED_STAGE_BLACKLIST_VALUES.contains(stage.toString()) && getStageFilterType().test(STAGE_FILTER_VALUES, stage.toString());
-	}
+//	public static boolean testStage(RenderLevelStageEvent.Stage stage) {
+//		return getStageFilterType().test(STAGE_FILTER_VALUES, stage.toString());
+//	}
 
 	public static boolean shouldFilterMenus() {
 		return getMenuFilterSetting() == FeatureStatus.ENABLED || HAS_PREDEFINED_MENU_BLACKLIST;

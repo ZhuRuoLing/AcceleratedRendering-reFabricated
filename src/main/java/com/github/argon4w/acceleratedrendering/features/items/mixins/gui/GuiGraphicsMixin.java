@@ -7,7 +7,6 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -17,7 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.ItemDecoratorHandler;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -309,51 +307,6 @@ public class GuiGraphicsMixin {
 				maxU,
 				minV,
 				maxV
-		);
-	}
-
-	@SuppressWarnings	("UnstableApiUsage")
-	@WrapOperation		(
-			method	= "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
-			at		= @At(
-					value	= "INVOKE",
-					target	= "Lnet/neoforged/neoforge/client/ItemDecoratorHandler;render(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V"
-			)
-	)
-	public void renderDecorationCustomFast(
-			ItemDecoratorHandler	instance,
-			GuiGraphics				guiGraphics,
-			Font					font,
-			ItemStack				stack,
-			int						xOffset,
-			int						yOffset,
-			Operation<Void>			original
-	) {
-		if (		!	CoreFeature.isLoaded				()
-				||	!	CoreFeature.isGuiBatching			()
-				||		CoreFeature.shouldByPassGuiBatching	()
-		) {
-			original.call(
-					instance,
-					guiGraphics,
-					font,
-					stack,
-					xOffset,
-					yOffset
-			);
-			return;
-		}
-
-		var last = pose.last();
-
-		GuiBatchingController.INSTANCE.submitCustomDecorator(
-				last.pose	(),
-				last.normal	(),
-				instance,
-				font,
-				stack,
-				xOffset,
-				yOffset
 		);
 	}
 

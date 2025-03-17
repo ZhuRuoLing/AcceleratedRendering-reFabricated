@@ -1,27 +1,38 @@
 package com.github.argon4w.acceleratedrendering;
 
 import com.github.argon4w.acceleratedrendering.configs.FeatureConfig;
-import com.mojang.logging.LogUtils;
-import net.neoforged.api.distmarker.Dist;
+import com.github.argon4w.acceleratedrendering.core.programs.ComputeShaderPrograms;
+import com.github.argon4w.acceleratedrendering.features.culling.OrientationCullingPrograms;
+import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeConfigRegistry;
+import lombok.Getter;
+import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import org.slf4j.Logger;
 
-@Mod(
-		value	= AcceleratedRenderingModEntry	.MOD_ID,
-		dist	= Dist							.CLIENT
-)
-public class AcceleratedRenderingModEntry {
+public class AcceleratedRenderingModEntry implements ClientModInitializer {
 
-	public static final String MOD_ID = "acceleratedrendering";
-	public static final Logger LOGGER = LogUtils.getLogger();
+    public static final String MOD_ID = "acceleratedrendering";
+    @Getter
+    private static ModContainer container;
 
-	public AcceleratedRenderingModEntry(IEventBus modEventBus, ModContainer modContainer) {
-		modContainer.registerConfig			(ModConfig.Type.CLIENT,			FeatureConfig.SPEC);
-		modContainer.registerExtensionPoint	(IConfigScreenFactory.class,	ConfigurationScreen::new);
-	}
+    public static ResourceLocation location(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    }
+
+    @Override
+    public void onInitializeClient() {
+        NeoForgeConfigRegistry.INSTANCE.register(MOD_ID, ModConfig.Type.CLIENT, FeatureConfig.SPEC);
+        container = ModLoader.createModContainer(MOD_ID);
+        IEventBus eventBus = container.getModEventBus();
+        eventBus.register(ComputeShaderPrograms.class);
+        eventBus.register(OrientationCullingPrograms.class);
+        conditionalInitialize(container.getModEventBus());
+    }
+
+    public void conditionalInitialize(IEventBus modEventBus) {
+        //intentionally empty
+    }
 }

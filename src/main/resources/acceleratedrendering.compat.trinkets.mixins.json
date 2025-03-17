@@ -1,10 +1,10 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.github.argon4w.acceleratedrendering.features.simplebedrockmodel.mixins",
+  "package": "com.github.argon4w.acceleratedrendering.compat.trinkets.mixins",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "BedrockPartMixin"
+    "TrinketFeatureRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
