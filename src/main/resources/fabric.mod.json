@@ -30,6 +30,6 @@
 	"depends": {
 		"fabricloader": ">=0.16.10",
 		"java": ">=21",
-		"fabric-api": "*"
+		"fabric-resource-loader-v0": "*"
 	}
 }
