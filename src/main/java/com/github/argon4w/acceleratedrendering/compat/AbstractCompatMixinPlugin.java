@@ -1,5 +1,6 @@
 package com.github.argon4w.acceleratedrendering.compat;
 
+import com.github.argon4w.acceleratedrendering.FabricUtils;
 import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -24,7 +25,7 @@ public abstract class AbstractCompatMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        return FabricLoader.getInstance().getModContainer(getModID()).isPresent();
+        return FabricUtils.modExists(getModID());
     }
 
     @Override
