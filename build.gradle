@@ -56,26 +56,8 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	//modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation fabricApi.module("fabric-resource-loader-v0", project.fabric_version)
-	modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}"){
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-renderer-indigo")
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-renderer-api-v1")
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-rendering-fluids-v1")
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-rendering-v1")
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-rendering-v0")
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-rendering-data-attachment-v1")
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-renderer-registries-v1")
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-transfer-api-v1")
-	}
-	modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:21.1.3") {
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-renderer-indigo")
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-renderer-api-v1")
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-rendering-fluids-v1")
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-rendering-v1")
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-rendering-v0")
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-rendering-data-attachment-v1")
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-renderer-registries-v1")
-		exclude(group: "net.fabricmc.fabric-api", module: "fabric-transfer-api-v1")
-	}
+	modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
+	modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:21.1.3")
 	modCompileOnly "maven.modrinth:sodium:mc1.21-0.6.0-beta.1-fabric"
 	modCompileOnly "maven.modrinth:iris:1.8.0-beta.2+1.21-fabric"
 
