@@ -3,7 +3,7 @@ package com.github.argon4w.acceleratedrendering;
 import com.github.argon4w.acceleratedrendering.compat.iris.programs.IrisPrograms;
 import com.github.argon4w.acceleratedrendering.configs.FeatureConfig;
 import com.github.argon4w.acceleratedrendering.core.programs.ComputeShaderPrograms;
-import com.github.argon4w.acceleratedrendering.features.culling.NormalCullingPrograms;
+import com.github.argon4w.acceleratedrendering.features.culling.OrientationCullingPrograms;
 import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeConfigRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +28,7 @@ public class AcceleratedRenderingModEntry implements ClientModInitializer {
         IEventBus eventBus = container.getModEventBus();
         eventBus.register(IrisPrograms.class);
         eventBus.register(ComputeShaderPrograms.class);
-        eventBus.register(NormalCullingPrograms.class);
+        eventBus.register(OrientationCullingPrograms.class);
         conditionalInitialize(container.getModEventBus());
     }
 
