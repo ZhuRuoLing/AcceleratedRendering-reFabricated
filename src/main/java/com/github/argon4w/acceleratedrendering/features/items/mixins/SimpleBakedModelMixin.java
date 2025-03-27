@@ -126,6 +126,16 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 					var normalOffset	= vertexOffset + IQuadTransformer.NORMAL;
 					var packedNormal	= data[normalOffset];
 
+                    float normalX = ((byte) (packedNormal & 0xFF)) / 127.0f;
+                    float normalY = ((byte) ((packedNormal >> 8) & 0xFF)) / 127.0f;
+                    float normalZ = ((byte) ((packedNormal >> 16) & 0xFF)) / 127.0f;
+
+                    if (normalX == 0 && normalY == 0 && normalZ == 0) {
+                        normalX = quad.getDirection().getNormal().getX();
+                        normalY = quad.getDirection().getNormal().getY();
+                        normalZ = quad.getDirection().getNormal().getZ();
+                    }
+
 					meshBuilder.addVertex(
 							Float.intBitsToFloat(data[posOffset + 0]),
 							Float.intBitsToFloat(data[posOffset + 1]),
@@ -135,9 +145,9 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 							Float.intBitsToFloat(data[uv0Offset + 1]),
 							-1,
 							data[uv2Offset],
-							((byte) (	packedNormal		& 0xFF)) / 127.0f,
-							((byte) ((	packedNormal >> 8)	& 0xFF)) / 127.0f,
-							((byte) ((	packedNormal >> 16)	& 0xFF)) / 127.0f
+                        	normalX,
+                        	normalY,
+                        	normalZ
 					);
 				}
 			}
