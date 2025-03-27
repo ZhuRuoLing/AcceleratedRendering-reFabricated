@@ -26,7 +26,6 @@ public class AcceleratedRenderingModEntry implements ClientModInitializer {
         NeoForgeConfigRegistry.INSTANCE.register(MODID, ModConfig.Type.CLIENT, FeatureConfig.SPEC);
         this.container = ModLoader.createModContainer(MODID);
         IEventBus eventBus = container.getModEventBus();
-        eventBus.register(IrisPrograms.class);
         eventBus.register(ComputeShaderPrograms.class);
         eventBus.register(OrientationCullingPrograms.class);
         conditionalInitialize(container.getModEventBus());
