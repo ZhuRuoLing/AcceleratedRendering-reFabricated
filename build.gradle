@@ -78,6 +78,8 @@ dependencies {
 	}
 	modCompileOnly "maven.modrinth:sodium:mc1.21-0.6.0-beta.1-fabric"
 	modCompileOnly "maven.modrinth:iris:1.8.0-beta.2+1.21-fabric"
+
+	//implementation "com.github.tartaricacid:touhoulittlemaid-1.21.1:release-1.2.2"
 }
 
 processResources {
