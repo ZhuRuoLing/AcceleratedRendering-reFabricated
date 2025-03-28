@@ -1,6 +1,5 @@
 package com.github.argon4w.acceleratedrendering;
 
-import com.github.argon4w.acceleratedrendering.compat.iris.programs.IrisPrograms;
 import com.github.argon4w.acceleratedrendering.configs.FeatureConfig;
 import com.github.argon4w.acceleratedrendering.core.programs.ComputeShaderPrograms;
 import com.github.argon4w.acceleratedrendering.features.culling.OrientationCullingPrograms;
@@ -14,17 +13,17 @@ import net.neoforged.fml.config.ModConfig;
 
 public class AcceleratedRenderingModEntry implements ClientModInitializer {
 
-    public static final String MODID = "acceleratedrendering";
+    public static final String MOD_ID = "acceleratedrendering";
     private ModContainer container;
 
     public static ResourceLocation location(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MODID, path);
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 
     @Override
     public void onInitializeClient() {
-        NeoForgeConfigRegistry.INSTANCE.register(MODID, ModConfig.Type.CLIENT, FeatureConfig.SPEC);
-        this.container = ModLoader.createModContainer(MODID);
+        NeoForgeConfigRegistry.INSTANCE.register(MOD_ID, ModConfig.Type.CLIENT, FeatureConfig.SPEC);
+        this.container = ModLoader.createModContainer(MOD_ID);
         IEventBus eventBus = container.getModEventBus();
         eventBus.register(ComputeShaderPrograms.class);
         eventBus.register(OrientationCullingPrograms.class);
