@@ -1,4 +1,5 @@
 plugins {
+	id 'idea'
 	id 'fabric-loom' version '1.10-SNAPSHOT'
 	id 'maven-publish'
 }
@@ -61,6 +62,8 @@ dependencies {
 	modCompileOnly "maven.modrinth:sodium:mc1.21-0.6.0-beta.1-fabric"
 	modCompileOnly "maven.modrinth:iris:1.8.0-beta.2+1.21-fabric"
 
+	compileOnly("org.projectlombok:lombok:1.18.38")
+	annotationProcessor("org.projectlombok:lombok:1.18.38")
 	//implementation "com.github.tartaricacid:touhoulittlemaid-1.21.1:release-1.2.2"
 }
 
@@ -100,5 +103,12 @@ jar {
 
 	from("LICENSE") {
 		rename { "${it}_${inputs.properties.archivesName}"}
+	}
+}
+
+idea {
+	module {
+		downloadSources = true
+		downloadJavadoc = true
 	}
 }
