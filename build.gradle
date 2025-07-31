@@ -61,7 +61,8 @@ dependencies {
 	modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:21.1.3")
 	modCompileOnly "maven.modrinth:sodium:mc1.21-0.6.0-beta.1-fabric"
 	modCompileOnly "maven.modrinth:iris:1.8.0-beta.2+1.21-fabric"
-
+	modCompileOnly "maven.modrinth:geckolib:aHSu8jaP"
+	modCompileOnly "maven.modrinth:immediatelyfast:1.6.6+1.21.1-fabric"
 	compileOnly("org.projectlombok:lombok:1.18.38")
 	annotationProcessor("org.projectlombok:lombok:1.18.38")
 	//implementation "com.github.tartaricacid:touhoulittlemaid-1.21.1:release-1.2.2"

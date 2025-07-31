@@ -8,11 +8,11 @@
 		"${mod_authors}"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/ZhuRuoLing/AcceleratedRendering-reFabricated"
 	},
 	"license": "${mod_license}",
 	"environment": "*",
+	"icon": "logo_fabric.png",
 	"entrypoints": {
 		"client": [
 			"com.github.argon4w.acceleratedrendering.AcceleratedRenderingModEntry"
