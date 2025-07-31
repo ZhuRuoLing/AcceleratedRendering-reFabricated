@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.lang.invoke.VarHandle;
 
-@Mixin(FlattenVarHandleMeshInfoCache.class)
+@Mixin(value = FlattenVarHandleMeshInfoCache.class, remap = false)
 public class FlattenVarHandleMeshInfoCacheMixin implements IIrisMeshInfoCache {
 
 	@Shadow @Final public	static			VarHandle	HANDLE;
