@@ -8,7 +8,7 @@ import net.irisshaders.iris.shadows.ShadowRenderingState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(CoreBuffers.class)
+@Mixin(value = CoreBuffers.class, remap = false)
 public class CoreBuffersMixin {
 
 	@ModifyReturnValue(
