@@ -13,6 +13,7 @@
 	"license": "${mod_license}",
 	"environment": "*",
 	"icon": "logo_fabric.png",
+	"accessWidener": "acceleratedrendering.accesswidener",
 	"entrypoints": {
 		"client": [
 			"com.github.argon4w.acceleratedrendering.AcceleratedRenderingModEntry"
