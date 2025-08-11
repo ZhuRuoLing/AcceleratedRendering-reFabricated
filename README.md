@@ -9,7 +9,7 @@
 ![Benchmark](images/benchmark.jpg)
 
 ## 🍝赞助
-加速渲染基本由我一人完成, 花费了数千小时对其进行开发和测试, 才得以发布.
+加速渲染基本由我（Argon4W）一人完成, 花费了数千小时对其进行开发和测试, 才得以发布.
 来自广大玩家们的赞助将用于加速渲染后续的更快的开发, 创新和优化, 感谢所有支持者!
 如果你喜欢这个MOD, 并且想要支持加速渲染的开发, 请前往[爱发电](https://afdian.com/a/argon4w)为狐狸买一份意面
 
@@ -50,7 +50,7 @@ other MODs and their entities.
 
 ## 🍝Sponsorship
 
-This MOD is almost done by myself and takes thousands of hours of my own time working and testing on it to be released.
+This MOD is almost done by myself (Argon4W) and takes thousands of hours of my own time working and testing on it to be released.
 Sponsorships from players can ensure the future development, innovation and optimization of this MOD. Thanks for everyone
 that support this MOD! If you like it and want to support my work on development of AcceleratedRendering, please consider sponsor me at [爱发电](https://afdian.com/a/argon4w)
 
