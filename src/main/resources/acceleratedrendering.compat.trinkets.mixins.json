@@ -1,10 +1,10 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.github.argon4w.acceleratedrendering.compat.curios.mixins",
+  "package": "com.github.argon4w.acceleratedrendering.compat.trinkets.mixins",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "CuriosLayerMixin"
+    "TrinketFeatureRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
