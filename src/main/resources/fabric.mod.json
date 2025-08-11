@@ -21,6 +21,7 @@
 	},
 	"mixins": [
 		"acceleratedrendering.compat.iris.mixins.json",
+		"acceleratedrendering.compat.trinkets.mixins.json",
 		"acceleratedrendering.core.mixins.json",
 		"acceleratedrendering.feature.entities.mixins.json",
 		"acceleratedrendering.feature.items.mixins.json",
