@@ -61,11 +61,11 @@ public class FeatureConfig {
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			irisCompatShadowCulling;
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			irisCompatPolygonProcessing;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			curiosCompatFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			curiosCompatLayerAcceleration;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			curiosItemFilter;
-	public			final	ModConfigSpec.ConfigValue<FilterType>				curiosItemFilterType;
-	public			final	ModConfigSpec.ConfigValue<List<? extends String>>	curiosItemFilterValues;
+	public final		ModConfigSpec.ConfigValue<FeatureStatus>			trinketsCompatFeatureStatus;
+	public final		ModConfigSpec.ConfigValue<FeatureStatus>			trinketsCompatLayerAcceleration;
+	public final		ModConfigSpec.ConfigValue<FeatureStatus>			trinketsItemFilter;
+	public final		ModConfigSpec.ConfigValue<FilterType>				trinketsItemFilterType;
+	public final		ModConfigSpec.ConfigValue<List<? extends String>>	trinketsItemFilterValues;
 
 	static {
 		Pair<FeatureConfig, ModConfigSpec> pair	= new ModConfigSpec.Builder()	.configure	(FeatureConfig::new);
@@ -376,39 +376,39 @@ public class FeatureConfig {
 		builder.pop();
 
 		builder
-				.comment				("Curios Compatibility Settings")
-				.comment				("Curios Compatibility Settings allows Accelerated Rendering to work correctly with Curios.")
-				.translation			("acceleratedrendering.configuration.curios_compatibility")
-				.push					("curios_compatibility");
+				.comment				("Trinkets Compatibility Settings")
+				.comment				("Trinkets Compatibility Settings allows Accelerated Rendering to work correctly with Trinkets.")
+				.translation			("acceleratedrendering.configuration.trinkets_compatibility")
+				.push					("trinkets_compatibility");
 
-		curiosCompatFeatureStatus						= builder
-				.comment				("- DISABLED: Accelerated Rendering will not interrupt the acceleration of the Curios layer on entities.")
-				.comment				("- ENABLED: Accelerated Rendering will interrupt the acceleration of Curios layer on entities to prevent some mods using extremely bad rendering code that breaks the caching of Accelerated Rendering.")
-				.translation			("acceleratedrendering.configuration.curios_compatibility.feature_status")
+		trinketsCompatFeatureStatus						= builder
+				.comment				("- DISABLED: Accelerated Rendering will not interrupt the acceleration of the Trinkets layer on entities.")
+				.comment				("- ENABLED: Accelerated Rendering will interrupt the acceleration of Trinkets layer on entities to prevent some mods using extremely bad rendering code that breaks the caching of Accelerated Rendering.")
+				.translation			("acceleratedrendering.configuration.trinkets_compatibility.feature_status")
 				.defineEnum				("feature_status",						FeatureStatus.ENABLED);
 
-		curiosCompatLayerAcceleration					= builder
-				.comment				("- DISABLED: Curios layer will not be accelerated by default to prevent some mods using extremely bad rendering code that breaks the caching of Accelerated Rendering unless mods explicitly enable the acceleration when rendering their accessories or equipments.")
-				.comment				("- ENABLED: Curios layer will be accelerated by default unless mods explicitly enable the acceleration when rendering their accessories or equipments.")
-				.translation			("acceleratedrendering.configuration.curios_compatibility.layer_acceleration")
+		trinketsCompatLayerAcceleration					= builder
+				.comment				("- DISABLED: Trinkets layer will not be accelerated by default to prevent some mods using extremely bad rendering code that breaks the caching of Accelerated Rendering unless mods explicitly enable the acceleration when rendering their accessories or equipments.")
+				.comment				("- ENABLED: Trinkets layer will be accelerated by default unless mods explicitly enable the acceleration when rendering their accessories or equipments.")
+				.translation			("acceleratedrendering.configuration.trinkets_compatibility.layer_acceleration")
 				.defineEnum				("layer_acceleration",					FeatureStatus.DISABLED);
 
-		curiosItemFilter								= builder
-				.comment				("- DISABLED: Curios item filter will be disabled and acceleration of the rendering of all curios accessories/equipments will be determined by the \"layer acceleration\" option.")
-				.comment				("- ENABLED: Curios item filter will test if the acceleration of the curios accessories/equipments should be prevented based on the filter values and the filter type.")
-				.translation			("acceleratedrendering.configuration.curios_compatibility.item_filter")
+		trinketsItemFilter								= builder
+				.comment				("- DISABLED: Trinkets item filter will be disabled and acceleration of the rendering of all trinkets accessories/equipments will be determined by the \"layer acceleration\" option.")
+				.comment				("- ENABLED: Trinkets item filter will test if the acceleration of the trinkets accessories/equipments should be prevented based on the filter values and the filter type.")
+				.translation			("acceleratedrendering.configuration.trinkets_compatibility.item_filter")
 				.defineEnum				("item_filter",							FeatureStatus.DISABLED);
 
-		curiosItemFilterType							= builder
-				.comment				("- BLACKLIST: Curios items that are not in the filter values can pass the filter and not being prevented to be accelerated.")
-				.comment				("- WHITELIST: Curios items that are in the filter values can pass the filter and not being prevented to be accelerated.")
-				.translation			("acceleratedrendering.configuration.curios_compatibility.item_filter_type")
+		trinketsItemFilterType							= builder
+				.comment				("- BLACKLIST: Trinkets items that are not in the filter values can pass the filter and not being prevented to be accelerated.")
+				.comment				("- WHITELIST: Trinkets items that are in the filter values can pass the filter and not being prevented to be accelerated.")
+				.translation			("acceleratedrendering.configuration.trinkets_compatibility.item_filter_type")
 				.defineEnum				("item_filter_type",					FilterType.BLACKLIST);
 
-		curiosItemFilterValues							= builder
-				.comment				("You can configure the curios item filter by this list.")
-				.comment				("Curios item filter will use this list and the filter type to determine if a curios item can pass the filter.")
-				.translation			("acceleratedrendering.configuration.curios_compatibility.item_filter_values")
+		trinketsItemFilterValues							= builder
+				.comment				("The configurable filter values of the trinkets item filter.")
+				.comment				("Changing this will affect the trinkets item filter.")
+				.translation			("acceleratedrendering.configuration.trinkets_compatibility.item_filter_values")
 				.gameRestart			()
 				.defineListAllowEmpty	("item_filter_values",					new ArrayList<>(), () -> "minecraft:air", object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
 

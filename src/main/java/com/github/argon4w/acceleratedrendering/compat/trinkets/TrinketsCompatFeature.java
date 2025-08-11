@@ -1,4 +1,4 @@
-package com.github.argon4w.acceleratedrendering.compat.curios;
+package com.github.argon4w.acceleratedrendering.compat.trinkets;
 
 import com.github.argon4w.acceleratedrendering.configs.FeatureConfig;
 import com.github.argon4w.acceleratedrendering.configs.FeatureStatus;
@@ -13,41 +13,41 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Set;
 
-public class CuriosCompatFeature {
+public class TrinketsCompatFeature {
 
 	public	static final Deque	<FeatureStatus> LAYER_ACCELERATION_CONTROLLER_STACK		= new ArrayDeque<>			();
 	public	static final Deque	<FeatureStatus> CURIOS_ITEM_FILTER_CONTROLLER_STACK		= new ArrayDeque<>			();
 	private	static final Set	<Item>			CURIOS_ITEM_FILTER_VALUES				= new ReferenceOpenHashSet<>();
 
 	static {
-		FeatureConfig.CONFIG.curiosItemFilterValues.get().forEach(string -> CURIOS_ITEM_FILTER_VALUES.add(BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(string))));
+		FeatureConfig.CONFIG.trinketsItemFilterValues.get().forEach(string -> CURIOS_ITEM_FILTER_VALUES.add(BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(string))));
 	}
 
 	public static boolean isEnabled() {
-		return FeatureConfig.CONFIG.curiosCompatFeatureStatus.get() == FeatureStatus.ENABLED;
+		return FeatureConfig.CONFIG.trinketsCompatFeatureStatus.get() == FeatureStatus.ENABLED;
 	}
 
-	public static boolean testCuriosItem(ItemStack itemStack) {
-		return getCuriosItemFilterType().test(CURIOS_ITEM_FILTER_VALUES, itemStack.getItem());
+	public static boolean testTrinketsItem(ItemStack itemStack) {
+		return getTrinketsItemFilterType().test(CURIOS_ITEM_FILTER_VALUES, itemStack.getItem());
 	}
 
-	public static boolean shouldAccelerateCurios() {
+	public static boolean shouldAccelerateTrinkets() {
 		return getLayerAccelerationSetting() == FeatureStatus.ENABLED;
 	}
 
-	public static boolean shouldFilterCuriosItems() {
-		return getCuriosItemFilterSetting() == FeatureStatus.ENABLED;
+	public static boolean shouldFilterTrinketsItems() {
+		return getTrinketsItemFilterSetting() == FeatureStatus.ENABLED;
 	}
 
-	public static FilterType getCuriosItemFilterType() {
-		return FeatureConfig.CONFIG.curiosItemFilterType.get();
+	public static FilterType getTrinketsItemFilterType() {
+		return FeatureConfig.CONFIG.trinketsItemFilterType.get();
 	}
 
 	public static void disableLayerAcceleration() {
 		LAYER_ACCELERATION_CONTROLLER_STACK.push(FeatureStatus.DISABLED);
 	}
 
-	public static void disableCuriosItemFilter() {
+	public static void disableTrinketsItemFilter() {
 		CURIOS_ITEM_FILTER_CONTROLLER_STACK.push(FeatureStatus.DISABLED);
 	}
 
@@ -55,7 +55,7 @@ public class CuriosCompatFeature {
 		LAYER_ACCELERATION_CONTROLLER_STACK.push(FeatureStatus.ENABLED);
 	}
 
-	public static void forceEnableCuriosItemFilter() {
+	public static void forceEnableTrinketsItemFilter() {
 		CURIOS_ITEM_FILTER_CONTROLLER_STACK.push(FeatureStatus.ENABLED);
 	}
 
@@ -63,7 +63,7 @@ public class CuriosCompatFeature {
 		LAYER_ACCELERATION_CONTROLLER_STACK.push(status);
 	}
 
-	public static void forceSetCuriosItemFilter(FeatureStatus status) {
+	public static void forceSetTrinketsItemFilter(FeatureStatus status) {
 		CURIOS_ITEM_FILTER_CONTROLLER_STACK.push(status);
 	}
 
@@ -71,7 +71,7 @@ public class CuriosCompatFeature {
 		LAYER_ACCELERATION_CONTROLLER_STACK.pop();
 	}
 
-	public static void resetCuriosItemFilter() {
+	public static void resetTrinketsItemFilter() {
 		CURIOS_ITEM_FILTER_CONTROLLER_STACK.pop();
 	}
 
@@ -79,15 +79,15 @@ public class CuriosCompatFeature {
 		return LAYER_ACCELERATION_CONTROLLER_STACK.isEmpty() ? getDefaultLayerAccelerationSettings() : LAYER_ACCELERATION_CONTROLLER_STACK.peek();
 	}
 
-	public static FeatureStatus getCuriosItemFilterSetting() {
-		return CURIOS_ITEM_FILTER_CONTROLLER_STACK.isEmpty() ? getDefaultCuriosItemFilterSetting() : CURIOS_ITEM_FILTER_CONTROLLER_STACK.peek();
+	public static FeatureStatus getTrinketsItemFilterSetting() {
+		return CURIOS_ITEM_FILTER_CONTROLLER_STACK.isEmpty() ? getDefaultTrinketsItemFilterSetting() : CURIOS_ITEM_FILTER_CONTROLLER_STACK.peek();
 	}
 
 	public static FeatureStatus getDefaultLayerAccelerationSettings() {
-		return FeatureConfig.CONFIG.curiosCompatLayerAcceleration.get();
+		return FeatureConfig.CONFIG.trinketsCompatLayerAcceleration.get();
 	}
 
-	public static FeatureStatus getDefaultCuriosItemFilterSetting() {
-		return FeatureConfig.CONFIG.curiosItemFilter.get();
+	public static FeatureStatus getDefaultTrinketsItemFilterSetting() {
+		return FeatureConfig.CONFIG.trinketsItemFilter.get();
 	}
 }
