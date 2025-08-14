@@ -17,6 +17,9 @@
 	"entrypoints": {
 		"client": [
 			"com.github.argon4w.acceleratedrendering.AcceleratedRenderingModEntry"
+		],
+		"modmenu": [
+			"com.github.argon4w.acceleratedrendering.ARModMenu"
 		]
 	},
 	"mixins": [
