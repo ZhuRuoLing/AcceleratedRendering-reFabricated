@@ -24,16 +24,18 @@ public class AcceleratedItemRenderContext {
         RandomSource	random
     ) {
         this.itemStack	= itemStack;
-        this.itemColor	= ((ItemColorsAccessor) Minecraft.getInstance().getItemColors()).getItemColors().getOrDefault(this.itemStack.getItem(), EmptyItemColor.INSTANCE);
+        this.itemColor	= getItemColorOrDefault(this.itemStack);
         this.bakedModel	= bakedModel;
         this.random		= random;
     }
 
     private static ItemColor getItemColorOrDefault(ItemStack itemStack) {
-        MCItemColorsAccessor accessor = (MCItemColorsAccessor) Minecraft.getInstance();
-        int id = BuiltInRegistries.ITEM.getId(itemStack.getItem());
-        ItemColor color = ((ItemColorsAccessor) (accessor.getItemColors())).getItemColors().byId(id);
-        if (color == null) return EmptyItemColor.INSTANCE;
+        MCItemColorsAccessor    accessor    = (MCItemColorsAccessor)    Minecraft.getInstance();
+        int                     id          =                           BuiltInRegistries.ITEM.getId(itemStack.getItem());
+        ItemColor               color       = ((ItemColorsAccessor)     (accessor.getItemColors())).getItemColors().byId(id);
+        if (color == null) {
+            return EmptyItemColor.INSTANCE;
+        }
         return color;
     }
 }

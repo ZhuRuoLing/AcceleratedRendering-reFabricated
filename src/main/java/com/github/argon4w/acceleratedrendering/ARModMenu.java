@@ -9,15 +9,6 @@ import java.lang.reflect.Method;
 
 public class ARModMenu implements ModMenuApi {
 
-    static {
-        for (Method declaredMethod : ConfigScreen.class.getDeclaredMethods()) {
-            System.out.println("declaredMethod = " + declaredMethod);
-        }
-        for (Constructor<?> constructor : ConfigScreen.class.getConstructors()) {
-            System.out.println("constructor = " + constructor);
-        }
-    }
-
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return screen -> new ConfigScreen(AcceleratedRenderingModEntry.getContainer(), screen);
