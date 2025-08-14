@@ -39,3 +39,7 @@ accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph v0 F
 accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph u1 F
 accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph v1 F
 accessible field net/minecraft/client/renderer/RenderStateShard$BooleanStateShard enabled Z
+
+accessible class net/minecraft/client/OptionInstance$ValueSet
+accessible field net/minecraft/client/OptionInstance toString Ljava/util/function/Function;
+accessible field net/minecraft/client/OptionInstance caption Lnet/minecraft/network/chat/Component;
