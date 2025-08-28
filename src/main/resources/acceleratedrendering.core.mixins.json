@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "AvoidLogSpamMixin",
-    "MCItemColorsAccessor",
     "BufferBuilderMixin",
     "BufferSourceMixin",
     "EntityOutlineGeneratorMixin",
@@ -16,7 +15,8 @@
     "SpriteCoordinateExpanderMixin",
     "VertexConsumerMixin",
     "VertexDoubleConsumerMixin",
-    "VertexMultipleConsumerMixin"
+    "VertexMultipleConsumerMixin",
+    "WindowMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,6 +1,6 @@
 package com.github.argon4w.acceleratedrendering.features.items;
 
-import com.github.argon4w.acceleratedrendering.core.mixins.MCItemColorsAccessor;
+import com.github.argon4w.acceleratedrendering.features.items.mixins.MCItemColorsAccessor;
 import com.github.argon4w.acceleratedrendering.features.items.mixins.ItemColorsAccessor;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
