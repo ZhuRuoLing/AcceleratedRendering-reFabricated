@@ -34,6 +34,8 @@
 	"depends": {
 		"fabricloader": ">=0.16.10",
 		"java": ">=21",
-		"fabric-resource-loader-v0": "*"
+		"minecraft": "1.21.1",
+		"fabric-resource-loader-v0": "*",
+		"forgeconfigapiport": "*"
 	}
 }

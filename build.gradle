@@ -68,7 +68,7 @@ dependencies {
 	modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
 	modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:21.1.3")
 	modCompileOnly "maven.modrinth:sodium:mc1.21-0.6.0-beta.1-fabric"
-	modCompileOnly "maven.modrinth:iris:1.8.0-beta.2+1.21-fabric"
+	modCompileOnly "maven.modrinth:iris:1.8.8+1.21.1-fabric"
     modCompileOnly "maven.modrinth:geckolib:aHSu8jaP"
     modCompileOnly "maven.modrinth:entity-model-features:9t01xL7K"
 	modCompileOnly "maven.modrinth:immediatelyfast:1.6.6+1.21.1-fabric"
@@ -114,12 +114,5 @@ jar {
 
 	from("LICENSE") {
 		rename { "${it}_${inputs.properties.archivesName}"}
-	}
-}
-
-idea {
-	module {
-		downloadSources = true
-		downloadJavadoc = true
 	}
 }
