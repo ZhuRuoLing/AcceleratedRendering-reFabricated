@@ -39,6 +39,15 @@ accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph v0 F
 accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph u1 F
 accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph v1 F
 accessible field net/minecraft/client/renderer/RenderStateShard$BooleanStateShard enabled Z
+accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph$Effect x0 F
+accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph$Effect y0 F
+accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph$Effect x1 F
+accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph$Effect y1 F
+accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph$Effect depth F
+accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph$Effect r F
+accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph$Effect g F
+accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph$Effect b F
+accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph$Effect a F
 
 accessible class net/minecraft/client/OptionInstance$ValueSet
 accessible field net/minecraft/client/OptionInstance toString Ljava/util/function/Function;
