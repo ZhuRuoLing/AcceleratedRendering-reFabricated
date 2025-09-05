@@ -11,7 +11,7 @@
 		"sources": "https://github.com/ZhuRuoLing/AcceleratedRendering-reFabricated"
 	},
 	"license": "${mod_license}",
-	"environment": "*",
+	"environment": "client",
 	"icon": "logo_fabric.png",
 	"accessWidener": "acceleratedrendering.accesswidener",
 	"entrypoints": {
