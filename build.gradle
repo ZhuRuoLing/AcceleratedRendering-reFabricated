@@ -72,6 +72,8 @@ dependencies {
     modCompileOnly "maven.modrinth:geckolib:aHSu8jaP"
     modCompileOnly "maven.modrinth:entity-model-features:9t01xL7K"
 	modCompileOnly "maven.modrinth:immediatelyfast:1.6.6+1.21.1-fabric"
+	modCompileOnly "maven.modrinth:axiom:6BFd0w5s"
+	compileOnly("com.moulberry:mixinconstraints:1.0.9")
 	compileOnly("org.projectlombok:lombok:1.18.38")
 	annotationProcessor("org.projectlombok:lombok:1.18.38")
 	modImplementation "dev.emi:trinkets:3.10.0"

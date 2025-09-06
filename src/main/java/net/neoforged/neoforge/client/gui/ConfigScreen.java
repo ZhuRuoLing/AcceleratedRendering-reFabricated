@@ -28,6 +28,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
@@ -60,7 +62,6 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.config.ModConfig.Type;
 import net.neoforged.fml.config.ModConfigs;
-import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ListValueSpec;
@@ -141,7 +142,7 @@ public final class ConfigScreen extends OptionsSubScreen {
         }
 
         public void finish() {
-            if (/*CLIENT.logUntranslatedConfigurationWarnings.get() &&*/ !FMLLoader.isProduction() && (!untranslatables.isEmpty() || !untranslatablesWithFallback.isEmpty())) {
+            if (/*CLIENT.logUntranslatedConfigurationWarnings.get() &&*/ FabricLoader.getInstance().isDevelopmentEnvironment() && (!untranslatables.isEmpty() || !untranslatablesWithFallback.isEmpty())) {
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append("""
                         \n	Dev warning - Untranslated configuration keys encountered. Please translate your configuration keys so users can properly configure your mod.
