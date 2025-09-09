@@ -6,44 +6,49 @@ import com.github.argon4w.acceleratedrendering.core.utils.DirectionUtils;
 import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.items.AcceleratedQuadsRenderer;
 import com.github.argon4w.acceleratedrendering.features.items.BakedModelExtension;
-import com.github.argon4w.acceleratedrendering.features.items.colors.ItemLayerColors;
+import com.github.argon4w.acceleratedrendering.features.items.colors.FixedColors;
 import com.github.argon4w.acceleratedrendering.features.items.contexts.AcceleratedQuadsRenderContext;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lombok.experimental.ExtensionMethod;
-import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @ExtensionMethod(value = {VertexConsumerExtension	.class, BakedModelExtension.class	})
-@Mixin			(value = {ItemRenderer				.class								})
-public class ItemRendererMixin {
+@Mixin			(value = {ModelBlockRenderer		.class								}, priority = 999)
+public class ModelBlockRendererMixin {
 
-	@WrapOperation(
-			method	= "render",
-			at		= @At(
-					value	= "INVOKE",
-					target	= "Lnet/minecraft/client/renderer/entity/ItemRenderer;renderModelLists(Lnet/minecraft/client/resources/model/BakedModel;Lnet/minecraft/world/item/ItemStack;IILcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;)V"
-			)
+	@Inject(
+			cancellable	= true,
+			method		= "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/client/resources/model/BakedModel;FFFIILnet/neoforged/neoforge/client/model/data/ModelData;Lnet/minecraft/client/renderer/RenderType;)V",
+			at			= @At("HEAD")
 	)
-	@SuppressWarnings("deprecation")
-	public void renderFast(
-			ItemRenderer	instance,
-			BakedModel		pModel,
-			ItemStack		pStack,
-			int				pCombinedLight,
-			int				pCombinedOverlay,
-			PoseStack		pPoseStack,
-			VertexConsumer	pBuffer,
-			Operation<Void>	original
+	public void renderModelFast(
+			PoseStack.Pose		pose,
+			VertexConsumer		consumer,
+			BlockState			state,
+			BakedModel			model,
+			float				red,
+			float				green,
+			float				blue,
+			int					packedLight,
+			int					packedOverlay,
+			ModelData			modelData,
+			RenderType			renderType,
+			CallbackInfo		ci
 	) {
-		var extension1 = pBuffer.getAccelerated();
-		var extension2 = pModel	.getAccelerated();
+		var extension1 = consumer	.getAccelerated();
+		var extension2 = model		.getAccelerated();
 
 		if (			!		AcceleratedItemRenderingFeature	.isEnabled						()
 				||		!		AcceleratedItemRenderingFeature	.shouldUseAcceleratedPipeline	()
@@ -58,62 +63,59 @@ public class ItemRendererMixin {
 				||				AcceleratedItemRenderingFeature	.shouldAccelerateInGui			())))
 				||		!		extension1						.isAccelerated					()
 		) {
-			original.call(
-					instance,
-					pModel,
-					pStack,
-					pCombinedLight,
-					pCombinedOverlay,
-					pPoseStack,
-					pBuffer
-			);
 			return;
 		}
 
 		if (extension2.isAccelerated()) {
-			extension2.renderItemFast(
-					pStack,
-					RandomSource.create(42L),
-					pPoseStack.last(),
+			ci			.cancel			();
+			extension2	.renderBlockFast(
+					state,
+					RandomSource.create(42),
+					pose,
 					extension1,
-					pCombinedLight,
-					pCombinedOverlay
+					packedLight,
+					packedOverlay,
+					FastColor.ARGB32.colorFromFloat(
+							1.0f,
+							Mth.clamp(red,		0.0f, 1.0f),
+							Mth.clamp(green,	0.0f, 1.0f),
+							Mth.clamp(blue,		0.0f, 1.0f)
+					)
 			);
 			return;
 		}
 
 		if (!AcceleratedItemRenderingFeature.shouldBakeMeshForQuad()) {
-			original.call(
-					instance,
-					pModel,
-					pStack,
-					pCombinedLight,
-					pCombinedOverlay,
-					pPoseStack,
-					pBuffer
-			);
 			return;
 		}
 
-		var pose			= pPoseStack	.last	();
-		var randomSource	= RandomSource	.create	();
+		ci.cancel();
+
+		var randomSource = RandomSource.create();
 
 		for (var direction : DirectionUtils.FULL) {
 			randomSource.setSeed	(42L);
 			extension1	.doRender	(
 					AcceleratedQuadsRenderer.INSTANCE,
 					new AcceleratedQuadsRenderContext(
-							pModel.getQuads(
-									null,
+							model.getQuads(
+									state,
 									direction,
-									randomSource
+									randomSource,
+									modelData,
+									renderType
 							),
-							new ItemLayerColors(pStack)
+							new FixedColors(FastColor.ARGB32.colorFromFloat(
+									1.0f,
+									Mth.clamp(red,		0.0f, 1.0f),
+									Mth.clamp(green,	0.0f, 1.0f),
+									Mth.clamp(blue,		0.0f, 1.0f)
+							))
 					),
 					pose.pose	(),
 					pose.normal	(),
-					pCombinedLight,
-					pCombinedOverlay,
+					packedLight,
+					packedOverlay,
 					-1
 			);
 		}

@@ -1,4 +1,4 @@
-package com.github.argon4w.acceleratedrendering.features.items.mixins;
+package com.github.argon4w.acceleratedrendering.features.items.mixins.models;
 
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IAcceleratedVertexConsumer;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IBufferGraph;
@@ -7,12 +7,14 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderer
 import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.CulledMeshCollector;
 import com.github.argon4w.acceleratedrendering.core.utils.DirectionUtils;
-import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderContext;
 import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedBakedModel;
+import com.github.argon4w.acceleratedrendering.features.items.colors.FixedColors;
+import com.github.argon4w.acceleratedrendering.features.items.colors.ItemLayerColors;
+import com.github.argon4w.acceleratedrendering.features.items.contexts.AcceleratedModelRenderContext;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectAVLTreeMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -35,7 +37,7 @@ import java.util.Map;
 
 @ExtensionMethod(VertexConsumerExtension.class)
 @Mixin			(SimpleBakedModel		.class)
-public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, IAcceleratedRenderer<AcceleratedItemRenderContext> {
+public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, IAcceleratedRenderer<AcceleratedModelRenderContext> {
 
 	@Shadow public abstract List<BakedQuad> getQuads(BlockState pState, Direction pDirection, RandomSource pRandom);
 
@@ -45,20 +47,36 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 	@Override
 	public void renderItemFast(
 			ItemStack					itemStack,
-			PoseStack					poseStack,
+			RandomSource				random,
+			PoseStack.Pose				pose,
 			IAcceleratedVertexConsumer	extension,
 			int							combinedLight,
 			int							combinedOverlay
 	) {
-		PoseStack.Pose pose = poseStack.last();
-
 		extension.doRender(
 				this,
-				new AcceleratedItemRenderContext(
-						itemStack,
-						null,
-						null
-				),
+				new AcceleratedModelRenderContext(random, new ItemLayerColors(itemStack)),
+				pose.pose(),
+				pose.normal(),
+				combinedLight,
+				combinedOverlay,
+				-1
+		);
+	}
+
+	@Override
+	public void renderBlockFast(
+			BlockState					state,
+			RandomSource				random,
+			PoseStack.Pose				pose,
+			IAcceleratedVertexConsumer	extension,
+			int							combinedLight,
+			int							combinedOverlay,
+			int							color
+	) {
+		extension.doRender(
+				this,
+				new AcceleratedModelRenderContext(random, new FixedColors(color)),
 				pose.pose(),
 				pose.normal(),
 				combinedLight,
@@ -71,16 +89,15 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 	@Override
 	public void render(
 			VertexConsumer					vertexConsumer,
-			AcceleratedItemRenderContext	context,
+			AcceleratedModelRenderContext	context,
 			Matrix4f						transform,
 			Matrix3f						normal,
 			int								light,
 			int								overlay,
 			int								color
 	) {
-		var itemStack	= context		.getItemStack	();
-		var itemColor	= context		.getItemColor	();
 		var extension	= vertexConsumer.getAccelerated	();
+		var layerColors	= context		.layerColors	();
 		var layers		= meshes		.get			(extension);
 
 		extension.beginTransform(transform, normal);
@@ -91,7 +108,7 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 
 				mesh.write(
 						extension,
-						getCustomColor(layer, itemColor.getColor(itemStack, layer)),
+						getCustomColor(layer, layerColors.getColor(layer)),
 						light,
 						overlay
 				);
@@ -101,9 +118,10 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 			return;
 		}
 
-		var culledMeshCollectors	= new Int2ObjectOpenHashMap<CulledMeshCollector>();
-		layers 						= new Int2ObjectLinkedOpenHashMap<>				();
-		meshes.put																	(extension, layers);
+		var culledMeshCollectors	= new Int2ObjectOpenHashMap	<CulledMeshCollector>	();
+		layers 						= new Int2ObjectAVLTreeMap	<>						();
+
+		meshes.put(extension, layers);
 
 		for (var direction : DirectionUtils.FULL) {
 			for (var quad : getQuads(null, direction, null)) {
@@ -118,12 +136,12 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 				var data		= quad		.getVertices();
 
 				for (int i = 0; i < data.length / 8; i++) {
-					var vertexOffset	= i * IQuadTransformer.STRIDE;
-					var posOffset		= vertexOffset + IQuadTransformer.POSITION;
-					var colorOffset		= vertexOffset + IQuadTransformer.COLOR;
-					var uv0Offset		= vertexOffset + IQuadTransformer.UV0;
-					var uv2Offset		= vertexOffset + IQuadTransformer.UV2;
-					var normalOffset	= vertexOffset + IQuadTransformer.NORMAL;
+					var vertexOffset	= i				* IQuadTransformer.STRIDE;
+					var posOffset		= vertexOffset	+ IQuadTransformer.POSITION;
+					var colorOffset		= vertexOffset	+ IQuadTransformer.COLOR;
+					var uv0Offset		= vertexOffset	+ IQuadTransformer.UV0;
+					var uv2Offset		= vertexOffset	+ IQuadTransformer.UV2;
+					var normalOffset	= vertexOffset	+ IQuadTransformer.NORMAL;
 					var packedNormal	= data[normalOffset];
 
 					meshBuilder.addVertex(
@@ -145,6 +163,7 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 
 		for (int layer : culledMeshCollectors.keySet()) {
 			var culledMeshCollector = culledMeshCollectors.get(layer);
+
 			culledMeshCollector.flush();
 
 			var mesh = AcceleratedItemRenderingFeature
@@ -155,7 +174,7 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 			layers	.put	(layer, mesh);
 			mesh	.write	(
 					extension,
-					getCustomColor(layer, itemColor.getColor(itemStack, layer)),
+					getCustomColor(layer, layerColors.getColor(layer)),
 					light,
 					overlay
 			);

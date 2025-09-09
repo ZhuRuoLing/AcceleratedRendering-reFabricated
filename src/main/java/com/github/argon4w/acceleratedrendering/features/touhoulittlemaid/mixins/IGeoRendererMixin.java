@@ -21,8 +21,8 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin			(IGeoRenderer			.class)
 public interface IGeoRendererMixin {
 
-	@SuppressWarnings("unchecked")
-	@WrapOperation(
+	@SuppressWarnings	("unchecked")
+	@WrapOperation		(
 			method		= "renderRecursively",
 			at			= @At(
 					value	= "INVOKE",

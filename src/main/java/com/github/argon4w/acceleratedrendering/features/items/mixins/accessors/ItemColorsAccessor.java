@@ -1,4 +1,4 @@
-package com.github.argon4w.acceleratedrendering.features.items.mixins;
+package com.github.argon4w.acceleratedrendering.features.items.mixins.accessors;
 
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;

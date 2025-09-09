@@ -1,10 +1,9 @@
-package com.github.argon4w.acceleratedrendering.features.items.mixins;
+package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
-import com.github.argon4w.acceleratedrendering.features.items.DecorationRenderContext;
 import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedGuiGraphics;
-import com.llamalad7.mixinextras.sugar.Local;
+import com.github.argon4w.acceleratedrendering.features.items.contexts.DecorationRenderContext;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -102,8 +101,8 @@ public abstract class AbstractContainerScreenMixin extends ScreenMixin {
 	}
 
 	@Inject(
-			method		= "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;IIF)V",
 			cancellable	= true,
+			method		= "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;IIF)V",
 			at			= @At(
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;IIII)V",
@@ -125,21 +124,20 @@ public abstract class AbstractContainerScreenMixin extends ScreenMixin {
 	}
 
 	@Inject(
-			method		= "renderSlotContents",
 			cancellable	= true,
+			method		= "renderSlotContents",
 			at			= @At(
-					value = "INVOKE",
-					target = "Lnet/minecraft/client/gui/GuiGraphics;renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
-					shift = At.Shift.BEFORE
+					value	= "INVOKE",
+					target	= "Lnet/minecraft/client/gui/GuiGraphics;renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
+					shift	= At.Shift.BEFORE
 			)
 	)
 	public void recordSlotItems(
-			GuiGraphics				guiGraphics,
-			ItemStack				itemstack,
-			Slot					slot,
-			String					countString,
-			CallbackInfo			ci,
-			@Local(name = "j1") int	seed
+			GuiGraphics		guiGraphics,
+			ItemStack		itemstack,
+			Slot			slot,
+			String			countString,
+			CallbackInfo	ci
 	) {
 		if (CoreFeature.isGuiBatching()) {
 			ci			.cancel	();

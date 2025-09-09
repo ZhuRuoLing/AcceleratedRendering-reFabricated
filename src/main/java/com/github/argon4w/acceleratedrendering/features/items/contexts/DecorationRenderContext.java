@@ -1,4 +1,4 @@
-package com.github.argon4w.acceleratedrendering.features.items;
+package com.github.argon4w.acceleratedrendering.features.items.contexts;
 
 import net.minecraft.world.item.ItemStack;
 

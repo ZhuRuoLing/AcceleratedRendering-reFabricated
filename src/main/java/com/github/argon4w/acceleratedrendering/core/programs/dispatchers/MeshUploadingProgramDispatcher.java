@@ -22,10 +22,10 @@ import static org.lwjgl.opengl.GL46.glMemoryBarrier;
 
 public class MeshUploadingProgramDispatcher {
 
-	private static	final int														GROUP_SIZE					= 128;
-	private static	final int														DISPATCH_COUNT_Y_Z			= 1;
-	public static	final int														SPARSE_MESH_BUFFER_INDEX	= 5;
-	public static	final int														MESH_BUFFER_INDEX			= 7;
+	private static	final	int														GROUP_SIZE					= 128;
+	private static	final	int														DISPATCH_COUNT_Y_Z			= 1;
+	public static	final	int														SPARSE_MESH_BUFFER_INDEX	= 5;
+	public static	final	int														MESH_BUFFER_INDEX			= 7;
 
 	private			final	Map<IServerBuffer, List<MeshUploaderPool.MeshUploader>>	denseUploaders;
 	private			final	Map<IServerBuffer, List<MeshUploaderPool.MeshUploader>>	sparseUploaders;

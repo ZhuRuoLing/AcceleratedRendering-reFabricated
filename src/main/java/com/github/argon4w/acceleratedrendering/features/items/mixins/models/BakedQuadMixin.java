@@ -1,4 +1,4 @@
-package com.github.argon4w.acceleratedrendering.features.items.mixins;
+package com.github.argon4w.acceleratedrendering.features.items.mixins.models;
 
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IAcceleratedVertexConsumer;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IBufferGraph;
@@ -61,12 +61,12 @@ public abstract class BakedQuadMixin implements IAcceleratedBakedQuad {
 		var meshBuilder			= extension.decorate		(culledMeshCollector);
 
 		for (var i = 0; i < vertices.length / 8; i++) {
-			var vertexOffset	= i * IQuadTransformer.STRIDE;
-			var posOffset		= vertexOffset + IQuadTransformer.POSITION;
-			var colorOffset		= vertexOffset + IQuadTransformer.COLOR;
-			var uv0Offset		= vertexOffset + IQuadTransformer.UV0;
-			var uv2Offset		= vertexOffset + IQuadTransformer.UV2;
-			var normalOffset	= vertexOffset + IQuadTransformer.NORMAL;
+			var vertexOffset	= i				* IQuadTransformer.STRIDE;
+			var posOffset		= vertexOffset	+ IQuadTransformer.POSITION;
+			var colorOffset		= vertexOffset	+ IQuadTransformer.COLOR;
+			var uv0Offset		= vertexOffset	+ IQuadTransformer.UV0;
+			var uv2Offset		= vertexOffset	+ IQuadTransformer.UV2;
+			var normalOffset	= vertexOffset	+ IQuadTransformer.NORMAL;
 			var packedNormal	= vertices[normalOffset];
 
 			meshBuilder.addVertex(

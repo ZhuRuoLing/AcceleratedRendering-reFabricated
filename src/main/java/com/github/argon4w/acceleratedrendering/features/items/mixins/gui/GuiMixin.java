@@ -1,9 +1,9 @@
-package com.github.argon4w.acceleratedrendering.features.items.mixins;
+package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
-import com.github.argon4w.acceleratedrendering.features.items.DecorationRenderContext;
 import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedGuiGraphics;
+import com.github.argon4w.acceleratedrendering.features.items.contexts.DecorationRenderContext;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -70,12 +70,12 @@ public class GuiMixin {
 	}
 
 	@Inject(
-			method		= "renderSlot",
 			cancellable	= true,
+			method		= "renderSlot",
 			at			= @At(
-					value = "INVOKE",
-					target = "Lnet/minecraft/client/gui/GuiGraphics;renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V",
-					shift = At.Shift.BEFORE
+					value	= "INVOKE",
+					target	= "Lnet/minecraft/client/gui/GuiGraphics;renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V",
+					shift	= At.Shift.BEFORE
 			)
 	)
 	public void recordSlotItems(
