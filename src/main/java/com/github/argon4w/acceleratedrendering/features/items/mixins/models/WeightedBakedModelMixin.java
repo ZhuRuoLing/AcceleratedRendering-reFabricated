@@ -13,6 +13,7 @@ import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandom;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -60,7 +61,8 @@ public class WeightedBakedModelMixin implements IAcceleratedBakedModel {
 			PoseStack.Pose				pose,
 			IAcceleratedVertexConsumer	extension,
 			int							light,
-			int							overlay
+			int							overlay,
+			boolean						fabulous
 	) {
 		var model = WeightedRandom.getWeightedItem(list, Math.abs((int) random.nextLong()) % totalWeight);
 
@@ -75,7 +77,8 @@ public class WeightedBakedModelMixin implements IAcceleratedBakedModel {
 							pose,
 							extension,
 							light,
-							overlay
+							overlay,
+							fabulous
 					);
 		}
 	}
@@ -88,7 +91,8 @@ public class WeightedBakedModelMixin implements IAcceleratedBakedModel {
 			IAcceleratedVertexConsumer	extension,
 			int							light,
 			int							overlay,
-			int							color
+			int							color,
+			ModelData					data
 	) {
 		var model = WeightedRandom.getWeightedItem(list, Math.abs((int) random.nextLong()) % totalWeight);
 
@@ -104,7 +108,8 @@ public class WeightedBakedModelMixin implements IAcceleratedBakedModel {
 							extension,
 							light,
 							overlay,
-							getCustomColor(-1, color)
+							getCustomColor(-1, color),
+							data
 					);
 		}
 	}

@@ -3,16 +3,20 @@ package com.github.argon4w.acceleratedrendering.features.items.mixins.models;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IAcceleratedVertexConsumer;
 import com.github.argon4w.acceleratedrendering.features.items.BakedModelExtension;
 import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedBakedModel;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lombok.Getter;
 import lombok.experimental.ExtensionMethod;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.MultiPartBakedModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.model.CompositeModel;
 import net.neoforged.neoforge.client.model.data.ModelData;
-import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,36 +25,37 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.BitSet;
-import java.util.List;
-import java.util.function.Predicate;
-
 @Getter
-@ExtensionMethod(BakedModelExtension.class)
-@Mixin			(MultiPartBakedModel.class)
-public abstract class MultipartBakedModelMixin implements IAcceleratedBakedModel {
+@ExtensionMethod(BakedModelExtension	.class)
+@Mixin			(CompositeModel.Baked	.class)
+public class BakedCompositeModelMixin implements IAcceleratedBakedModel {
 
-
-	@Unique private			boolean											accelerated;
-	@Unique private			boolean											acceleratedInHand;
-	@Unique private			boolean											acceleratedInGui;
-
-	@Shadow @Final private	List<Pair<Predicate<BlockState>, BakedModel>>	selectors;
-
-	@Shadow public abstract BitSet getSelectors(BlockState p_235050_);
-
+	@Shadow @Final private	ImmutableMap<String, BakedModel>	children;
+	@Unique private			boolean								accelerated;
+	@Unique private			boolean								acceleratedInHand;
+	@Unique private			boolean								acceleratedInGui;
 
 	@Inject(
 			method	= "<init>",
 			at		= @At("TAIL")
 	)
-	public void checkAccelerationSupport(List<Pair<Predicate<BlockState>, BakedModel>> selectors, CallbackInfo ci) {
+	public void checkAccelerationSupport(
+			boolean								isGui3d,
+			boolean								isSideLit,
+			boolean								isAmbientOcclusion,
+			TextureAtlasSprite					particle,
+			ItemTransforms						transforms,
+			ItemOverrides						overrides,
+			ImmutableMap<String, BakedModel>	children,
+			ImmutableList<BakedModel>			itemPasses,
+			CallbackInfo						ci
+	) {
 		accelerated			= true;
 		acceleratedInHand	= true;
 		acceleratedInGui	= true;
 
-		for (Pair<Predicate<BlockState>, BakedModel> selector : selectors) {
-			var extension = selector.getRight().getAccelerated();
+		for (BakedModel childModel : children.values()) {
+			var extension = childModel.getAccelerated();
 
 			accelerated			&= extension.isAccelerated		();
 			acceleratedInHand	&= extension.isAcceleratedInHand();
@@ -68,7 +73,19 @@ public abstract class MultipartBakedModelMixin implements IAcceleratedBakedModel
 			int							overlay,
 			boolean						fabulous
 	) {
-
+		for (BakedModel childModel : children.values()) {
+			childModel
+					.getAccelerated()
+					.renderItemFast(
+							itemStack,
+							random,
+							pose,
+							extension,
+							light,
+							overlay,
+							fabulous
+					);
+		}
 	}
 
 	@Override
@@ -82,33 +99,26 @@ public abstract class MultipartBakedModelMixin implements IAcceleratedBakedModel
 			int							color,
 			ModelData					data
 	) {
-		var bitset	= getSelectors		(blockState);
-		var seed	= random.nextLong	();
+		for (BakedModel child : children.values()) {
+			var renderTypeSet = child.getRenderTypes(
+					blockState,
+					random,
+					data
+			);
 
-		for (var j = 0; j < bitset.length(); j ++) {
-			if (bitset.get(j)) {
-				var selector		= selectors	.get			(j);
-				var selected		= selector	.getRight		();
-				var renderTypeSet	= selected	.getRenderTypes	(
-						blockState,
-						random,
-						data
-				);
-
-				if (renderTypeSet.contains(extension.getRenderType())) {
-					selected
-							.getAccelerated	()
-							.renderBlockFast(
-									blockState,
-									RandomSource.create(seed),
-									pose,
-									extension,
-									light,
-									overlay,
-									getCustomColor(-1, color),
-									data
-							);
-				}
+			if (renderTypeSet.contains(extension.getRenderType())) {
+				child
+						.getAccelerated	()
+						.renderBlockFast(
+								blockState,
+								random,
+								pose,
+								extension,
+								light,
+								overlay,
+								getCustomColor(-1, color),
+								data
+						);
 			}
 		}
 	}

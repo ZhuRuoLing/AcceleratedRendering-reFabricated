@@ -4,16 +4,19 @@ import com.github.argon4w.acceleratedrendering.configs.FeatureConfig;
 import com.github.argon4w.acceleratedrendering.configs.FeatureStatus;
 import com.github.argon4w.acceleratedrendering.configs.PipelineSetting;
 import com.github.argon4w.acceleratedrendering.core.meshes.MeshType;
+import com.github.argon4w.acceleratedrendering.core.utils.SimpleTextureTarget;
+import com.mojang.blaze3d.pipeline.TextureTarget;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class AcceleratedItemRenderingFeature {
 
-	private static final	Deque<PipelineSetting>	PIPELINE_CONTROLLER_STACK			= new ArrayDeque<>();
-	private static final	Deque<FeatureStatus>	BAKE_QUAD_MESH_CONTROLLER_STACK		= new ArrayDeque<>();
-	private static final	Deque<FeatureStatus>	HAND_ACCELERATION_CONTROLLER_STACK	= new ArrayDeque<>();
-	private static final	Deque<FeatureStatus>	GUI_ACCELERATION_CONTROLLER_STACK	= new ArrayDeque<>();
+	public	static final TextureTarget			GUI_OVERLAY_TARGET					= new SimpleTextureTarget	(true);
+	private	static final Deque<PipelineSetting>	PIPELINE_CONTROLLER_STACK			= new ArrayDeque<>			();
+	private	static final Deque<FeatureStatus>	BAKE_QUAD_MESH_CONTROLLER_STACK		= new ArrayDeque<>			();
+	private	static final Deque<FeatureStatus>	HAND_ACCELERATION_CONTROLLER_STACK	= new ArrayDeque<>			();
+	private	static final Deque<FeatureStatus>	GUI_ACCELERATION_CONTROLLER_STACK	= new ArrayDeque<>			();
 
 	public static boolean isEnabled() {
 		return FeatureConfig.CONFIG.acceleratedItemRenderingFeatureStatus.get() == FeatureStatus.ENABLED;

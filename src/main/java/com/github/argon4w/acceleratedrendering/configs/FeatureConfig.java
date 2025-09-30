@@ -215,7 +215,7 @@ public class FeatureConfig {
 				.comment				("- DISABLED: Items in the container GUI will be rendered as per item per batch if the GUI Acceleration is enabled, which is inefficient and may cause slight reduction in FPS, but it has better compatibility in modded container GUI.")
 				.comment				("- ENABLED: Items in the container will be rendered together in a single batch if the GUI Acceleration is enabled, which is much more efficient but has little compatibility in modded container GUI.")
 				.translation			("acceleratedrendering.configuration.accelerated_item_rendering.gui_item_batching")
-				.defineEnum				("gui_item_batching",					FeatureStatus.ENABLED);
+				.defineEnum				("gui_item_batching",					FeatureStatus.DISABLED);
 
 		builder.pop();
 

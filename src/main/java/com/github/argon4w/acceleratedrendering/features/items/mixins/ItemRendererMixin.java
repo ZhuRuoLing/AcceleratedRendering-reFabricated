@@ -10,6 +10,7 @@ import com.github.argon4w.acceleratedrendering.features.items.colors.ItemLayerCo
 import com.github.argon4w.acceleratedrendering.features.items.contexts.AcceleratedQuadsRenderContext;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lombok.experimental.ExtensionMethod;
@@ -33,14 +34,15 @@ public class ItemRendererMixin {
 	)
 	@SuppressWarnings("deprecation")
 	public void renderFast(
-			ItemRenderer	instance,
-			BakedModel		pModel,
-			ItemStack		pStack,
-			int				pCombinedLight,
-			int				pCombinedOverlay,
-			PoseStack		pPoseStack,
-			VertexConsumer	pBuffer,
-			Operation<Void>	original
+			ItemRenderer					instance,
+			BakedModel						pModel,
+			ItemStack						pStack,
+			int								pCombinedLight,
+			int								pCombinedOverlay,
+			PoseStack						pPoseStack,
+			VertexConsumer					pBuffer,
+			Operation<Void>					original,
+			@Local(name = "flag1") boolean	fabulous
 	) {
 		var extension1 = pBuffer.getAccelerated();
 		var extension2 = pModel	.getAccelerated();
@@ -73,11 +75,12 @@ public class ItemRendererMixin {
 		if (extension2.isAccelerated()) {
 			extension2.renderItemFast(
 					pStack,
-					RandomSource.create(42L),
-					pPoseStack.last(),
+					RandomSource.create	(42L),
+					pPoseStack	.last	(),
 					extension1,
 					pCombinedLight,
-					pCombinedOverlay
+					pCombinedOverlay,
+					fabulous
 			);
 			return;
 		}

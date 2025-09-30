@@ -178,8 +178,8 @@ public class BakedGlyphMixin implements IAcceleratedRenderer<BakedGlyph.Effect> 
 		};
 
 		for (var i = 0; i < 4; i ++) {
-			var position	= new Vector3f(positions[i], context.depth);
-			var texCoord	= texCoords[i];
+			var position = new Vector3f(positions[i], context.depth);
+			var texCoord = texCoords[i];
 
 			meshBuilder
 					.addVertex	(position)

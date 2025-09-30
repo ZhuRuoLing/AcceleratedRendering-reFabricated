@@ -7,6 +7,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -21,7 +22,8 @@ public interface BakedModelMixin extends IAcceleratedBakedModel {
 			PoseStack.Pose				pose,
 			IAcceleratedVertexConsumer	vertexConsumer,
 			int							light,
-			int							overlay
+			int							overlay,
+			boolean						fabulous
 	) {
 		throw new UnsupportedOperationException("Unsupported Operation.");
 	}
@@ -35,7 +37,8 @@ public interface BakedModelMixin extends IAcceleratedBakedModel {
 			IAcceleratedVertexConsumer	extension,
 			int							light,
 			int							overlay,
-			int							color
+			int							color,
+			ModelData					data
 	) {
 		throw new UnsupportedOperationException("Unsupported Operation.");
 	}

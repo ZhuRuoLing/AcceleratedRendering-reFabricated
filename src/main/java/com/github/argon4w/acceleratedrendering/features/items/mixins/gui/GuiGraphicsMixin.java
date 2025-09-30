@@ -2,11 +2,14 @@ package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
 import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
+import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedGuiGraphics;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -66,6 +69,76 @@ public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
 
 		if (!CoreFeature.isGuiBatching()) {
 			flushItemBatching();
+		}
+	}
+
+	@Inject(
+			method	= "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
+			at		= {
+					@At(
+							value	= "INVOKE",
+							target	= "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I",
+							shift	= At.Shift.BEFORE
+					),
+					@At(
+							value	= "INVOKE",
+							target	= "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V",
+							shift	= At.Shift.BEFORE,
+							ordinal	= 0
+					),
+					@At(
+							value	= "INVOKE",
+							target	= "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V",
+							shift	= At.Shift.BEFORE,
+							ordinal	= 2
+					)
+			}
+	)
+	public void startRenderDecorationPart(
+			Font			font,
+			ItemStack		stack,
+			int				x,
+			int				y,
+			String			text,
+			CallbackInfo	ci
+	) {
+		if (CoreFeature.isGuiBatching()) {
+			AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET.bindWrite(false);
+		}
+	}
+
+	@Inject(
+			method	= "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
+			at		= {
+					@At(
+							value	= "INVOKE",
+							target	= "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I",
+							shift	= At.Shift.AFTER
+					),
+					@At(
+							value	= "INVOKE",
+							target	= "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V",
+							shift	= At.Shift.AFTER,
+							ordinal	= 1
+					),
+					@At(
+							value	= "INVOKE",
+							target	= "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V",
+							shift	= At.Shift.AFTER,
+							ordinal	= 2
+					)
+			}
+	)
+	public void stopRenderDecorationPart(
+			Font			font,
+			ItemStack		stack,
+			int				x,
+			int				y,
+			String			text,
+			CallbackInfo	ci
+	) {
+		if (CoreFeature.isGuiBatching()) {
+			Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
 		}
 	}
 

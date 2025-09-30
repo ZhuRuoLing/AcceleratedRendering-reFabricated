@@ -80,7 +80,8 @@ public class ModelBlockRendererMixin {
 							Mth.clamp(red,		0.0f, 1.0f),
 							Mth.clamp(green,	0.0f, 1.0f),
 							Mth.clamp(blue,		0.0f, 1.0f)
-					)
+					),
+					modelData
 			);
 			return;
 		}

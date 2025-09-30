@@ -52,11 +52,11 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 	@Getter private								final	ILayerFunction									function;
 
 
-	@EqualsAndHashCode.Include @Getter private 	final	IMemoryLayout<VertexFormatElement>				layout;
 	@EqualsAndHashCode.Include private			final	RenderType										renderType;
+	@Getter @EqualsAndHashCode.Include private	final	IMemoryLayout<VertexFormatElement>				layout;
+	@Getter private								final	ICullingProgramDispatcher						cullingProgramDispatcher;
 	@Getter private								final	ITransformShaderProgramOverride					transformOverride;
 	@Getter private								final	IUploadingShaderProgramOverride					uploadingOverride;
-	@Getter private								final	ICullingProgramDispatcher						cullingProgramDispatcher;
 	@Getter private								final	VertexFormat.Mode								mode;
 	@Getter private								final	long											vertexSize;
 	@Getter private								final	int												polygonSize;
@@ -92,12 +92,15 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 			ILayerFunction							layerFunction,
 			RenderType								renderType
 	) {
-		this.varyingOffset				= new SimpleDynamicMemoryInterface(0L * 4L, this);
-		this.varyingSharing				= new SimpleDynamicMemoryInterface(1L * 4L, this);
-		this.varyingMesh				= new SimpleDynamicMemoryInterface(2L * 4L, this);
-		this.varyingShouldCull			= new SimpleDynamicMemoryInterface(3L * 4L, this);
+		var environment					= buffer		.getBufferEnvironment			();
+		var overrides					= environment	.getShaderProgramOverrides		();
 
-		this.meshUploaders				= new Reference2ObjectLinkedOpenHashMap<>();
+		this.varyingOffset				= new SimpleDynamicMemoryInterface				(0L * 4L, this);
+		this.varyingSharing				= new SimpleDynamicMemoryInterface				(1L * 4L, this);
+		this.varyingMesh				= new SimpleDynamicMemoryInterface				(2L * 4L, this);
+		this.varyingShouldCull			= new SimpleDynamicMemoryInterface				(3L * 4L, this);
+
+		this.meshUploaders				= new Reference2ObjectLinkedOpenHashMap<>		();
 		this.vertexBuffer				= vertexBuffer;
 		this.varyingBuffer				= varyingBuffer;
 		this.elementSegment				= elementSegment;
@@ -105,24 +108,25 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 		this.function					= layerFunction;
 
 		this.renderType					= renderType;
-		this.layout						= this.buffer.getBufferEnvironment()	.getLayout								();
-		this.transformOverride			= this.buffer.getBufferEnvironment()	.getShaderProgramOverrides				().getTransformOverrides().get(this.renderType);
-		this.uploadingOverride			= this.buffer.getBufferEnvironment()	.getShaderProgramOverrides				().getUploadingOverrides().get(this.renderType);
-		this.cullingProgramDispatcher	= this.buffer.getBufferEnvironment()	.selectCullingProgramDispatcher			(this.renderType);
-		this.mode						= this.renderType						.mode;
-		this.vertexSize					= this.buffer							.getVertexSize							();
-		this.polygonSize				= this.mode								.primitiveLength;
-		this.polygonElementCount		= this.mode								.indexCount								(this.polygonSize);
+		this.layout						= environment									.getLayout						();
+		this.cullingProgramDispatcher	= environment									.selectCullingProgramDispatcher	(this.renderType);
+		this.transformOverride			= overrides.getTransformOverrides()				.get							(this.renderType);
+		this.uploadingOverride			= overrides.getUploadingOverrides()				.get							(this.renderType);
+
+		this.mode						= this.renderType								.mode;
+		this.polygonSize				= this.mode										.primitiveLength;
+		this.vertexSize					= this.buffer									.getVertexSize					();
+		this.polygonElementCount		= this.mode										.indexCount						(this.polygonSize);
+
+		this.posOffset					= this.layout									.getElement						(VertexFormatElement.POSITION);
+		this.colorOffset				= this.layout									.getElement						(VertexFormatElement.COLOR);
+		this.uv0Offset					= this.layout									.getElement						(VertexFormatElement.UV0);
+		this.uv1Offset					= this.layout									.getElement						(VertexFormatElement.UV1);
+		this.uv2Offset					= this.layout									.getElement						(VertexFormatElement.UV2);
+		this.normalOffset				= this.layout									.getElement						(VertexFormatElement.NORMAL);
 
 		this.cachedTransformValue		= new Matrix4f();
 		this.cachedNormalValue			= new Matrix3f();
-
-		this.posOffset					= this.layout							.getElement								(VertexFormatElement.POSITION);
-		this.colorOffset				= this.layout							.getElement								(VertexFormatElement.COLOR);
-		this.uv0Offset					= this.layout							.getElement								(VertexFormatElement.UV0);
-		this.uv1Offset					= this.layout							.getElement								(VertexFormatElement.UV1);
-		this.uv2Offset					= this.layout							.getElement								(VertexFormatElement.UV2);
-		this.normalOffset				= this.layout							.getElement								(VertexFormatElement.NORMAL);
 
 		this.elementCount				= 0;
 		this.meshVertexCount			= 0;
@@ -377,9 +381,9 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 				bufferSize
 		);
 
-		colorOffset			.putInt			(vertexAddress,	FastColor.ABGR32.fromArgb32(color));
-		uv1Offset			.putInt			(vertexAddress,	overlay);
-		uv2Offset			.putInt			(vertexAddress,	light);
+		colorOffset			.putInt			(vertexAddress,		FastColor.ABGR32.fromArgb32(color));
+		uv1Offset			.putInt			(vertexAddress,		overlay);
+		uv2Offset			.putInt			(vertexAddress,		light);
 
 		varyingSharing		.putInt			(varyingAddress,	activeSharing);
 		varyingMesh			.putInt			(varyingAddress,	-1);

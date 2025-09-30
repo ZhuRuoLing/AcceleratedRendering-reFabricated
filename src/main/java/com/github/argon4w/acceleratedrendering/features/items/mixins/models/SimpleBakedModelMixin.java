@@ -26,6 +26,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.IQuadTransformer;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -51,13 +52,14 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 			PoseStack.Pose				pose,
 			IAcceleratedVertexConsumer	extension,
 			int							combinedLight,
-			int							combinedOverlay
+			int							combinedOverlay,
+			boolean						fabulous
 	) {
 		extension.doRender(
 				this,
 				new AcceleratedModelRenderContext(random, new ItemLayerColors(itemStack)),
-				pose.pose(),
-				pose.normal(),
+				pose.pose	(),
+				pose.normal	(),
 				combinedLight,
 				combinedOverlay,
 				-1
@@ -72,13 +74,14 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 			IAcceleratedVertexConsumer	extension,
 			int							combinedLight,
 			int							combinedOverlay,
-			int							color
+			int							color,
+			ModelData					data
 	) {
 		extension.doRender(
 				this,
 				new AcceleratedModelRenderContext(random, new FixedColors(color)),
-				pose.pose(),
-				pose.normal(),
+				pose.pose	(),
+				pose.normal	(),
 				combinedLight,
 				combinedOverlay,
 				-1
@@ -96,9 +99,10 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 			int								overlay,
 			int								color
 	) {
-		var extension	= vertexConsumer.getAccelerated	();
-		var layerColors	= context		.layerColors	();
-		var layers		= meshes		.get			(extension);
+		var extension		= vertexConsumer.getAccelerated	();
+		var randomSource	= context		.randomSource	();
+		var layerColors		= context		.layerColors	();
+		var layers			= meshes		.get			(extension);
 
 		extension.beginTransform(transform, normal);
 
@@ -124,7 +128,11 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 		meshes.put(extension, layers);
 
 		for (var direction : DirectionUtils.FULL) {
-			for (var quad : getQuads(null, direction, null)) {
+			for (var quad : getQuads(
+					null,
+					direction,
+					randomSource
+			)) {
 				var culledMeshCollector = culledMeshCollectors.get(quad.getTintIndex());
 
 				if (culledMeshCollector == null) {
