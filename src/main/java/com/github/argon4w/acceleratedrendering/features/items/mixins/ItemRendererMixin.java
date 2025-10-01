@@ -25,24 +25,23 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin			(value = {ItemRenderer				.class								})
 public class ItemRendererMixin {
 
-	@WrapOperation(
+	@SuppressWarnings	("deprecation")
+	@WrapOperation		(
 			method	= "render",
 			at		= @At(
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/renderer/entity/ItemRenderer;renderModelLists(Lnet/minecraft/client/resources/model/BakedModel;Lnet/minecraft/world/item/ItemStack;IILcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;)V"
 			)
 	)
-	@SuppressWarnings("deprecation")
 	public void renderFast(
-			ItemRenderer					instance,
-			BakedModel						pModel,
-			ItemStack						pStack,
-			int								pCombinedLight,
-			int								pCombinedOverlay,
-			PoseStack						pPoseStack,
-			VertexConsumer					pBuffer,
-			Operation<Void>					original,
-			@Local(name = "flag1") boolean	fabulous
+			ItemRenderer	instance,
+			BakedModel		pModel,
+			ItemStack		pStack,
+			int				pCombinedLight,
+			int				pCombinedOverlay,
+			PoseStack		pPoseStack,
+			VertexConsumer	pBuffer,
+			Operation<Void>	original
 	) {
 		var extension1 = pBuffer.getAccelerated();
 		var extension2 = pModel	.getAccelerated();
@@ -79,8 +78,7 @@ public class ItemRendererMixin {
 					pPoseStack	.last	(),
 					extension1,
 					pCombinedLight,
-					pCombinedOverlay,
-					fabulous
+					pCombinedOverlay
 			);
 			return;
 		}

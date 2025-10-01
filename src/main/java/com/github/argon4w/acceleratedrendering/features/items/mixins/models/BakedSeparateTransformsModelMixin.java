@@ -28,8 +28,7 @@ public class BakedSeparateTransformsModelMixin implements IAcceleratedBakedModel
 			PoseStack.Pose				pose,
 			IAcceleratedVertexConsumer	extension,
 			int							light,
-			int							overlay,
-			boolean						fabulous
+			int							overlay
 	) {
 		baseModel
 				.getAccelerated()
@@ -39,8 +38,7 @@ public class BakedSeparateTransformsModelMixin implements IAcceleratedBakedModel
 						pose,
 						extension,
 						light,
-						overlay,
-						fabulous
+						overlay
 				);
 	}
 

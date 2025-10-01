@@ -52,8 +52,7 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 			PoseStack.Pose				pose,
 			IAcceleratedVertexConsumer	extension,
 			int							combinedLight,
-			int							combinedOverlay,
-			boolean						fabulous
+			int							combinedOverlay
 	) {
 		extension.doRender(
 				this,

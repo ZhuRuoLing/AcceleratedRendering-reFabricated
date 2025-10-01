@@ -65,8 +65,7 @@ public abstract class MultipartBakedModelMixin implements IAcceleratedBakedModel
 			PoseStack.Pose				pose,
 			IAcceleratedVertexConsumer	extension,
 			int							light,
-			int							overlay,
-			boolean						fabulous
+			int							overlay
 	) {
 
 	}
@@ -82,6 +81,10 @@ public abstract class MultipartBakedModelMixin implements IAcceleratedBakedModel
 			int							color,
 			ModelData					data
 	) {
+		if (blockState == null) {
+			return;
+		}
+
 		var bitset	= getSelectors		(blockState);
 		var seed	= random.nextLong	();
 

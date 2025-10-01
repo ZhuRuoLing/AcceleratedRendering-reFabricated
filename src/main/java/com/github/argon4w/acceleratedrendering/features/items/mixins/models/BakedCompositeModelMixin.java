@@ -70,20 +70,18 @@ public class BakedCompositeModelMixin implements IAcceleratedBakedModel {
 			PoseStack.Pose				pose,
 			IAcceleratedVertexConsumer	extension,
 			int							light,
-			int							overlay,
-			boolean						fabulous
+			int							overlay
 	) {
-		for (BakedModel childModel : children.values()) {
-			childModel
-					.getAccelerated()
+		for (BakedModel child : children.values()) {
+			child
+					.getAccelerated	()
 					.renderItemFast(
 							itemStack,
 							random,
 							pose,
 							extension,
 							light,
-							overlay,
-							fabulous
+							overlay
 					);
 		}
 	}
@@ -99,6 +97,10 @@ public class BakedCompositeModelMixin implements IAcceleratedBakedModel {
 			int							color,
 			ModelData					data
 	) {
+		if (blockState == null) {
+			return;
+		}
+
 		for (BakedModel child : children.values()) {
 			var renderTypeSet = child.getRenderTypes(
 					blockState,

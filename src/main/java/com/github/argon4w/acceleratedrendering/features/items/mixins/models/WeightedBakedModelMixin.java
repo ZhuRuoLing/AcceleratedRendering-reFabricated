@@ -61,8 +61,7 @@ public class WeightedBakedModelMixin implements IAcceleratedBakedModel {
 			PoseStack.Pose				pose,
 			IAcceleratedVertexConsumer	extension,
 			int							light,
-			int							overlay,
-			boolean						fabulous
+			int							overlay
 	) {
 		var model = WeightedRandom.getWeightedItem(list, Math.abs((int) random.nextLong()) % totalWeight);
 
@@ -77,8 +76,7 @@ public class WeightedBakedModelMixin implements IAcceleratedBakedModel {
 							pose,
 							extension,
 							light,
-							overlay,
-							fabulous
+							overlay
 					);
 		}
 	}

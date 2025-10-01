@@ -22,8 +22,7 @@ public interface BakedModelMixin extends IAcceleratedBakedModel {
 			PoseStack.Pose				pose,
 			IAcceleratedVertexConsumer	vertexConsumer,
 			int							light,
-			int							overlay,
-			boolean						fabulous
+			int							overlay
 	) {
 		throw new UnsupportedOperationException("Unsupported Operation.");
 	}
