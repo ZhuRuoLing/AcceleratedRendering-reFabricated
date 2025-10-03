@@ -13,12 +13,8 @@
     "gui.GameRendererMixin",
     "gui.GuiGraphicsMixin",
     "gui.GuiMixin",
-    "gui.ItemDecorationHandlerMixin",
-    "models.BakedCompositeModelMixin",
     "models.BakedModelMixin",
-    "models.BakedModelWrapperMixin",
     "models.BakedQuadMixin",
-    "models.BakedSeparateTransformsModelMixin",
     "models.MultipartBakedModelMixin",
     "models.SimpleBakedModelMixin",
     "models.WeightedBakedModelMixin"
