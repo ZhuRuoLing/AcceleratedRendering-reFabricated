@@ -9,8 +9,10 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.St
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryInterface;
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryLayout;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
+import net.irisshaders.batchedentityrendering.impl.WrappableRenderType;
 import net.irisshaders.iris.uniforms.CapturedRenderingState;
 import net.irisshaders.iris.vertices.IrisVertexFormats;
 import net.minecraft.client.renderer.RenderType;
@@ -31,6 +33,26 @@ public class AcceleratedBufferBuilderMixin implements IIrisAcceleratedBufferBuil
 
 	@Unique private			IMemoryInterface					entityIdOffset;
 	@Unique private			IMemoryInterface					entityOffset;
+
+	@Inject(
+		method = "<init>",
+		at = @At(
+			value = "INVOKE",
+			target = "Lit/unimi/dsi/fastutil/objects/Reference2ObjectLinkedOpenHashMap;<init>()V"
+		)
+	)
+	public void unwrapIrisRenderType(
+        StagingBufferPool.StagingBuffer vertexBuffer,
+        StagingBufferPool.StagingBuffer varyingBuffer,
+        ElementBufferPool.ElementSegment elementSegment,
+        AcceleratedRingBuffers.Buffers buffer,
+        ILayerFunction layerFunction,
+        RenderType renderType,
+        CallbackInfo ci,
+        @Local(argsOnly = true) LocalRef<RenderType> renderTypeLocalRef
+    ) {
+		renderTypeLocalRef.set(renderType instanceof WrappableRenderType wrapped ? wrapped.unwrap() : renderType);
+	}
 
 	@Inject(
 			method	= "<init>",
