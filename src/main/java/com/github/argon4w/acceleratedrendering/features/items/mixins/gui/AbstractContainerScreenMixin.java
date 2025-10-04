@@ -75,21 +75,4 @@ public abstract class AbstractContainerScreenMixin {
 			Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
 		}
 	}
-
-	@WrapOperation(
-		method = "renderSlot",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/client/gui/GuiGraphics;renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V"
-		)
-	)
-	void onRenderItemDecorations(GuiGraphics instance, Font font, ItemStack stack, int x, int y, String text, Operation<Void> original){
-		if (CoreFeature.isGuiBatching()) {
-			AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET.bindWrite(false);
-		}
-		original.call(instance, font, stack, x, y, text);
-		if (CoreFeature.isGuiBatching()) {
-			AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET.bindWrite(false);
-		}
-	}
 }

@@ -77,6 +77,8 @@ dependencies {
 	compileOnly("org.projectlombok:lombok:1.18.38")
 	annotationProcessor("org.projectlombok:lombok:1.18.38")
 	modImplementation "dev.emi:trinkets:3.10.0"
+	modCompileOnly "maven.modrinth:malilib:xTezyq2N"
+	modCompileOnly "maven.modrinth:tweakermore:vQdcjuSM" // v3.27.0-mc1.21.1
 	//implementation "com.github.tartaricacid:touhoulittlemaid-1.21.1:release-1.2.2"
 }
 

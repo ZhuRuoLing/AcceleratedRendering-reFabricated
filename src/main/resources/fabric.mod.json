@@ -25,6 +25,7 @@
 	"mixins": [
 		"acceleratedrendering.compat.iris.mixins.json",
 		"acceleratedrendering.compat.immediatelyfast.mixins.json",
+		"acceleratedrendering.compat.tweakmore.mixins.json",
 		"acceleratedrendering.compat.trinkets.mixins.json",
 		"acceleratedrendering.core.mixins.json",
 		"acceleratedrendering.feature.entities.mixins.json",
