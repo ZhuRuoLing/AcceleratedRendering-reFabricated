@@ -86,7 +86,7 @@ public class TransformProgramDispatcher {
 		lastOverride = null;
 	}
 
-	public static class DefaultTransformProgramOverride implements ITransformShaderProgramOverride {
+	public static class Default implements ITransformShaderProgramOverride {
 
 		private final long				varyingSize;
 		private final ComputeProgram	program;
@@ -94,7 +94,7 @@ public class TransformProgramDispatcher {
 		private final Uniform			vertexOffsetUniform;
 		private final Uniform			varyingOffsetUniform;
 
-		public DefaultTransformProgramOverride(ResourceLocation key, long varyingSize) {
+		public Default(ResourceLocation key, long varyingSize) {
 			this.varyingSize			= varyingSize;
 			this.program				= ComputeShaderProgramLoader.getProgram(key);
 			this.vertexCountUniform		= program					.getUniform("vertexCount");

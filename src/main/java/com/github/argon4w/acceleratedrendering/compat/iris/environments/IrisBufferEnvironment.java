@@ -10,6 +10,8 @@ import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.IPolygo
 import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.MeshUploadingProgramDispatcher;
 import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.TransformProgramDispatcher;
 import com.github.argon4w.acceleratedrendering.core.programs.overrides.IShaderProgramOverrides;
+import com.github.argon4w.acceleratedrendering.core.programs.overrides.ITransformShaderProgramOverride;
+import com.github.argon4w.acceleratedrendering.core.programs.overrides.IUploadingShaderProgramOverride;
 import com.github.argon4w.acceleratedrendering.core.programs.overrides.LoadShaderProgramOverridesEvent;
 import com.github.argon4w.acceleratedrendering.core.programs.processing.IPolygonProcessor;
 import com.github.argon4w.acceleratedrendering.core.programs.processing.LoadPolygonProcessorEvent;
@@ -64,8 +66,13 @@ public class IrisBufferEnvironment implements IBufferEnvironment {
 	}
 
 	@Override
-	public IShaderProgramOverrides getShaderProgramOverrides() {
-		return getSubSet().getShaderProgramOverrides();
+	public ITransformShaderProgramOverride getTransformProgramOverride(RenderType renderType) {
+		return getSubSet().getTransformProgramOverride(renderType);
+	}
+
+	@Override
+	public IUploadingShaderProgramOverride getUploadingProgramOverride(RenderType renderType) {
+		return getSubSet().getUploadingProgramOverride(renderType);
 	}
 
 	@Override
@@ -113,26 +120,23 @@ public class IrisBufferEnvironment implements IBufferEnvironment {
 		public IrisSubSet(
 				VertexFormat		vanillaVertexFormat,
 				VertexFormat		irisVertexFormat,
-				ResourceLocation	meshUploadingProgramKey,
+				ResourceLocation	uploadingProgramKey,
 				ResourceLocation	transformProgramKey
 		) {
-			var defaultTransformOverride		= new TransformProgramDispatcher	.DefaultTransformProgramOverride	(transformProgramKey,		4L * 4L);
-			var defaultUploadingOverride		= new MeshUploadingProgramDispatcher.DefaultMeshUploadingProgramOverride(meshUploadingProgramKey,	7L * 4L);
+			var defaultTransformOverride		= new TransformProgramDispatcher	.Default(transformProgramKey, 4L * 4L);
+			var defaultUploadingOverride		= new MeshUploadingProgramDispatcher.Default(uploadingProgramKey, 7L * 4L);
 
 			this.vanillaVertexFormat			= vanillaVertexFormat;
 			this.irisVertexFormat				= irisVertexFormat;
-			this.layout							= new VertexFormatMemoryLayout		(this.irisVertexFormat);
+			this.layout							= new VertexFormatMemoryLayout				(this.irisVertexFormat);
 
-			this.cullingProgramSelector			= ModLoader.postEventWithReturn		(new LoadCullingProgramSelectorEvent(this.irisVertexFormat)).getSelector	();
-			this.polygonProcessor				= ModLoader.postEventWithReturn		(new LoadPolygonProcessorEvent		(this.irisVertexFormat)).getProcessor	();
+			this.shaderProgramOverrides			= ModLoader.postEventWithReturn				(new LoadShaderProgramOverridesEvent(this.irisVertexFormat)).getOverrides	(defaultTransformOverride, defaultUploadingOverride);
+			this.cullingProgramSelector			= ModLoader.postEventWithReturn				(new LoadCullingProgramSelectorEvent(this.irisVertexFormat)).getSelector	();
+			this.polygonProcessor				= ModLoader.postEventWithReturn				(new LoadPolygonProcessorEvent		(this.irisVertexFormat)).getProcessor	();
 
-			this.meshUploadingProgramDispatcher	= new MeshUploadingProgramDispatcher();
-			this.transformProgramDispatcher		= new TransformProgramDispatcher	();
-			this.shaderProgramOverrides			= ModLoader.postEventWithReturn		(new LoadShaderProgramOverridesEvent(
-					this.irisVertexFormat,
-					defaultTransformOverride,
-					defaultUploadingOverride
-			));
+
+			this.meshUploadingProgramDispatcher	= new MeshUploadingProgramDispatcher		();
+			this.transformProgramDispatcher		= new TransformProgramDispatcher			();
 		}
 
 		@Override
@@ -156,8 +160,13 @@ public class IrisBufferEnvironment implements IBufferEnvironment {
 		}
 
 		@Override
-		public IShaderProgramOverrides getShaderProgramOverrides() {
-			return shaderProgramOverrides;
+		public ITransformShaderProgramOverride getTransformProgramOverride(RenderType renderType) {
+			return shaderProgramOverrides.getTransformOverrides().get(renderType);
+		}
+
+		@Override
+		public IUploadingShaderProgramOverride getUploadingProgramOverride(RenderType renderType) {
+			return shaderProgramOverrides.getUploadingOverrides().get(renderType);
 		}
 
 		@Override

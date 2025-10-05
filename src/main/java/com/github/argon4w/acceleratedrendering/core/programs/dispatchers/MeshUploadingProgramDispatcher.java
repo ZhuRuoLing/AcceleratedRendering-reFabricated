@@ -188,7 +188,7 @@ public class MeshUploadingProgramDispatcher {
 		lastOverride = null;
 	}
 
-	public static class DefaultMeshUploadingProgramOverride implements IUploadingShaderProgramOverride {
+	public static class Default implements IUploadingShaderProgramOverride {
 
 		private final long				meshInfoSize;
 		private final ComputeProgram	program;
@@ -198,7 +198,7 @@ public class MeshUploadingProgramDispatcher {
 		private final Uniform			varyingOffsetUniform;
 		private final Uniform			meshOffsetUniform;
 
-		public DefaultMeshUploadingProgramOverride(ResourceLocation key, long meshInfoSize) {
+		public Default(ResourceLocation key, long meshInfoSize) {
 			this.meshInfoSize			= meshInfoSize;
 			this.program				= ComputeShaderProgramLoader.getProgram(key);
 			this.meshCountUniform		= program					.getUniform("meshCount");

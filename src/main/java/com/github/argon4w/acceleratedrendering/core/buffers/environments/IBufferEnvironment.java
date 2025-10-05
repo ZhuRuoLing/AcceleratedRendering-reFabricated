@@ -7,6 +7,8 @@ import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.IPolygo
 import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.MeshUploadingProgramDispatcher;
 import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.TransformProgramDispatcher;
 import com.github.argon4w.acceleratedrendering.core.programs.overrides.IShaderProgramOverrides;
+import com.github.argon4w.acceleratedrendering.core.programs.overrides.ITransformShaderProgramOverride;
+import com.github.argon4w.acceleratedrendering.core.programs.overrides.IUploadingShaderProgramOverride;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
@@ -16,16 +18,17 @@ import java.util.Set;
 
 public interface IBufferEnvironment {
 
-	void								setupBufferState					();
-	boolean								isAccelerated						(VertexFormat		vertexFormat);
+	int									getVertexSize						();
 	Set<VertexFormat>					getVertexFormats					();
 	IMemoryLayout<VertexFormatElement>	getLayout							();
-	IShaderProgramOverrides				getShaderProgramOverrides			();
 	MeshUploadingProgramDispatcher		selectMeshUploadingProgramDispatcher();
 	TransformProgramDispatcher			selectTransformProgramDispatcher	();
+	ITransformShaderProgramOverride		getTransformProgramOverride			(RenderType			renderType);
+	IUploadingShaderProgramOverride		getUploadingProgramOverride			(RenderType			renderType);
 	ICullingProgramDispatcher			selectCullingProgramDispatcher		(RenderType			renderType);
 	IPolygonProgramDispatcher			selectProcessingProgramDispatcher	(VertexFormat.Mode	mode);
-	int									getVertexSize						();
+	boolean								isAccelerated						(VertexFormat		vertexFormat);
+	void								setupBufferState					();
 
 	class Presets {
 
