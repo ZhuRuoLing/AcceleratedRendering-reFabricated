@@ -42,14 +42,14 @@ public class AcceleratedBufferBuilderMixin implements IIrisAcceleratedBufferBuil
 		)
 	)
 	public void unwrapIrisRenderType(
-        StagingBufferPool.StagingBuffer vertexBuffer,
-        StagingBufferPool.StagingBuffer varyingBuffer,
-        ElementBufferPool.ElementSegment elementSegment,
-        AcceleratedRingBuffers.Buffers buffer,
-        ILayerFunction layerFunction,
-        RenderType renderType,
-        CallbackInfo ci,
-        @Local(argsOnly = true) LocalRef<RenderType> renderTypeLocalRef
+								StagingBufferPool		.StagingBuffer			vertexBuffer,
+								StagingBufferPool		.StagingBuffer			varyingBuffer,
+								ElementBufferPool		.ElementSegment			elementSegment,
+								AcceleratedRingBuffers	.Buffers				buffers,
+								ILayerFunction									layerFunction,
+								RenderType										renderType,
+								CallbackInfo									ci,
+		@Local(argsOnly = true) LocalRef<RenderType> 							renderTypeLocalRef
     ) {
 		renderTypeLocalRef.set(renderType instanceof WrappableRenderType wrapped ? wrapped.unwrap() : renderType);
 	}
