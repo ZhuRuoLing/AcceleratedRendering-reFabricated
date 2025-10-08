@@ -4,6 +4,7 @@ import com.github.argon4w.acceleratedrendering.compat.iris.IrisCompatBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
 import com.github.argon4w.acceleratedrendering.core.buffers.AcceleratedBufferSources;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import net.irisshaders.iris.pathways.HandRenderer;
 import net.irisshaders.iris.shadows.ShadowRenderingState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,6 +17,14 @@ public class CoreBuffersMixin {
 			at		= @At("RETURN")
 	)
 	private static AcceleratedBufferSources getShadowBufferSources(AcceleratedBufferSources original) {
-		return ShadowRenderingState.areShadowsCurrentlyBeingRendered() ? IrisCompatBuffers.SHADOW : original;
+		if (ShadowRenderingState.areShadowsCurrentlyBeingRendered()) {
+			return IrisCompatBuffers.SHADOW;
+		}
+
+		if (HandRenderer.INSTANCE.isActive()) {
+			return IrisCompatBuffers.HAND;
+		}
+
+		return original;
 	}
 }

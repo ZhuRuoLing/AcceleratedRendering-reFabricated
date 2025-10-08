@@ -2,6 +2,9 @@ package com.github.argon4w.acceleratedrendering.core;
 
 import com.github.argon4w.acceleratedrendering.configs.FeatureConfig;
 import com.github.argon4w.acceleratedrendering.configs.FeatureStatus;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.ILayerStorage;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.LayerStorageType;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.IMeshInfoCache;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.MeshInfoCacheType;
 import com.google.common.util.concurrent.Runnables;
 
@@ -23,12 +26,12 @@ public class CoreFeature {
 		return FeatureConfig.CONFIG.coreDebugContextEnabled.get() == FeatureStatus.ENABLED;
 	}
 
-	public static int getPooledBufferSetSize() {
-		return FeatureConfig.CONFIG.corePooledBufferSetSize.getAsInt();
+	public static int getPooledRingBufferSize() {
+		return FeatureConfig.CONFIG.corePooledRingBufferSize.getAsInt();
 	}
 
-	public static int getPooledElementBufferSize() {
-		return FeatureConfig.CONFIG.corePooledElementBufferSize.getAsInt();
+	public static int getPooledBatchingSize() {
+		return FeatureConfig.CONFIG.corePooledBatchingSize.getAsInt();
 	}
 
 	public static int getCachedImageSize() {
@@ -47,8 +50,20 @@ public class CoreFeature {
 		return FeatureConfig.CONFIG.coreMeshInfoCacheType.get();
 	}
 
+	public static LayerStorageType getLayerStorageType() {
+		return FeatureConfig.CONFIG.coreLayerStorageType.get();
+	}
+
 	public static boolean shouldUploadMeshImmediately() {
 		return FeatureConfig.CONFIG.coreUploadMeshImmediately.get() == FeatureStatus.ENABLED;
+	}
+
+	public static IMeshInfoCache createMeshInfoCache() {
+		return MeshInfoCacheType.create(getMeshInfoCacheType());
+	}
+
+	public static ILayerStorage createLayerStorage() {
+		return LayerStorageType.create(getLayerStorageType(), getPooledBatchingSize());
 	}
 
 	public static void disableForceTranslucentAcceleration() {

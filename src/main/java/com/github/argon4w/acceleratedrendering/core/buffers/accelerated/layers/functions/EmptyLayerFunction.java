@@ -1,4 +1,4 @@
-package com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers;
+package com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.functions;
 
 public class EmptyLayerFunction implements ILayerFunction {
 

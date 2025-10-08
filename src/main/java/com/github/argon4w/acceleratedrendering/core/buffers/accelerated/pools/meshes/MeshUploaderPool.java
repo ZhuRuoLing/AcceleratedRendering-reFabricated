@@ -67,7 +67,7 @@ public class MeshUploaderPool extends SimpleResetPool<MeshUploaderPool.MeshUploa
 			this.meshInfoLight		= new SimpleDynamicMemoryInterface	(4L * 4L, this);
 
 			this.meshInfoBuffer		= new MappedBuffer					(64L);
-			this.meshInfos			= MeshInfoCacheType.create			(CoreFeature.getMeshInfoCacheType());
+			this.meshInfos			= CoreFeature.createMeshInfoCache	();
 
 			this.serverMesh			= null;
 			this.uploadingOverride	= null;

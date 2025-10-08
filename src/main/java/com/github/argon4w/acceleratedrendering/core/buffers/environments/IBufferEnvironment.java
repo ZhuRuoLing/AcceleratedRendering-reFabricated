@@ -6,7 +6,6 @@ import com.github.argon4w.acceleratedrendering.core.programs.culling.ICullingPro
 import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.IPolygonProgramDispatcher;
 import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.MeshUploadingProgramDispatcher;
 import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.TransformProgramDispatcher;
-import com.github.argon4w.acceleratedrendering.core.programs.overrides.IShaderProgramOverrides;
 import com.github.argon4w.acceleratedrendering.core.programs.overrides.ITransformShaderProgramOverride;
 import com.github.argon4w.acceleratedrendering.core.programs.overrides.IUploadingShaderProgramOverride;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;

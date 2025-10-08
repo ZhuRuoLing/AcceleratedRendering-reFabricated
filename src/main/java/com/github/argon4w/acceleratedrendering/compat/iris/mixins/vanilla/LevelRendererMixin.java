@@ -2,6 +2,7 @@ package com.github.argon4w.acceleratedrendering.compat.iris.mixins.vanilla;
 
 import com.github.argon4w.acceleratedrendering.compat.iris.IrisCompatBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerDrawType;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.Camera;
@@ -24,24 +25,13 @@ public class LevelRendererMixin {
 
 	@Inject(
 			method	= "renderLevel",
-			at		= {
-					@At(
-							value	= "INVOKE",
-							target	= "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V",
-							ordinal = 1
-					),
-					@At(
-							value	= "INVOKE",
-							target	= "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V",
-							ordinal = 2
-					),
-					@At(
-							value	= "CONSTANT",
-							args	= "stringValue=translucent"
-					)
-			}
+			at		= @At(
+					value	= "INVOKE",
+					target	= "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V",
+					ordinal = 1
+			)
 	)
-	public void drawIrisCoreBuffers(
+	public void drawIrisAllCoreBuffers(
 			DeltaTracker	pDeltaTracker,
 			boolean			pRenderBlockOutline,
 			Camera			pCamera,
@@ -51,12 +41,93 @@ public class LevelRendererMixin {
 			Matrix4f		pProjectionMatrix,
 			CallbackInfo	ci
 	) {
-		CoreBuffers.ENTITY				.drawBuffers();
-		CoreBuffers.BLOCK				.drawBuffers();
-		CoreBuffers.POS					.drawBuffers();
-		CoreBuffers.POS_TEX				.drawBuffers();
-		CoreBuffers.POS_TEX_COLOR		.drawBuffers();
-		CoreBuffers.POS_COLOR_TEX_LIGHT	.drawBuffers();
+		CoreBuffers.ENTITY				.prepareBuffers	();
+		CoreBuffers.BLOCK				.prepareBuffers	();
+		CoreBuffers.POS					.prepareBuffers	();
+		CoreBuffers.POS_TEX				.prepareBuffers	();
+		CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
+		CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
+
+		CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.ALL);
+		CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.ALL);
+		CoreBuffers.POS					.drawBuffers	(LayerDrawType.ALL);
+		CoreBuffers.POS_TEX				.drawBuffers	(LayerDrawType.ALL);
+		CoreBuffers.POS_TEX_COLOR		.drawBuffers	(LayerDrawType.ALL);
+		CoreBuffers.POS_COLOR_TEX_LIGHT	.drawBuffers	(LayerDrawType.ALL);
+
+		CoreBuffers.ENTITY				.clearBuffers	();
+		CoreBuffers.BLOCK				.clearBuffers	();
+		CoreBuffers.POS					.clearBuffers	();
+		CoreBuffers.POS_TEX				.clearBuffers	();
+		CoreBuffers.POS_TEX_COLOR		.clearBuffers	();
+		CoreBuffers.POS_COLOR_TEX_LIGHT	.clearBuffers	();
+	}
+
+	@Inject(
+			method	= "renderLevel",
+			at		= @At(
+					value	= "CONSTANT",
+					args	= "stringValue=translucent",
+					ordinal	= 1
+			)
+	)
+	public void drawIrisOpaqueCoreBuffers(
+			DeltaTracker	pDeltaTracker,
+			boolean			pRenderBlockOutline,
+			Camera			pCamera,
+			GameRenderer	pGameRenderer,
+			LightTexture	pLightTexture,
+			Matrix4f		pFrustumMatrix,
+			Matrix4f		pProjectionMatrix,
+			CallbackInfo	ci
+	) {
+		CoreBuffers.ENTITY				.prepareBuffers	();
+		CoreBuffers.BLOCK				.prepareBuffers	();
+		CoreBuffers.POS					.prepareBuffers	();
+		CoreBuffers.POS_TEX				.prepareBuffers	();
+		CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
+		CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
+
+		CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.OPAQUE);
+		CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.OPAQUE);
+		CoreBuffers.POS					.drawBuffers	(LayerDrawType.OPAQUE);
+		CoreBuffers.POS_TEX				.drawBuffers	(LayerDrawType.OPAQUE);
+		CoreBuffers.POS_TEX_COLOR		.drawBuffers	(LayerDrawType.OPAQUE);
+		CoreBuffers.POS_COLOR_TEX_LIGHT	.drawBuffers	(LayerDrawType.OPAQUE);
+	}
+
+	@Inject(
+			method	= "renderLevel",
+			at		= @At(
+					value	= "CONSTANT",
+					args	= "stringValue=translucent",
+					ordinal	= 1,
+					shift	= At.Shift.AFTER
+			)
+	)
+	public void drawIrisTranslucentCoreBuffers(
+			DeltaTracker	pDeltaTracker,
+			boolean			pRenderBlockOutline,
+			Camera			pCamera,
+			GameRenderer	pGameRenderer,
+			LightTexture	pLightTexture,
+			Matrix4f		pFrustumMatrix,
+			Matrix4f		pProjectionMatrix,
+			CallbackInfo	ci
+	) {
+		CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.TRANSLUCENT);
+		CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.TRANSLUCENT);
+		CoreBuffers.POS					.drawBuffers	(LayerDrawType.TRANSLUCENT);
+		CoreBuffers.POS_TEX				.drawBuffers	(LayerDrawType.TRANSLUCENT);
+		CoreBuffers.POS_TEX_COLOR		.drawBuffers	(LayerDrawType.TRANSLUCENT);
+		CoreBuffers.POS_COLOR_TEX_LIGHT	.drawBuffers	(LayerDrawType.TRANSLUCENT);
+
+		CoreBuffers.ENTITY				.clearBuffers	();
+		CoreBuffers.BLOCK				.clearBuffers	();
+		CoreBuffers.POS					.clearBuffers	();
+		CoreBuffers.POS_TEX				.clearBuffers	();
+		CoreBuffers.POS_TEX_COLOR		.clearBuffers	();
+		CoreBuffers.POS_COLOR_TEX_LIGHT	.clearBuffers	();
 	}
 
 	@WrapOperation(
@@ -66,7 +137,7 @@ public class LevelRendererMixin {
 					target	= "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endLastBatch()V"
 			)
 	)
-	public void preventDrawCoreBuffers(MultiBufferSource.BufferSource instance, Operation<Void> original) {
+	public void preventDrawVanillaCoreBuffers(MultiBufferSource.BufferSource instance, Operation<Void> original) {
 		instance.endLastBatch();
 	}
 
@@ -75,10 +146,17 @@ public class LevelRendererMixin {
 			at		= @At("TAIL")
 	)
 	public void deleteIrisBuffers(CallbackInfo ci) {
-		IrisCompatBuffers.BLOCK_SHADOW			.delete();
-		IrisCompatBuffers.ENTITY_SHADOW			.delete();
-		IrisCompatBuffers.GLYPH_SHADOW			.delete();
-		IrisCompatBuffers.POS_TEX_SHADOW		.delete();
-		IrisCompatBuffers.POS_TEX_COLOR_SHADOW	.delete();
+		IrisCompatBuffers.BLOCK_SHADOW				.delete();
+		IrisCompatBuffers.ENTITY_SHADOW				.delete();
+		IrisCompatBuffers.GLYPH_SHADOW				.delete();
+		IrisCompatBuffers.POS_TEX_SHADOW			.delete();
+		IrisCompatBuffers.POS_TEX_COLOR_SHADOW		.delete();
+
+		IrisCompatBuffers.ENTITY_HAND				.delete();
+		IrisCompatBuffers.BLOCK_HAND				.delete();
+		IrisCompatBuffers.POS_HAND					.delete();
+		IrisCompatBuffers.POS_TEX_HAND				.delete();
+		IrisCompatBuffers.POS_TEX_COLOR_HAND		.delete();
+		IrisCompatBuffers.POS_COLOR_TEX_LIGHT_HAND	.delete();
 	}
 }

@@ -10,7 +10,6 @@ import com.github.argon4w.acceleratedrendering.features.items.colors.ItemLayerCo
 import com.github.argon4w.acceleratedrendering.features.items.contexts.AcceleratedQuadsRenderContext;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lombok.experimental.ExtensionMethod;

@@ -1,6 +1,7 @@
 package com.github.argon4w.acceleratedrendering.compat.iris.mixins.iris;
 
 import com.github.argon4w.acceleratedrendering.compat.iris.IrisCompatBuffers;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerDrawType;
 import net.irisshaders.iris.mixin.LevelRendererAccessor;
 import net.irisshaders.iris.shadows.ShadowRenderer;
 import net.minecraft.client.Camera;
@@ -24,10 +25,22 @@ public class ShadowRendererMixin {
 			Camera					playerCamera,
 			CallbackInfo			ci
 	) {
-		IrisCompatBuffers.BLOCK_SHADOW			.drawBuffers();
-		IrisCompatBuffers.ENTITY_SHADOW			.drawBuffers();
-		IrisCompatBuffers.GLYPH_SHADOW			.drawBuffers();
-		IrisCompatBuffers.POS_TEX_SHADOW		.drawBuffers();
-		IrisCompatBuffers.POS_TEX_COLOR_SHADOW	.drawBuffers();
+		IrisCompatBuffers.BLOCK_SHADOW			.prepareBuffers	();
+		IrisCompatBuffers.ENTITY_SHADOW			.prepareBuffers	();
+		IrisCompatBuffers.GLYPH_SHADOW			.prepareBuffers	();
+		IrisCompatBuffers.POS_TEX_SHADOW		.prepareBuffers	();
+		IrisCompatBuffers.POS_TEX_COLOR_SHADOW	.prepareBuffers	();
+
+		IrisCompatBuffers.BLOCK_SHADOW			.drawBuffers	(LayerDrawType.ALL);
+		IrisCompatBuffers.ENTITY_SHADOW			.drawBuffers	(LayerDrawType.ALL);
+		IrisCompatBuffers.GLYPH_SHADOW			.drawBuffers	(LayerDrawType.ALL);
+		IrisCompatBuffers.POS_TEX_SHADOW		.drawBuffers	(LayerDrawType.ALL);
+		IrisCompatBuffers.POS_TEX_COLOR_SHADOW	.drawBuffers	(LayerDrawType.ALL);
+
+		IrisCompatBuffers.BLOCK_SHADOW			.clearBuffers	();
+		IrisCompatBuffers.ENTITY_SHADOW			.clearBuffers	();
+		IrisCompatBuffers.GLYPH_SHADOW			.clearBuffers	();
+		IrisCompatBuffers.POS_TEX_SHADOW		.clearBuffers	();
+		IrisCompatBuffers.POS_TEX_COLOR_SHADOW	.clearBuffers	();
 	}
 }

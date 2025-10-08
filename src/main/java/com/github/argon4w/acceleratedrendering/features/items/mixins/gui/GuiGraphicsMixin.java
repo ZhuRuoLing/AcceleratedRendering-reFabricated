@@ -2,6 +2,7 @@ package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
 import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerDrawType;
 import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedGuiGraphics;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -192,11 +193,25 @@ public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
 	@Unique
 	@Override
 	public void flushItemBatching() {
-		CoreBuffers.ENTITY				.drawBuffers();
-		CoreBuffers.BLOCK				.drawBuffers();
-		CoreBuffers.POS					.drawBuffers();
-		CoreBuffers.POS_TEX				.drawBuffers();
-		CoreBuffers.POS_TEX_COLOR		.drawBuffers();
-		CoreBuffers.POS_COLOR_TEX_LIGHT	.drawBuffers();
+		CoreBuffers.ENTITY				.prepareBuffers	();
+		CoreBuffers.BLOCK				.prepareBuffers	();
+		CoreBuffers.POS					.prepareBuffers	();
+		CoreBuffers.POS_TEX				.prepareBuffers	();
+		CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
+		CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
+
+		CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.ALL);
+		CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.ALL);
+		CoreBuffers.POS					.drawBuffers	(LayerDrawType.ALL);
+		CoreBuffers.POS_TEX				.drawBuffers	(LayerDrawType.ALL);
+		CoreBuffers.POS_TEX_COLOR		.drawBuffers	(LayerDrawType.ALL);
+		CoreBuffers.POS_COLOR_TEX_LIGHT	.drawBuffers	(LayerDrawType.ALL);
+
+		CoreBuffers.ENTITY				.clearBuffers	();
+		CoreBuffers.BLOCK				.clearBuffers	();
+		CoreBuffers.POS					.clearBuffers	();
+		CoreBuffers.POS_TEX				.clearBuffers	();
+		CoreBuffers.POS_TEX_COLOR		.clearBuffers	();
+		CoreBuffers.POS_COLOR_TEX_LIGHT	.clearBuffers	();
 	}
 }

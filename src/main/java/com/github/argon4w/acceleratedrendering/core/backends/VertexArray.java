@@ -10,11 +10,11 @@ public class VertexArray {
 		this.vaoHandle = glCreateVertexArrays();
 	}
 
-	public void bindVertexArray() {
+	public void bind() {
 		glBindVertexArray(vaoHandle);
 	}
 
-	public void unbindVertexArray() {
+	public void unbind() {
 		glBindVertexArray(0);
 	}
 

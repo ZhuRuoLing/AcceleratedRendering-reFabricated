@@ -1,25 +1,26 @@
 package com.github.argon4w.acceleratedrendering.core.buffers.accelerated;
 
+import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.AcceleratedBufferBuilder;
-import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.CustomLayerFunction;
-import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.EmptyLayerFunction;
-import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerKey;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.*;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.functions.CustomLayerFunction;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.functions.EmptyLayerFunction;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.SeparatedLayerStorage;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.empty.EmptyLayerStorage;
 import com.github.argon4w.acceleratedrendering.core.buffers.environments.IBufferEnvironment;
 import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
 import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.MeshUploadingProgramDispatcher;
+import com.github.argon4w.acceleratedrendering.core.utils.RenderTypeUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import it.unimi.dsi.fastutil.ints.IntAVLTreeSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
-import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -94,10 +95,10 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 		}
 
 		if (layer == null) {
-			function	= new CustomLayerFunction	();
-			layer 		= new ReferenceArrayList<>	();
-			layers		.put						(layerIndex, layer);
-			functions	.put						(layerIndex, function);
+			function	= new CustomLayerFunction			();
+			layer 		= CoreFeature	.createLayerStorage	();
+			layers						.put				(layerIndex, layer);
+			functions					.put				(layerIndex, function);
 		}
 
 		builder = new AcceleratedBufferBuilder(
@@ -120,7 +121,7 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 		return builder;
 	}
 
-	public void drawBuffers() {
+	public void prepareBuffers() {
 		if (!used) {
 			return;
 		}
@@ -145,17 +146,23 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 					continue;
 				}
 
-				var drawContext		= buffer	.getDrawContext		();
-				var elementSegment	= builder	.getElementSegment	();
-				var renderType		= layerKey	.renderType			();
-				var layer			= layerKey	.layer				();
+				var drawContext		= buffer			.getDrawContext		();
+				var elementSegment	= builder			.getElementSegment	();
+				var renderType		= layerKey			.renderType			();
+				var layer			= layerKey			.layer				();
+				var drawType		= RenderTypeUtils	.getDrawType		(renderType);
 
-				builder							.setOutdated		();
-				elementSegment					.allocateOffset		();
-				buffer							.bindElementBuffer	(elementSegment);
-				drawContext						.bindComputeBuffers	(elementSegment);
-				drawContext						.setRenderType		(renderType);
-				buffer.getLayers().get(layer)	.add				(drawContext);
+				builder									.setOutdated		();
+				elementSegment							.allocateOffset		();
+				buffer									.bindElementBuffer	(elementSegment);
+				drawContext								.bindComputeBuffers	(elementSegment);
+				drawContext								.setRenderType		(renderType);
+
+				buffer
+						.getLayers	()
+						.get		(layer)
+						.get		(drawType)
+						.add		(drawContext);
 
 				barrier |= environment	.selectProcessingProgramDispatcher	(renderType.mode)	.dispatch(builder);
 				barrier |= builder		.getCullingProgramDispatcher		()					.dispatch(builder);
@@ -164,23 +171,29 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 			glMemoryBarrier	(barrier);
 			glUseProgram	(program);
 		}
+	}
+
+	public void drawBuffers(LayerDrawType drawType) {
+		if (!used) {
+			return;
+		}
 
 		for (		int layerIndex	: activeLayers) {
 			for (	var buffer		: buffers) {
-				var function	= buffer.getFunctions	().getOrDefault(layerIndex, EmptyLayerFunction	.INSTANCE);
-				var layer		= buffer.getLayers		().getOrDefault(layerIndex, List				.of());
+				var function = buffer.getFunctions	().getOrDefault(layerIndex, EmptyLayerFunction	.INSTANCE);
+				var contexts = buffer.getLayers		().getOrDefault(layerIndex, EmptyLayerStorage	.INSTANCE).get(drawType);
 
-				if (layer.isEmpty()) {
+				if (contexts.isEmpty()) {
 					continue;
 				}
 
 				glMemoryBarrier					(GL_ELEMENT_ARRAY_BARRIER_BIT | GL_COMMAND_BARRIER_BIT);
-				layer			.sort			(Comparator.naturalOrder());
 				BufferUploader	.invalidate		();
 				buffer			.bindDrawBuffers();
+				contexts		.prepare		();
 				function		.runBefore		();
 
-				for (var drawContext : layer) {
+				for (var drawContext : contexts) {
 					var renderType	= drawContext	.getRenderType		();
 					renderType						.setupRenderState	();
 
@@ -201,10 +214,15 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 				}
 
 				function.runAfter			();
-				function.reset				();
-				layer	.clear				();
+				contexts.reset				();
 				buffer	.unbindVertexArray	();
 			}
+		}
+	}
+
+	public void clearBuffers() {
+		if (!used) {
+			return;
 		}
 
 		for (var buffer : buffers) {

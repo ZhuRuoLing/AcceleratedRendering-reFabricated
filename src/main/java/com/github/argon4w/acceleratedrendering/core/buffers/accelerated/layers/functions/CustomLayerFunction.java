@@ -1,4 +1,4 @@
-package com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers;
+package com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.functions;
 
 import it.unimi.dsi.fastutil.objects.ReferenceLinkedOpenHashSet;
 

@@ -11,24 +11,24 @@ import net.minecraft.client.renderer.RenderType;
 
 import static org.lwjgl.opengl.GL46.*;
 
-public class DrawContextPool extends SimpleResetPool<DrawContextPool.IndirectDrawContext, MappedBuffer> {
+public class DrawContextPool extends SimpleResetPool<DrawContextPool.DrawContext, MappedBuffer> {
 
 	public DrawContextPool(int size) {
 		super(size, new MappedBuffer(20L * size));
 	}
 
 	@Override
-	protected IndirectDrawContext create(MappedBuffer buffer, int i) {
-		return new IndirectDrawContext(i);
+	protected DrawContext create(MappedBuffer buffer, int i) {
+		return new DrawContext(i);
 	}
 
 	@Override
-	protected void reset(IndirectDrawContext drawContext) {
+	protected void reset(DrawContext drawContext) {
 
 	}
 
 	@Override
-	protected void delete(IndirectDrawContext drawContext) {
+	protected void delete(DrawContext drawContext) {
 
 	}
 
@@ -38,14 +38,14 @@ public class DrawContextPool extends SimpleResetPool<DrawContextPool.IndirectDra
 	}
 
 	@Override
-	public IndirectDrawContext fail() {
+	public DrawContext fail() {
 		expand();
 		return get();
 	}
 
 	@Getter
 	@Setter
-	public class IndirectDrawContext implements Comparable<IndirectDrawContext> {
+	public class DrawContext implements Comparable<DrawContext> {
 
 		public static	final	int					ELEMENT_COUNT_INDEX		= 0;
 		public static	final	IMemoryInterface	INDIRECT_COUNT			= new SimpleMemoryInterface(0L * 4L, 4);
@@ -57,7 +57,7 @@ public class DrawContextPool extends SimpleResetPool<DrawContextPool.IndirectDra
 		private			final	long				commandOffset;
 		private					RenderType			renderType;
 
-		public IndirectDrawContext(int index) {
+		public DrawContext(int index) {
 			this.commandOffset	= index * 20L;
 			this.renderType		= null;
 
@@ -93,7 +93,7 @@ public class DrawContextPool extends SimpleResetPool<DrawContextPool.IndirectDra
 		}
 
 		@Override
-		public int compareTo(DrawContextPool.IndirectDrawContext that) {
+		public int compareTo(DrawContext that) {
 			return Boolean.compare(
 					this.renderType.sortOnUpload,
 					that.renderType.sortOnUpload

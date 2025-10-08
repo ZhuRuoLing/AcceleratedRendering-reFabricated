@@ -16,6 +16,7 @@ import net.minecraft.util.FastColor;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import static org.lwjgl.opengl.GL46.GL_SHADER_STORAGE_BUFFER;
 import static org.lwjgl.opengl.GL46.glMemoryBarrier;

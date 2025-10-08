@@ -1,5 +1,6 @@
 package com.github.argon4w.acceleratedrendering.configs;
 
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.LayerStorageType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.MeshInfoCacheType;
 import com.github.argon4w.acceleratedrendering.core.meshes.MeshType;
 import com.github.argon4w.acceleratedrendering.features.filter.FilterType;
@@ -15,13 +16,14 @@ public class FeatureConfig {
 	public static	final	FeatureConfig										CONFIG;
 	public static	final	ModConfigSpec										SPEC;
 
-	public			final	ModConfigSpec.IntValue								corePooledBufferSetSize;
-	public			final	ModConfigSpec.IntValue								corePooledElementBufferSize;
+	public			final	ModConfigSpec.IntValue								corePooledRingBufferSize;
+	public			final	ModConfigSpec.IntValue								corePooledBatchingSize;
 	public			final	ModConfigSpec.IntValue								coreCachedImageSize;
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			coreDebugContextEnabled;
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			coreForceTranslucentAcceleration;
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			coreCacheIdenticalPose;
 	public			final	ModConfigSpec.ConfigValue<MeshInfoCacheType>		coreMeshInfoCacheType;
+	public			final	ModConfigSpec.ConfigValue<LayerStorageType>			coreLayerStorageType;
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			coreUploadMeshImmediately;
 
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedEntityRenderingFeatureStatus;
@@ -80,19 +82,19 @@ public class FeatureConfig {
 				.translation			("acceleratedrendering.configuration.core_settings")
 				.push					("core_settings");
 
-		corePooledBufferSetSize							= builder
+		corePooledRingBufferSize						= builder
 				.gameRestart			()
 				.comment				("Count of buffer sets that holds data for in-flight frame rendering.")
 				.comment				("Changing this value may affects your FPS. Smaller value means less in-flight frames, while larger values means more in-flight frames. More in-flight frames means more FPS but more VRAM.")
-				.translation			("acceleratedrendering.configuration.core_settings.pooled_buffer_set_size")
-				.defineInRange			("pooled_buffer_set_size",		8,	1,	Integer.MAX_VALUE);
+				.translation			("acceleratedrendering.configuration.core_settings.pooled_ring_buffer_size")
+				.defineInRange			("pooled_ring_buffer_size",		8,	1,	Integer.MAX_VALUE);
 
-		corePooledElementBufferSize						= builder
+		corePooledBatchingSize							= builder
 				.gameRestart			()
 				.comment				("Count of batches of RenderTypes that is allowed in a draw call.")
 				.comment				("Changing this value may affects your FPS. Smaller value means less batches allowed in a draw call, while larger values means more batches. More batches means more FPS but more VRAM and more CPU pressure on handling RenderTypes.")
-				.translation			("acceleratedrendering.configuration.core_settings.pooled_element_buffer_size")
-				.defineInRange			("pooled_element_buffer_size",	32,	1,	Integer.MAX_VALUE);
+				.translation			("acceleratedrendering.configuration.core_settings.pooled_batching_size")
+				.defineInRange			("pooled_batching_size",		32,	1,	Integer.MAX_VALUE);
 
 		coreCachedImageSize								= builder
 				.comment				("Count of images that cached for static mesh culling.")
@@ -126,6 +128,13 @@ public class FeatureConfig {
 				.translation			("acceleratedrendering.configuration.core_settings.mesh_info_cache_type")
 				.gameRestart			()
 				.defineEnum				("mesh_info_cache_type",				MeshInfoCacheType.HANDLE);
+
+		coreLayerStorageType							= builder
+				.comment				("- SORTED: The basic implementation of batching layer storage that renders opaque and translucent geometries together in a single stage with better performance but slight visual glitches on translucent geometries.")
+				.comment				("- SEPARATED: The visually-precise implementation of batching layer storage that separates opaque and translucent geometries into two rendering stages to prevent visual glitches, slightly slower than basic implementation.")
+				.translation			("acceleratedrendering.configuration.core_settings.layer_storage_type")
+				.gameRestart			()
+				.defineEnum				("layer_storage_type",					LayerStorageType.SEPARATED);
 
 		coreUploadMeshImmediately						= builder
 				.comment				("- DISABLED: Meshes that is going to be accelerated will be collected and uploaded together at the end for choosing better uploading method and increasing memory access efficiency to reach the best performance. Also this method allows mesh cache with bigger capacity (up to VRAM limit), but it may not follow the correct draw order.")
