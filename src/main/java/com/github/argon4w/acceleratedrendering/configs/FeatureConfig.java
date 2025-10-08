@@ -113,7 +113,7 @@ public class FeatureConfig {
 				.comment				("- DISABLED: Translucent RenderType will fallback to vanilla rendering pipeline if the accelerated pipeline does not support translucent sorting unless mods explicitly enable force translucent acceleration temporarily when rendering their own faces.")
 				.comment				("- ENABLED: Translucent RenderType will still be rendered in accelerated pipeline even if the pipeline does not support translucent sorting unless mods explicitly disable force translucent acceleration temporarily when rendering their own faces.")
 				.translation			("acceleratedrendering.configuration.core_settings.force_translucent_acceleration")
-				.defineEnum				("force_translucent_acceleration",		FeatureStatus.DISABLED);
+				.defineEnum				("force_translucent_acceleration",		FeatureStatus.ENABLED);
 
 		coreCacheIdenticalPose							= builder
 				.comment				("- DISABLED: Poses with identical transform matrix and normal matrix that used to transform vertices will not be cached in buffer which slightly decreases CPU pressure but increase VRAM usage unless mods explicitly disable it when rendering.")
@@ -212,19 +212,19 @@ public class FeatureConfig {
 				.comment				("- DISABLED: Accelerated Rendering will not accelerate item models that are marked as \"too small to make up the cost of acceleration\" when rendering it in hand unless mods explicitly enable it temporarily when rendering their own item models.")
 				.comment				("- ENABLED: Accelerated Rendering will still accelerate item models that are marked as \"too small to make up the cost of acceleration\" when rendering it in hand unless mods explicitly disable it temporarily when rendering their own item models, which may slightly reduce the FPS but accelerate vanilla-like modded item models with large amount of vertices.")
 				.translation			("acceleratedrendering.configuration.accelerated_item_rendering.hand_acceleration")
-				.defineEnum				("hand_acceleration",					FeatureStatus.DISABLED);
+				.defineEnum				("hand_acceleration",					FeatureStatus.ENABLED);
 
 		acceleratedItemRenderingGuiAcceleration			= builder
 				.comment				("- DISABLED: Accelerated Rendering will not accelerate item models that are marked as \"too small to make up the cost of acceleration\" when rendering it in a container GUI unless mods explicitly enable it temporarily when rendering their own item models.")
 				.comment				("- ENABLED: Accelerated Rendering will still accelerate item models that are marked as \"too small to make up the cost of acceleration\" when rendering it in a container GUI unless mods explicitly disable it temporarily when rendering their own item models, which may slightly reduce the FPS but accelerate vanilla-like modded item models with large amount of vertices.")
 				.translation			("acceleratedrendering.configuration.accelerated_item_rendering.gui_acceleration")
-				.defineEnum				("gui_acceleration",					FeatureStatus.DISABLED);
+				.defineEnum				("gui_acceleration",					FeatureStatus.ENABLED);
 
 		acceleratedItemRenderingGuiItemBatching			= builder
 				.comment				("- DISABLED: Items in the container GUI will be rendered as per item per batch if the GUI Acceleration is enabled, which is inefficient and may cause slight reduction in FPS, but it has better compatibility in modded container GUI.")
 				.comment				("- ENABLED: Items in the container will be rendered together in a single batch if the GUI Acceleration is enabled, which is much more efficient but has little compatibility in modded container GUI.")
 				.translation			("acceleratedrendering.configuration.accelerated_item_rendering.gui_item_batching")
-				.defineEnum				("gui_item_batching",					FeatureStatus.DISABLED);
+				.defineEnum				("gui_item_batching",					FeatureStatus.ENABLED);
 
 		builder.pop();
 

@@ -119,12 +119,12 @@ public class HandRendererMixin {
 		IrisCompatBuffers.POS_TEX_COLOR_HAND		.prepareBuffers		();
 		IrisCompatBuffers.POS_COLOR_TEX_LIGHT_HAND	.prepareBuffers		();
 
-		IrisCompatBuffers.ENTITY_HAND				.drawBuffers		(LayerDrawType.OPAQUE);
-		IrisCompatBuffers.BLOCK_HAND				.drawBuffers		(LayerDrawType.OPAQUE);
-		IrisCompatBuffers.POS_HAND					.drawBuffers		(LayerDrawType.OPAQUE);
-		IrisCompatBuffers.POS_TEX_HAND				.drawBuffers		(LayerDrawType.OPAQUE);
-		IrisCompatBuffers.POS_TEX_COLOR_HAND		.drawBuffers		(LayerDrawType.OPAQUE);
-		IrisCompatBuffers.POS_COLOR_TEX_LIGHT_HAND	.drawBuffers		(LayerDrawType.OPAQUE);
+		IrisCompatBuffers.ENTITY_HAND				.drawBuffers		(LayerDrawType.ALL);
+		IrisCompatBuffers.BLOCK_HAND				.drawBuffers		(LayerDrawType.ALL);
+		IrisCompatBuffers.POS_HAND					.drawBuffers		(LayerDrawType.ALL);
+		IrisCompatBuffers.POS_TEX_HAND				.drawBuffers		(LayerDrawType.ALL);
+		IrisCompatBuffers.POS_TEX_COLOR_HAND		.drawBuffers		(LayerDrawType.ALL);
+		IrisCompatBuffers.POS_COLOR_TEX_LIGHT_HAND	.drawBuffers		(LayerDrawType.ALL);
 
 		IrisCompatBuffers.ENTITY_HAND				.clearBuffers		();
 		IrisCompatBuffers.BLOCK_HAND				.clearBuffers		();
