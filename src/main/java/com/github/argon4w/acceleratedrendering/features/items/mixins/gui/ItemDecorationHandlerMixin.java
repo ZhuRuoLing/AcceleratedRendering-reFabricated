@@ -2,6 +2,7 @@ package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
@@ -52,7 +53,7 @@ public class ItemDecorationHandlerMixin {
 			CallbackInfo	ci
 	) {
 		if (CoreFeature.isGuiBatching()) {
-			AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET.bindWrite(false);
+			Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
 		}
 	}
 }
