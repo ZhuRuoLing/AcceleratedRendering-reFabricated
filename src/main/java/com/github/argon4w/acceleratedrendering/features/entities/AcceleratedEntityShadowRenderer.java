@@ -60,14 +60,14 @@ public class AcceleratedEntityShadowRenderer implements IAcceleratedRenderer<Acc
 		}
 
 		var dimensionBrightness	= LightTexture.getBrightness(levelReader.dimensionType(), levelBrightness);
-		var shadowTransparency	= weight * 0.5F * dimensionBrightness * 255.0f;
+		var shadowTransparency	= weight * 0.5f * dimensionBrightness * 255.0f;
 
-		if (shadowTransparency < 0.0F) {
+		if (shadowTransparency < 0.0f) {
 			return;
 		}
 
-		if (shadowTransparency > 255.0F) {
-			shadowTransparency = 255.0F;
+		if (shadowTransparency > 255.0f) {
+			shadowTransparency = 255.0f;
 		}
 
 		var shadowColor	= FastColor.ARGB32	.color	((int) shadowTransparency, color);

@@ -17,8 +17,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class HandRendererMixin {
 
 	@Inject(
-			method = "renderSolid",
-			at = @At(
+			method	= "renderSolid",
+			at		= @At(
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderHandsWithItems(FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/player/LocalPlayer;I)V",
 					shift	= At.Shift.BEFORE
@@ -36,8 +36,8 @@ public class HandRendererMixin {
 	}
 
 	@Inject(
-			method = "renderSolid",
-			at = @At(
+			method	= "renderSolid",
+			at		= @At(
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderHandsWithItems(FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/player/LocalPlayer;I)V",
 					shift	= At.Shift.AFTER
@@ -76,8 +76,8 @@ public class HandRendererMixin {
 	}
 
 	@Inject(
-			method = "renderTranslucent",
-			at = @At(
+			method	= "renderTranslucent",
+			at		= @At(
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderHandsWithItems(FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/player/LocalPlayer;I)V",
 					shift	= At.Shift.BEFORE
@@ -95,8 +95,8 @@ public class HandRendererMixin {
 	}
 
 	@Inject(
-			method = "renderTranslucent",
-			at = @At(
+			method	= "renderTranslucent",
+			at		= @At(
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderHandsWithItems(FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/player/LocalPlayer;I)V",
 					shift	= At.Shift.AFTER

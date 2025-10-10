@@ -79,10 +79,10 @@ public class BakedGlyphMixin implements IAcceleratedRenderer<BakedGlyph.Effect> 
 					pPackedLight,
 					OverlayTexture	.NO_OVERLAY,
 					FastColor.ARGB32.color(
-							(int) (pAlpha	* 255.0F),
-							(int) (pRed		* 255.0F),
-							(int) (pGreen	* 255.0F),
-							(int) (pBlue	* 255.0F)
+							(int) (pAlpha	* 255.0f),
+							(int) (pRed		* 255.0f),
+							(int) (pGreen	* 255.0f),
+							(int) (pBlue	* 255.0f)
 					)
 			);
 		}
@@ -116,10 +116,10 @@ public class BakedGlyphMixin implements IAcceleratedRenderer<BakedGlyph.Effect> 
 					packedLight,
 					OverlayTexture	.NO_OVERLAY,
 					FastColor.ARGB32.color(
-							(int) (effect.a * 255.0F),
-							(int) (effect.r * 255.0F),
-							(int) (effect.g * 255.0F),
-							(int) (effect.b * 255.0F)
+							(int) (effect.a * 255.0f),
+							(int) (effect.r * 255.0f),
+							(int) (effect.g * 255.0f),
+							(int) (effect.b * 255.0f)
 					)
 			);
 		}

@@ -173,7 +173,7 @@ public class FeatureConfig {
 				.comment				("- DISABLED: Accelerated Rendering will not accelerate entities when rendering it in a GUI unless mods explicitly enable it temporarily when rendering their own entities.")
 				.comment				("- ENABLED: Accelerated Rendering will still accelerate entities when rendering it in a GUI unless mods explicitly disable it temporarily when rendering their own entities.")
 				.translation			("acceleratedrendering.configuration.accelerated_entity_rendering.gui_acceleration")
-				.defineEnum				("gui_acceleration",						FeatureStatus.ENABLED);
+				.defineEnum				("gui_acceleration",					FeatureStatus.ENABLED);
 
 		builder.pop();
 

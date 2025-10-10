@@ -37,7 +37,7 @@ public interface GeoRendererMixin {
 			int				packedLight,
 			int				packedOverlay,
 			int				colour,
-			CallbackInfo		ci
+			CallbackInfo	ci
 	) {
 		var extension = buffer.getAccelerated();
 
