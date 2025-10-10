@@ -21,18 +21,16 @@ import java.util.function.Predicate;
 public class ParticleEngineMixin {
 
 	@Inject(
-			method	= "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/culling/Frustum;)V",
-			at		= @At("HEAD"),
-			remap	= false
+		method	= "render",
+		at		= @At("HEAD")
 	)
 	public void disableParticleAcceleration(
-			PoseStack						poseStack,
-			MultiBufferSource.BufferSource	buffer,
-			LightTexture					lightTexture,
-			Camera							activeRenderInfo,
-			float							partialTicks,
-			Frustum							clippingHelper,
-			CallbackInfo					ci
+		PoseStack poseStack,
+		MultiBufferSource.BufferSource buffer,
+		LightTexture lightTexture,
+		Camera activeRenderInfo,
+		float partialTicks,
+		CallbackInfo ci
 	) {
 		AcceleratedEntityRenderingFeature	.useVanillaPipeline();
 		AcceleratedItemRenderingFeature		.useVanillaPipeline();
@@ -40,18 +38,16 @@ public class ParticleEngineMixin {
 	}
 
 	@Inject(
-			method	= "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/culling/Frustum;)V",
-			at		= @At("RETURN"),
-			remap	= false
+		method	= "render",
+		at		= @At("RETURN")
 	)
 	public void resetParticleAcceleration(
-			PoseStack						poseStack,
-			MultiBufferSource.BufferSource	buffer,
-			LightTexture					lightTexture,
-			Camera							activeRenderInfo,
-			float							partialTicks,
-			Frustum							clippingHelper,
-			CallbackInfo					ci
+		PoseStack poseStack,
+		MultiBufferSource.BufferSource buffer,
+		LightTexture lightTexture,
+		Camera activeRenderInfo,
+		float partialTicks,
+		CallbackInfo ci
 	) {
 		AcceleratedEntityRenderingFeature	.resetPipeline();
 		AcceleratedItemRenderingFeature		.resetPipeline();
