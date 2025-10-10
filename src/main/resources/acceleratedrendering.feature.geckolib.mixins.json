@@ -2,12 +2,13 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.github.argon4w.acceleratedrendering.features.geckolib.mixins",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_17",
   "client": [
     "GeoBoneMixin",
     "GeoRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "refmap": "acceleratedrendering.refmap.json"
 }

@@ -1,6 +1,6 @@
 package com.github.argon4w.acceleratedrendering.compat.iris.mixins.iris;
 
-import net.irisshaders.iris.vertices.sodium.ModelToEntityVertexSerializer;
+import net.irisshaders.iris.compat.sodium.impl.vertex_format.ModelToEntityVertexSerializer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
@@ -10,7 +10,8 @@ public class ModelToEntityVertexSerializerMixin {
 
 	@ModifyConstant(
 			method		= "serialize",
-			constant	= @Constant(longValue = 42L)
+			constant	= @Constant(longValue = 42L),
+			remap		= false
 	)
 	public long modifyMidU(long constant) {
 		return 44L;
@@ -18,7 +19,8 @@ public class ModelToEntityVertexSerializerMixin {
 
 	@ModifyConstant(
 			method		= "serialize",
-			constant	= @Constant(longValue = 46L)
+			constant	= @Constant(longValue = 46L),
+			remap		= false
 	)
 	public long modifyMidV(long constant) {
 		return 48L;
@@ -26,7 +28,8 @@ public class ModelToEntityVertexSerializerMixin {
 
 	@ModifyConstant(
 			method		= "serialize",
-			constant	= @Constant(longValue = 50L)
+			constant	= @Constant(longValue = 50L),
+			remap		= false
 	)
 	public long modifyTangent(long constant) {
 		return 52L;

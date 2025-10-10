@@ -3,6 +3,7 @@ package com.github.argon4w.acceleratedrendering.compat.iris.mixins.iris;
 import com.github.argon4w.acceleratedrendering.compat.iris.IrisCompatBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerDrawType;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.irisshaders.iris.pathways.HandRenderer;
 import net.irisshaders.iris.pipeline.WorldRenderingPipeline;
 import net.minecraft.client.Camera;
@@ -17,15 +18,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class HandRendererMixin {
 
 	@Inject(
-			method = "renderSolid",
-			at = @At(
+			method	= "renderSolid",
+			at		= @At(
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderHandsWithItems(FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/player/LocalPlayer;I)V",
 					shift	= At.Shift.BEFORE
-			)
+			),
+			remap	= false
 	)
 	public void startRenderSolidFast(
-			Matrix4fc				modelMatrix,
+			PoseStack				poseStack,
 			float					tickDelta,
 			Camera					camera,
 			GameRenderer			gameRenderer,
@@ -36,15 +38,16 @@ public class HandRendererMixin {
 	}
 
 	@Inject(
-			method = "renderSolid",
-			at = @At(
+			method	= "renderSolid",
+			at		= @At(
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderHandsWithItems(FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/player/LocalPlayer;I)V",
 					shift	= At.Shift.AFTER
-			)
+			),
+			remap	= false
 	)
 	public void stopRenderSolidFast(
-			Matrix4fc				modelMatrix,
+			PoseStack				poseStack,
 			float					tickDelta,
 			Camera					camera,
 			GameRenderer			gameRenderer,
@@ -76,15 +79,16 @@ public class HandRendererMixin {
 	}
 
 	@Inject(
-			method = "renderTranslucent",
-			at = @At(
+			method	= "renderTranslucent",
+			at		= @At(
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderHandsWithItems(FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/player/LocalPlayer;I)V",
 					shift	= At.Shift.BEFORE
-			)
+			),
+			remap	= false
 	)
 	public void startRenderTranslucentFast(
-			Matrix4fc				modelMatrix,
+			PoseStack				poseStack,
 			float					tickDelta,
 			Camera					camera,
 			GameRenderer			gameRenderer,
@@ -95,15 +99,16 @@ public class HandRendererMixin {
 	}
 
 	@Inject(
-			method = "renderTranslucent",
-			at = @At(
+			method	= "renderTranslucent",
+			at		= @At(
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderHandsWithItems(FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/player/LocalPlayer;I)V",
 					shift	= At.Shift.AFTER
-			)
+			),
+			remap	= false
 	)
 	public void stopRenderTranslucentFast(
-			Matrix4fc				modelMatrix,
+			PoseStack				poseStack,
 			float					tickDelta,
 			Camera					camera,
 			GameRenderer			gameRenderer,

@@ -19,7 +19,8 @@ public class RenderTypeUtilsMixin {
 			method		= "getTextureLocation",
 			at			= @At("HEAD"),
 			ordinal		= 0,
-			argsOnly	= true
+			argsOnly	= true,
+			remap		= false
 	)
 	private static RenderType unwrapIrisRenderType1(RenderType renderType) {
 		return renderType instanceof WrappableRenderType wrapped ? wrapped.unwrap() : renderType;
@@ -29,7 +30,8 @@ public class RenderTypeUtilsMixin {
 			method		= "isCulled",
 			at			= @At("HEAD"),
 			ordinal		= 0,
-			argsOnly	= true
+			argsOnly	= true,
+			remap		= false
 	)
 	private static RenderType unwrapIrisRenderType2(RenderType renderType) {
 		return renderType instanceof WrappableRenderType wrapped ? wrapped.unwrap() : renderType;
@@ -38,7 +40,8 @@ public class RenderTypeUtilsMixin {
 	@Inject(
 			method		= "getDrawType",
 			at			= @At("HEAD"),
-			cancellable	= true
+			cancellable	= true,
+			remap		= false
 	)
 	private static void getIrisRenderTypeDrawType(RenderType renderType, CallbackInfoReturnable<LayerDrawType> cir) {
 		cir.setReturnValue(((BlendingStateHolder) renderType).getTransparencyType() == TransparencyType.GENERAL_TRANSPARENT ? LayerDrawType.TRANSLUCENT : LayerDrawType.OPAQUE);

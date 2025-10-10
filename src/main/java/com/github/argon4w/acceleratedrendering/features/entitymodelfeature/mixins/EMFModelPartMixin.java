@@ -7,6 +7,7 @@ import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEnti
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lombok.experimental.ExtensionMethod;
+import net.minecraft.util.FastColor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,15 +24,19 @@ public class EMFModelPartMixin {
 	@Inject				(
 			method		= "compile",
 			at			= @At("HEAD"),
-			cancellable	= true
+			cancellable	= true,
+			remap		= false
 	)
 	public void compileFast(
 			PoseStack.Pose	pPose,
-			VertexConsumer pBuffer,
+			VertexConsumer	pBuffer,
 			int				pPackedLight,
 			int				pPackedOverlay,
-			int				pColor,
-			CallbackInfo ci
+			float			red,
+			float			green,
+			float			blue,
+			float			alpha,
+			CallbackInfo	ci
 	) {
 		var extension = pBuffer.getAccelerated();
 
@@ -50,7 +55,12 @@ public class EMFModelPartMixin {
 					pPose.normal(),
 					pPackedLight,
 					pPackedOverlay,
-					pColor
+					FastColor.ARGB32.color(
+							(int) (alpha	* 255.0f),
+							(int) (red		* 255.0f),
+							(int) (green	* 255.0f),
+							(int) (blue		* 255.0f)
+					)
 			);
 		}
 	}

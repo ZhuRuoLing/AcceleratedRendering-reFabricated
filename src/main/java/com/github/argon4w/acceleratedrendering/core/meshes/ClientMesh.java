@@ -2,7 +2,7 @@ package com.github.argon4w.acceleratedrendering.core.meshes;
 
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IAcceleratedVertexConsumer;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.IMeshCollector;
-import com.mojang.blaze3d.vertex.ByteBufferBuilder;
+import com.github.argon4w.acceleratedrendering.core.utils.ByteBufferBuilder;
 import it.unimi.dsi.fastutil.objects.ReferenceLinkedOpenHashSet;
 import lombok.AllArgsConstructor;
 

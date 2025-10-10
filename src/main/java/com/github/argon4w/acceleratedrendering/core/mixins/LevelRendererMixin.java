@@ -8,8 +8,8 @@ import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
 import com.github.argon4w.acceleratedrendering.core.programs.ComputeShaderProgramLoader;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
@@ -31,12 +31,13 @@ public class LevelRendererMixin {
 			at		= @At("HEAD")
 	)
 	public void startRenderLevel(
-			DeltaTracker	deltaTracker,
+			PoseStack poseStack,
+			float			partialTick,
+			long			finishNanoTime,
 			boolean			renderBlockOutline,
 			Camera			camera,
 			GameRenderer	gameRenderer,
 			LightTexture	lightTexture,
-			Matrix4f		frustumMatrix,
 			Matrix4f		projectionMatrix,
 			CallbackInfo	ci
 	) {
@@ -48,12 +49,13 @@ public class LevelRendererMixin {
 			at		= @At("RETURN")
 	)
 	public void stopRenderLevel(
-			DeltaTracker	deltaTracker,
+			PoseStack		poseStack,
+			float			partialTick,
+			long			finishNanoTime,
 			boolean			renderBlockOutline,
 			Camera			camera,
 			GameRenderer	gameRenderer,
 			LightTexture	lightTexture,
-			Matrix4f		frustumMatrix,
 			Matrix4f		projectionMatrix,
 			CallbackInfo	ci
 	) {
@@ -68,13 +70,14 @@ public class LevelRendererMixin {
 			)
 	)
 	public void endOutlineBatches(
-			DeltaTracker	pDeltaTracker,
-			boolean			pRenderBlockOutline,
-			Camera			pCamera,
-			GameRenderer	pGameRenderer,
-			LightTexture	pLightTexture,
-			Matrix4f		pFrustumMatrix,
-			Matrix4f		pProjectionMatrix,
+			PoseStack		poseStack,
+			float			partialTick,
+			long			finishNanoTime,
+			boolean			renderBlockOutline,
+			Camera			camera,
+			GameRenderer	gameRenderer,
+			LightTexture	lightTexture,
+			Matrix4f		projectionMatrix,
 			CallbackInfo	ci
 	) {
 		CoreBuffers.POS_TEX_COLOR_OUTLINE.prepareBuffers();

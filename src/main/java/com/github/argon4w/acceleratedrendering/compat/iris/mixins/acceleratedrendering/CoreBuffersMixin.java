@@ -14,7 +14,8 @@ public class CoreBuffersMixin {
 
 	@ModifyReturnValue(
 			method	= "getCoreBufferSources",
-			at		= @At("RETURN")
+			at		= @At("RETURN"),
+			remap	= false
 	)
 	private static AcceleratedBufferSources getShadowBufferSources(AcceleratedBufferSources original) {
 		if (ShadowRenderingState.areShadowsCurrentlyBeingRendered()) {

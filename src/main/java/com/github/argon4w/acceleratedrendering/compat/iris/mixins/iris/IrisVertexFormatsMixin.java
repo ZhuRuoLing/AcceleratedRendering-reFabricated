@@ -1,7 +1,9 @@
 package com.github.argon4w.acceleratedrendering.compat.iris.mixins.iris;
 
+import com.google.common.collect.ImmutableMap;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
 import net.irisshaders.iris.vertices.IrisVertexFormats;
@@ -18,11 +20,11 @@ import org.spongepowered.asm.mixin.injection.At;
 )
 public class IrisVertexFormatsMixin {
 
-	@Shadow @Final @Mutable	public static VertexFormat			ENTITY;
-	@Shadow @Final @Mutable	public static VertexFormat			GLYPH;
-	@Shadow @Final			public static VertexFormatElement	ENTITY_ID_ELEMENT;
-	@Shadow @Final			public static VertexFormatElement	MID_TEXTURE_ELEMENT;
-	@Shadow @Final			public static VertexFormatElement	TANGENT_ELEMENT;
+	@Shadow(remap = false) @Final @Mutable	public static VertexFormat			ENTITY;
+	@Shadow(remap = false) @Final @Mutable	public static VertexFormat			GLYPH;
+	@Shadow(remap = false) @Final			public static VertexFormatElement	ENTITY_ID_ELEMENT;
+	@Shadow(remap = false) @Final			public static VertexFormatElement	MID_TEXTURE_ELEMENT;
+	@Shadow(remap = false) @Final			public static VertexFormatElement	TANGENT_ELEMENT;
 
 	@WrapOperation(
 			method	= "<clinit>",
@@ -30,24 +32,26 @@ public class IrisVertexFormatsMixin {
 					value	= "FIELD",
 					target	= "Lnet/irisshaders/iris/vertices/IrisVertexFormats;ENTITY:Lcom/mojang/blaze3d/vertex/VertexFormat;",
 					opcode	= Opcodes.PUTSTATIC
-			)
+			),
+			remap	= false
 	)
 	private static void addPaddingForEntityFormat(VertexFormat value, Operation<Void> original) {
-		original.call	(VertexFormat
-				.builder()
-				.add	("Position",		VertexFormatElement.POSITION)
-				.add	("Color",			VertexFormatElement.COLOR)
-				.add	("UV0",				VertexFormatElement.UV0)
-				.add	("UV1",				VertexFormatElement.UV1)
-				.add	("UV2",				VertexFormatElement.UV2)
-				.add	("Normal",			VertexFormatElement.NORMAL)
-				.padding(1)
-				.add	("iris_Entity",		ENTITY_ID_ELEMENT)
-				.padding(2)
-				.add	("mc_midTexCoord",	MID_TEXTURE_ELEMENT)
-				.add	("at_tangent",		TANGENT_ELEMENT)
+		original.call(new VertexFormat(ImmutableMap
+				.<String, VertexFormatElement>builder()
+				.put	("Position",		DefaultVertexFormat.ELEMENT_POSITION)
+				.put	("Color",			DefaultVertexFormat.ELEMENT_COLOR)
+				.put	("UV0",				DefaultVertexFormat.ELEMENT_UV0)
+				.put	("UV1",				DefaultVertexFormat.ELEMENT_UV1)
+				.put	("UV2",				DefaultVertexFormat.ELEMENT_UV2)
+				.put	("Normal",			DefaultVertexFormat.ELEMENT_NORMAL)
+				.put	("Padding1",		DefaultVertexFormat.ELEMENT_PADDING)
+				.put	("iris_Entity",		ENTITY_ID_ELEMENT)
+				.put	("Padding2",		DefaultVertexFormat.ELEMENT_PADDING)
+				.put	("Padding3",		DefaultVertexFormat.ELEMENT_PADDING)
+				.put	("mc_midTexCoord",	MID_TEXTURE_ELEMENT)
+				.put	("at_tangent",		TANGENT_ELEMENT)
 				.build	()
-		);
+		));
 	}
 
 	@WrapOperation(
@@ -56,22 +60,24 @@ public class IrisVertexFormatsMixin {
 					value	= "FIELD",
 					target	= "Lnet/irisshaders/iris/vertices/IrisVertexFormats;GLYPH:Lcom/mojang/blaze3d/vertex/VertexFormat;",
 					opcode	= Opcodes.PUTSTATIC
-			)
+			),
+			remap	= false
 	)
 	private static void addPaddingForGlyphFormat(VertexFormat value, Operation<Void> original) {
-		original.call	(VertexFormat
-				.builder()
-				.add	("Position",		VertexFormatElement.POSITION)
-				.add	("Color",			VertexFormatElement.COLOR)
-				.add	("UV0",				VertexFormatElement.UV0)
-				.add	("UV2",				VertexFormatElement.UV2)
-				.add	("Normal",			VertexFormatElement.NORMAL)
-				.padding(1)
-				.add	("iris_Entity",		ENTITY_ID_ELEMENT)
-				.padding(2)
-				.add	("mc_midTexCoord",	MID_TEXTURE_ELEMENT)
-				.add	("at_tangent",		TANGENT_ELEMENT)
+		original.call(new VertexFormat(ImmutableMap
+				.<String, VertexFormatElement>builder()
+				.put	("Position",		DefaultVertexFormat.ELEMENT_POSITION)
+				.put	("Color",			DefaultVertexFormat.ELEMENT_COLOR)
+				.put	("UV0",				DefaultVertexFormat.ELEMENT_UV0)
+				.put	("UV2",				DefaultVertexFormat.ELEMENT_UV2)
+				.put	("Normal",			DefaultVertexFormat.ELEMENT_NORMAL)
+				.put	("Padding1",		DefaultVertexFormat.ELEMENT_PADDING)
+				.put	("iris_Entity",		ENTITY_ID_ELEMENT)
+				.put	("Padding2",		DefaultVertexFormat.ELEMENT_PADDING)
+				.put	("Padding3",		DefaultVertexFormat.ELEMENT_PADDING)
+				.put	("mc_midTexCoord",	MID_TEXTURE_ELEMENT)
+				.put	("at_tangent",		TANGENT_ELEMENT)
 				.build	()
-		);
+		));
 	}
 }

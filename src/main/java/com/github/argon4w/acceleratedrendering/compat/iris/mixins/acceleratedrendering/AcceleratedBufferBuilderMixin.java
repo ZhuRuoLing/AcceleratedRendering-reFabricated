@@ -26,15 +26,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AcceleratedBufferBuilder.class)
 public class AcceleratedBufferBuilderMixin implements IIrisAcceleratedBufferBuilder {
 
-	@Shadow @Final private	IMemoryLayout<VertexFormatElement>	layout;
-	@Shadow private			long								vertexAddress;
+	@Shadow(remap = false) @Final private	IMemoryLayout<VertexFormatElement>	layout;
+	@Shadow(remap = false) private			long								vertexAddress;
 
-	@Unique private			IMemoryInterface					entityIdOffset;
-	@Unique private			IMemoryInterface					entityOffset;
+	@Unique private							IMemoryInterface					entityIdOffset;
+	@Unique private							IMemoryInterface					entityOffset;
 
 	@Inject(
 			method	= "<init>",
-			at		= @At("TAIL")
+			at		= @At("TAIL"),
+			remap	= false
 	)
 	public void constructor(
 			StagingBufferPool		.StagingBuffer	vertexBuffer,
@@ -50,14 +51,18 @@ public class AcceleratedBufferBuilderMixin implements IIrisAcceleratedBufferBuil
 	}
 
 	@Inject(
-			method	= "addVertex(FFFIFFIIFFF)V",
-			at		= @At("TAIL")
+			method	= "vertex(FFFFFFFFFIIFFF)V",
+			at		= @At("TAIL"),
+			remap	= false
 	)
 	public void addIrisVertex(
 			float								pX,
 			float								pY,
 			float								pZ,
-			int									pColor,
+			float								red,
+			float								green,
+			float								blue,
+			float								alpha,
 			float								pU,
 			float								pV,
 			int									pPackedOverlay,
@@ -72,13 +77,14 @@ public class AcceleratedBufferBuilderMixin implements IIrisAcceleratedBufferBuil
 	}
 
 	@Inject(
-			method	= "addVertex(FFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;",
-			at		= @At("TAIL")
+			method	= "vertex(DDD)Lcom/mojang/blaze3d/vertex/VertexConsumer;",
+			at		= @At("TAIL"),
+			remap	= false
 	)
 	public void addIrisVertex(
-			float									pX,
-			float									pY,
-			float 									pZ,
+			double									pX,
+			double									pY,
+			double 									pZ,
 			CallbackInfoReturnable<VertexConsumer>	cir) {
 		addIrisData(vertexAddress);
 	}
@@ -93,7 +99,8 @@ public class AcceleratedBufferBuilderMixin implements IIrisAcceleratedBufferBuil
 					target	= "Lcom/github/argon4w/acceleratedrendering/core/buffers/memory/IMemoryInterface;putInt(JI)V",
 					ordinal	= 2,
 					shift	= At.Shift.AFTER
-			)
+			),
+			remap	= false
 	)
 	public void addIrisMesh(CallbackInfo ci, @Local(name = "vertexAddress") long vertexAddress) {
 		addIrisData(vertexAddress);

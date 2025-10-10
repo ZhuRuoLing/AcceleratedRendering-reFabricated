@@ -8,10 +8,10 @@ public class PassThroughCullingProgramSelector implements ICullingProgramSelecto
 
 	@Override
 	public ICullingProgramDispatcher select(RenderType renderType) {
-		return switch (renderType.mode) {
+		return switch (renderType.mode()) {
 			case QUADS		-> PassThroughCullingProgramDispatcher.QUAD;
 			case TRIANGLES	-> PassThroughCullingProgramDispatcher.TRIANGLE;
-			default			-> throw new IllegalArgumentException("Unsupported mode: " + renderType.mode);
+			default			-> throw new IllegalArgumentException("Unsupported mode: " + renderType.mode());
 		};
 	}
 }

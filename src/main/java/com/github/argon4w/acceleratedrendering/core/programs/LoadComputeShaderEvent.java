@@ -3,8 +3,8 @@ package com.github.argon4w.acceleratedrendering.core.programs;
 import com.github.argon4w.acceleratedrendering.core.backends.programs.BarrierFlags;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.bus.api.Event;
-import net.neoforged.fml.event.IModBusEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.fml.event.IModBusEvent;
 
 import java.util.Map;
 

@@ -18,7 +18,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.fml.ModLoader;
+import net.minecraftforge.fml.ModLoader;
 
 import java.util.Set;
 
@@ -44,9 +44,9 @@ public class VanillaBufferEnvironment implements IBufferEnvironment {
 		this.vertexFormat					= vertexFormat;
 		this.layout							= new VertexFormatMemoryLayout				(vertexFormat);
 
-		this.shaderProgramOverrides			= ModLoader.postEventWithReturn				(new LoadShaderProgramOverridesEvent(this.vertexFormat)).getOverrides	(defaultTransformOverride, defaultUploadingOverride);
-		this.cullingProgramSelector			= ModLoader.postEventWithReturn				(new LoadCullingProgramSelectorEvent(this.vertexFormat)).getSelector	();
-		this.polygonProcessor				= ModLoader.postEventWithReturn				(new LoadPolygonProcessorEvent		(this.vertexFormat)).getProcessor	();
+		this.shaderProgramOverrides			= ModLoader.get().postEventWithReturn		(new LoadShaderProgramOverridesEvent(this.vertexFormat)).getOverrides	(defaultTransformOverride, defaultUploadingOverride);
+		this.cullingProgramSelector			= ModLoader.get().postEventWithReturn		(new LoadCullingProgramSelectorEvent(this.vertexFormat)).getSelector	();
+		this.polygonProcessor				= ModLoader.get().postEventWithReturn		(new LoadPolygonProcessorEvent		(this.vertexFormat)).getProcessor	();
 
 		this.meshUploadingProgramDispatcher	= new MeshUploadingProgramDispatcher		();
 		this.transformProgramDispatcher		= new TransformProgramDispatcher			();

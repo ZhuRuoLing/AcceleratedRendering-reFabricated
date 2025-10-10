@@ -18,7 +18,7 @@ import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.data.ModelData;
+import net.minecraftforge.client.model.data.ModelData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,8 +30,9 @@ public class ModelBlockRendererMixin {
 
 	@Inject(
 			cancellable	= true,
-			method		= "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/client/resources/model/BakedModel;FFFIILnet/neoforged/neoforge/client/model/data/ModelData;Lnet/minecraft/client/renderer/RenderType;)V",
-			at			= @At("HEAD")
+			method		= "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/client/resources/model/BakedModel;FFFIILnet/minecraftforge/client/model/data/ModelData;Lnet/minecraft/client/renderer/RenderType;)V",
+			at			= @At("HEAD"),
+			remap		= false
 	)
 	public void renderModelFast(
 			PoseStack.Pose		pose,
@@ -75,11 +76,11 @@ public class ModelBlockRendererMixin {
 					extension1,
 					packedLight,
 					packedOverlay,
-					FastColor.ARGB32.colorFromFloat(
-							1.0f,
-							Mth.clamp(red,		0.0f, 1.0f),
-							Mth.clamp(green,	0.0f, 1.0f),
-							Mth.clamp(blue,		0.0f, 1.0f)
+					FastColor.ARGB32.color(
+							255,
+							(int) (red		* 255.0f),
+							(int) (green	* 255.0f),
+							(int) (blue		* 255.0f)
 					),
 					modelData
 			);
@@ -106,11 +107,11 @@ public class ModelBlockRendererMixin {
 									modelData,
 									renderType
 							),
-							new FixedColors(FastColor.ARGB32.colorFromFloat(
-									1.0f,
-									Mth.clamp(red,		0.0f, 1.0f),
-									Mth.clamp(green,	0.0f, 1.0f),
-									Mth.clamp(blue,		0.0f, 1.0f)
+							new FixedColors(FastColor.ARGB32.color(
+									255,
+									(int) (red		* 255.0f),
+									(int) (green	* 255.0f),
+									(int) (blue		* 255.0f)
 							))
 					),
 					pose.pose	(),

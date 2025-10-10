@@ -2,7 +2,7 @@ package com.github.argon4w.acceleratedrendering.compat.immediatelyfast.mixins;
 
 import lombok.EqualsAndHashCode;
 import net.minecraft.client.renderer.RenderType;
-import net.raphimc.immediatelyfast.feature.batching.BatchingBuffers;
+import net.raphimc.immediatelyfast.feature.batching.BatchingRenderLayers;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;
@@ -12,14 +12,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Pseudo
 @EqualsAndHashCode
-@Mixin(BatchingBuffers.WrappedRenderLayer.class)
+@Mixin(BatchingRenderLayers.WrappedRenderLayer.class)
 public class WrappedRenderLayerMixin {
 
 	@Unique private RenderType original;
 
 	@Inject(
 			method	= "<init>",
-			at		= @At("TAIL")
+			at		= @At("TAIL"),
+			remap	= false
 	)
 	public void saveOriginal(
 			RenderType		renderLayer,

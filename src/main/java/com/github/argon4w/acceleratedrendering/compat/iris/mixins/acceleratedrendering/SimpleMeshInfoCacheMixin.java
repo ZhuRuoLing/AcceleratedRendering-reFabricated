@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(SimpleMeshInfoCache.class)
 public class SimpleMeshInfoCacheMixin implements IIrisMeshInfoCache {
 
-	@Shadow @Final private SimpleCachedArray<MeshInfo> meshInfos;
+	@Shadow(remap = false) @Final private SimpleCachedArray<MeshInfo> meshInfos;
 
 	@Override
 	public short getRenderedEntity(int i) {

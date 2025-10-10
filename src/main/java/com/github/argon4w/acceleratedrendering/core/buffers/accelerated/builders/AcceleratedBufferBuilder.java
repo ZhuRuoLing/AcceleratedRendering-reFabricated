@@ -15,10 +15,8 @@ import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
 import com.github.argon4w.acceleratedrendering.core.programs.culling.ICullingProgramDispatcher;
 import com.github.argon4w.acceleratedrendering.core.programs.overrides.ITransformShaderProgramOverride;
 import com.github.argon4w.acceleratedrendering.core.programs.overrides.IUploadingShaderProgramOverride;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormatElement;
+import com.github.argon4w.acceleratedrendering.core.utils.FastColorUtils;
+import com.mojang.blaze3d.vertex.*;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectLinkedOpenHashMap;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,8 +30,11 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.function.LongSupplier;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, VertexConsumer, LongSupplier {
+@EqualsAndHashCode(
+		onlyExplicitlyIncluded	= true,
+		callSuper				= false
+)
+public class AcceleratedBufferBuilder extends DefaultedVertexConsumer implements IAcceleratedVertexConsumer, LongSupplier {
 
 	public static								final	long											SHARING_SIZE		= 4L * 4L * 4L + 4L * 3L * 4L;
 	public static								final	IMemoryInterface								SHARING_TRANSFORM	= new SimpleMemoryInterface			(0L,			SHARING_SIZE);
@@ -112,17 +113,17 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 		this.transformOverride			= environment		.getTransformProgramOverride	(this.renderType);
 		this.uploadingOverride			= environment		.getUploadingProgramOverride	(this.renderType);
 
-		this.mode						= this.renderType	.mode;
+		this.mode						= this.renderType	.mode							();
 		this.polygonSize				= this.mode			.primitiveLength;
 		this.vertexSize					= this.buffer		.getVertexSize					();
 		this.polygonElementCount		= this.mode			.indexCount						(this.polygonSize);
 
-		this.posOffset					= this.layout		.getElement						(VertexFormatElement.POSITION);
-		this.colorOffset				= this.layout		.getElement						(VertexFormatElement.COLOR);
-		this.uv0Offset					= this.layout		.getElement						(VertexFormatElement.UV0);
-		this.uv1Offset					= this.layout		.getElement						(VertexFormatElement.UV1);
-		this.uv2Offset					= this.layout		.getElement						(VertexFormatElement.UV2);
-		this.normalOffset				= this.layout		.getElement						(VertexFormatElement.NORMAL);
+		this.posOffset					= this.layout		.getElement						(DefaultVertexFormat.ELEMENT_POSITION);
+		this.colorOffset				= this.layout		.getElement						(DefaultVertexFormat.ELEMENT_COLOR);
+		this.uv0Offset					= this.layout		.getElement						(DefaultVertexFormat.ELEMENT_UV0);
+		this.uv1Offset					= this.layout		.getElement						(DefaultVertexFormat.ELEMENT_UV1);
+		this.uv2Offset					= this.layout		.getElement						(DefaultVertexFormat.ELEMENT_UV2);
+		this.normalOffset				= this.layout		.getElement						(DefaultVertexFormat.ELEMENT_NORMAL);
 
 		this.cachedTransformValue		= new Matrix4f();
 		this.cachedNormalValue			= new Matrix3f();
@@ -140,38 +141,24 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 	}
 
 	@Override
-	public VertexConsumer addVertex(
-			PoseStack.Pose	pPose,
-			float			pX,
-			float			pY,
-			float			pZ
-	) {
-		beginTransform(
-				pPose.pose	(),
-				pPose.normal()
-		);
+	public void endVertex() {
 
-		return addVertex(
-				pX,
-				pY,
-				pZ
-		);
 	}
 
 	@Override
-	public VertexConsumer addVertex(
-			float pX,
-			float pY,
-			float pZ
+	public VertexConsumer vertex(
+			double pX,
+			double pY,
+			double pZ
 	) {
 		var vertexAddress	= vertexBuffer	.reserve(getVertexSize	());
 		var varyingAddress	= varyingBuffer	.reserve(getVaryingSize	());
 
 		this.vertexAddress	= vertexAddress;
 
-		posOffset			.putFloat		(vertexAddress + 0L,	pX);
-		posOffset			.putFloat		(vertexAddress + 4L,	pY);
-		posOffset			.putFloat		(vertexAddress + 8L,	pZ);
+		posOffset			.putFloat		(vertexAddress + 0L,	(float) pX);
+		posOffset			.putFloat		(vertexAddress + 4L,	(float) pY);
+		posOffset			.putFloat		(vertexAddress + 8L,	(float) pZ);
 
 		varyingOffset		.putInt			(varyingAddress,		0);
 		varyingSharing		.putInt			(varyingAddress,		activeSharing);
@@ -192,7 +179,7 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 	}
 
 	@Override
-	public VertexConsumer setColor(
+	public VertexConsumer color(
 			int pRed,
 			int pGreen,
 			int pBlue,
@@ -200,6 +187,13 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 	) {
 		if (vertexAddress == -1) {
 			throw new IllegalStateException("Vertex not building!");
+		}
+
+		if (defaultColorSet) {
+			pRed	= defaultR;
+			pGreen	= defaultG;
+			pBlue	= defaultB;
+			pAlpha	= defaultA;
 		}
 
 		colorOffset.putByte(vertexAddress + 0L, (byte) pRed);
@@ -211,7 +205,7 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 	}
 
 	@Override
-	public VertexConsumer setUv(float pU, float pV) {
+	public VertexConsumer uv(float pU, float pV) {
 		if (vertexAddress == -1) {
 			throw new IllegalStateException("Vertex not building!");
 		}
@@ -223,7 +217,7 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 	}
 
 	@Override
-	public VertexConsumer setUv1(int pU, int pV) {
+	public VertexConsumer overlayCoords(int pU, int pV) {
 		if (vertexAddress == -1) {
 			throw new IllegalStateException("Vertex not building!");
 		}
@@ -235,7 +229,7 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 	}
 
 	@Override
-	public VertexConsumer setUv2(int pU, int pV) {
+	public VertexConsumer uv2(int pU, int pV) {
 		if (vertexAddress == -1) {
 			throw new IllegalStateException("Vertex not building!");
 		}
@@ -247,36 +241,7 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 	}
 
 	@Override
-	public VertexConsumer setNormal(
-			PoseStack.Pose	pPose,
-			float			pNormalX,
-			float			pNormalY,
-			float			pNormalZ
-	) {
-		var normal = pPose.normal();
-
-		if (activeSharing == -1) {
-			return VertexConsumer.super.setNormal(
-					pPose,
-					pNormalX,
-					pNormalY,
-					pNormalZ
-			);
-		}
-
-		if (!normal.equals(cachedNormal)) {
-			SHARING_NORMAL.putMatrix3f(sharingAddress, normal);
-		}
-
-		return setNormal(
-				pNormalX,
-				pNormalY,
-				pNormalZ
-		);
-	}
-
-	@Override
-	public VertexConsumer setNormal(
+	public VertexConsumer normal(
 			float pNormalX,
 			float pNormalY,
 			float pNormalZ
@@ -293,11 +258,14 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 	}
 
 	@Override
-	public void addVertex(
+	public void vertex(
 			float	pX,
 			float	pY,
 			float	pZ,
-			int		pColor,
+			float	red,
+			float	green,
+			float	blue,
+			float	alpha,
 			float	pU,
 			float	pV,
 			int		pPackedOverlay,
@@ -306,13 +274,25 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 			float	pNormalY,
 			float	pNormalZ
 	) {
-		var vertexAddress	= vertexBuffer	.reserve(getVertexSize	());
-		var varyingAddress	= varyingBuffer	.reserve(getVaryingSize	());
+		if (defaultColorSet) {
+			red		= defaultR / 255.0f;
+			green	= defaultG / 255.0f;
+			blue	= defaultB / 255.0f;
+			alpha	= defaultA / 255.0f;
+		}
+
+		var vertexAddress	= vertexBuffer		.reserve(getVertexSize	());
+		var varyingAddress	= varyingBuffer		.reserve(getVaryingSize	());
 
 		posOffset			.putFloat		(vertexAddress + 0L,	pX);
 		posOffset			.putFloat		(vertexAddress + 4L,	pY);
 		posOffset			.putFloat		(vertexAddress + 8L,	pZ);
-		colorOffset			.putInt			(vertexAddress,			FastColor.ABGR32.fromArgb32(pColor));
+		colorOffset			.putInt			(vertexAddress,			FastColor.ABGR32.color(
+				(int) (alpha	* 255.0f),
+				(int) (blue		* 255.0f),
+				(int) (green	* 255.0f),
+				(int) (red		* 255.0f)
+		));
 		uv0Offset			.putFloat		(vertexAddress + 0L,	pU);
 		uv0Offset			.putFloat		(vertexAddress + 4L,	pV);
 		uv1Offset			.putInt			(vertexAddress,			pPackedOverlay);
@@ -374,6 +354,15 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 			int			light,
 			int			overlay
 	) {
+		if (defaultColorSet) {
+			color = FastColor.ARGB32.color(
+					defaultA,
+					defaultR,
+					defaultG,
+					defaultB
+			);
+		}
+
 		var bufferSize		= vertexSize * size;
 		var vertexAddress	= vertexBuffer	.reserve(bufferSize);
 		var varyingAddress	= varyingBuffer	.reserve(getVaryingSize() * size);
@@ -384,7 +373,7 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 				bufferSize
 		);
 
-		colorOffset			.putInt			(vertexAddress,		FastColor.ABGR32.fromArgb32(color));
+		colorOffset			.putInt			(vertexAddress,		FastColorUtils.abgr32(color));
 		uv1Offset			.putInt			(vertexAddress,		overlay);
 		uv2Offset			.putInt			(vertexAddress,		light);
 
@@ -408,12 +397,21 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 			int			light,
 			int			overlay
 	) {
+		if (defaultColorSet) {
+			color = FastColor.ARGB32.color(
+					defaultA,
+					defaultR,
+					defaultG,
+					defaultB
+			);
+		}
+
 		if (CoreFeature.shouldUploadMeshImmediately()) {
 			var meshSize		= serverMesh	.size	();
 			var vertexAddress	= vertexBuffer	.reserve(getVertexSize	() * meshSize);
 			var varyingAddress	= varyingBuffer	.reserve(getVaryingSize	() * meshSize);
 
-			colorOffset			.putInt			(vertexAddress,		FastColor.ABGR32.fromArgb32(color));
+			colorOffset			.putInt			(vertexAddress,		FastColorUtils.abgr32(color));
 			uv1Offset			.putInt			(vertexAddress,		overlay);
 			uv2Offset			.putInt			(vertexAddress,		light);
 

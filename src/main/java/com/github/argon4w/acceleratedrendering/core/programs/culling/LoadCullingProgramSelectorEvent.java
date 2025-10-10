@@ -2,8 +2,8 @@ package com.github.argon4w.acceleratedrendering.core.programs.culling;
 
 import com.mojang.blaze3d.vertex.VertexFormat;
 import lombok.Getter;
-import net.neoforged.bus.api.Event;
-import net.neoforged.fml.event.IModBusEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.fml.event.IModBusEvent;
 
 import java.util.function.UnaryOperator;
 

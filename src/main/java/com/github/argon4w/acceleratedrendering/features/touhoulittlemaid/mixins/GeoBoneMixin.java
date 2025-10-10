@@ -24,9 +24,9 @@ import java.util.Map;
 @Mixin			(GeoBone				.class)
 public class GeoBoneMixin implements IAcceleratedRenderer<Void> {
 
-	@Shadow @Final private GeoMesh						cubes;
+	@Shadow(remap = false) @Final private	GeoMesh						cubes;
 
-	@Unique private final	Map<IBufferGraph, IMesh>	meshes = new Object2ObjectOpenHashMap<>();
+	@Unique private final					Map<IBufferGraph, IMesh>	meshes = new Object2ObjectOpenHashMap<>();
 
 	@Unique
 	@Override
@@ -131,11 +131,14 @@ public class GeoBoneMixin implements IAcceleratedRenderer<Void> {
 						var texOrder	= texOrders	[k];
 						var normal		= normals	[j];
 
-						meshBuilder.addVertex(
+						meshBuilder.vertex(
 								position.x,
 								position.y,
 								position.z,
-								-1,
+								1.0f,
+								1.0f,
+								1.0f,
+								1.0f,
 								texCoord[texOrder.x],
 								texCoord[texOrder.y],
 								overlay,

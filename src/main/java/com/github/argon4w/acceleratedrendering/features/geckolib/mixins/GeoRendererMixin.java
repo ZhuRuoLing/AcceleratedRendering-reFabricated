@@ -7,6 +7,7 @@ import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEnti
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lombok.experimental.ExtensionMethod;
+import net.minecraft.util.FastColor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,15 +21,16 @@ import software.bernie.geckolib.renderer.GeoRenderer;
 @Mixin			(GeoRenderer			.class)
 public interface GeoRendererMixin {
 
-	@SuppressWarnings("unchecked")
-	@Inject(
+	/*@SuppressWarnings	("unchecked")
+	@Inject				(
 			method		= "renderCubesOfBone",
 			cancellable	= true,
 			at			= @At(
 					value	= "INVOKE",
 					target	= "Lsoftware/bernie/geckolib/cache/object/GeoBone;getCubes()Ljava/util/List;",
 					shift	= At.Shift.BEFORE
-			)
+			),
+			remap		= false
 	)
 	default void renderCubesOfBoneFast(
 			PoseStack		poseStack,
@@ -36,8 +38,11 @@ public interface GeoRendererMixin {
 			VertexConsumer	buffer,
 			int				packedLight,
 			int				packedOverlay,
-			int				colour,
-			CallbackInfo		ci
+			float			red,
+			float			green,
+			float			blue,
+			float			alpha,
+			CallbackInfo	ci
 	) {
 		var extension = buffer.getAccelerated();
 
@@ -58,8 +63,13 @@ public interface GeoRendererMixin {
 					pose.normal	(),
 					packedLight,
 					packedOverlay,
-					colour
+					FastColor.ARGB32.color(
+							(int) (alpha	* 255.0f),
+							(int) (red		* 255.0f),
+							(int) (green	* 255.0f),
+							(int) (blue		* 255.0f)
+					)
 			);
 		}
-	}
+	}*/
 }

@@ -3,6 +3,7 @@ package com.github.argon4w.acceleratedrendering.core.mixins;
 import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerDrawType;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.GameRenderer;
 import org.joml.Matrix4f;
@@ -23,9 +24,9 @@ public class GameRendererMixin {
 			)
 	)
 	public void startRenderItemInHandsFast(
-			Camera			camera,
-			float			partialTick,
-			Matrix4f		projectionMatrix,
+			PoseStack		poseStack,
+			Camera			activeRenderInfo,
+			float			partialTicks,
 			CallbackInfo	ci
 	) {
 		CoreFeature.setRenderingHand();
@@ -40,9 +41,9 @@ public class GameRendererMixin {
 			)
 	)
 	public void stopRenderItemInHandsFast(
-			Camera			camera,
-			float			partialTick,
-			Matrix4f		projectionMatrix,
+			PoseStack		poseStack,
+			Camera			activeRenderInfo,
+			float			partialTicks,
 			CallbackInfo	ci
 	) {
 		CoreFeature						.resetRenderingHand	();

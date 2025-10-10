@@ -41,12 +41,12 @@ public class AcceleratedBufferSources implements IAcceleratedBufferSource {
 	) {
 		if (			renderType		!= null
 				&& (	CoreFeature		.shouldForceAccelerateTranslucent	() || canSort || !renderType.sortOnUpload)
-				&&		validModes		.contains							(renderType.mode)
+				&&		validModes		.contains							(renderType.mode())
 				&& !	invalidNames	.contains							(renderType.name)
-				&&		sources			.containsKey						(renderType.format)
+				&&		sources			.containsKey						(renderType.format())
 		) {
 			return sources
-					.get		(renderType.format)
+					.get		(renderType.format())
 					.getBuffer	(
 							renderType,
 							before,

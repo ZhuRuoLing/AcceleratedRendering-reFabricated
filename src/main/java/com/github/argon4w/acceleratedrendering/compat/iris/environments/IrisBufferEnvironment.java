@@ -21,7 +21,7 @@ import net.irisshaders.iris.api.v0.IrisApi;
 import net.irisshaders.iris.vertices.ImmediateState;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.fml.ModLoader;
+import net.minecraftforge.fml.ModLoader;
 
 import java.util.Set;
 
@@ -130,9 +130,9 @@ public class IrisBufferEnvironment implements IBufferEnvironment {
 			this.irisVertexFormat				= irisVertexFormat;
 			this.layout							= new VertexFormatMemoryLayout				(this.irisVertexFormat);
 
-			this.shaderProgramOverrides			= ModLoader.postEventWithReturn				(new LoadShaderProgramOverridesEvent(this.irisVertexFormat)).getOverrides	(defaultTransformOverride, defaultUploadingOverride);
-			this.cullingProgramSelector			= ModLoader.postEventWithReturn				(new LoadCullingProgramSelectorEvent(this.irisVertexFormat)).getSelector	();
-			this.polygonProcessor				= ModLoader.postEventWithReturn				(new LoadPolygonProcessorEvent		(this.irisVertexFormat)).getProcessor	();
+			this.shaderProgramOverrides			= ModLoader.get().postEventWithReturn		(new LoadShaderProgramOverridesEvent(this.irisVertexFormat)).getOverrides	(defaultTransformOverride, defaultUploadingOverride);
+			this.cullingProgramSelector			= ModLoader.get().postEventWithReturn		(new LoadCullingProgramSelectorEvent(this.irisVertexFormat)).getSelector	();
+			this.polygonProcessor				= ModLoader.get().postEventWithReturn		(new LoadPolygonProcessorEvent		(this.irisVertexFormat)).getProcessor	();
 
 
 			this.meshUploadingProgramDispatcher	= new MeshUploadingProgramDispatcher		();

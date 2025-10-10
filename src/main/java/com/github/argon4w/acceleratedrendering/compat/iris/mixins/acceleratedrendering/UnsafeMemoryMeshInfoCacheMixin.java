@@ -18,14 +18,14 @@ import sun.misc.Unsafe;
 @Mixin(UnsafeMemoryMeshInfoCache.class)
 public class UnsafeMemoryMeshInfoCacheMixin implements IIrisMeshInfoCache {
 
-	@Shadow @Final public	static			Unsafe		UNSAFE;
+	@Shadow(remap = false) @Final public	static			Unsafe		UNSAFE;
 
-	@Shadow private							long		address;
+	@Shadow(remap = false) private							long		address;
 
-	@Unique private			static final	long		IRIS_MESH_INFO_SIZE				= 8L * 4L;
-	@Unique private			static final	long		RENDERED_ENTITY_OFFSET			= 5L * 4L;
-	@Unique private			static final	long		RENDERED_BLOCK_ENTITY_OFFSET	= 6L * 4L;
-	@Unique private			static final	long		RENDERED_ITEM_OFFSET			= 7L * 4L;
+	@Unique private							static final	long		IRIS_MESH_INFO_SIZE				= 8L * 4L;
+	@Unique private							static final	long		RENDERED_ENTITY_OFFSET			= 5L * 4L;
+	@Unique private							static final	long		RENDERED_BLOCK_ENTITY_OFFSET	= 6L * 4L;
+	@Unique private							static final	long		RENDERED_ITEM_OFFSET			= 7L * 4L;
 
 	@ModifyConstant(
 			method		= {
@@ -37,7 +37,8 @@ public class UnsafeMemoryMeshInfoCacheMixin implements IIrisMeshInfoCache {
 					"getLight",
 					"getOverlay"
 			},
-			constant	= @Constant(longValue = 20L)
+			constant	= @Constant(longValue = 20L),
+			remap		= false
 	)
 	public long modifySize(long constant) {
 		return IRIS_MESH_INFO_SIZE;
@@ -50,7 +51,8 @@ public class UnsafeMemoryMeshInfoCacheMixin implements IIrisMeshInfoCache {
 					target = "Lsun/misc/Unsafe;putInt(JI)V",
 					ordinal	= 4,
 					shift	= At.Shift.AFTER
-			)
+			),
+			remap	= false
 	)
 	public void addIrisData(
 			int									color,

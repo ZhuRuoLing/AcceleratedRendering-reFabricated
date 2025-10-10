@@ -7,6 +7,7 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import org.lwjgl.opengl.GL46;
 
 public class GuiBatchingController {
 
@@ -26,16 +27,19 @@ public class GuiBatchingController {
 
 	public static void flushBatching(GuiGraphics graphics) {
 		if (CoreFeature.isGuiBatching()) {
+			GL46.glPushDebugGroup(GL46.GL_DEBUG_SOURCE_APPLICATION, 419, "Flush Batching");
 			CoreFeature							.resetGuiBatching	();
 			((IAcceleratedGuiGraphics) graphics).flushItemBatching	();
 
-			RenderSystem.enableBlend		();
-			RenderSystem.blendFuncSeparate	(
+			RenderSystem.backupProjectionMatrix	();
+			RenderSystem.enableBlend			();
+			RenderSystem.blendFuncSeparate		(
 					GlStateManager.SourceFactor	.SRC_ALPHA,
 					GlStateManager.DestFactor	.ONE_MINUS_SRC_ALPHA,
 					GlStateManager.SourceFactor	.ZERO,
 					GlStateManager.DestFactor	.ONE
 			);
+
 
 			AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET.blitToScreen(
 					WINDOW.getWidth	(),
@@ -43,10 +47,12 @@ public class GuiBatchingController {
 					false
 			);
 
-			RenderSystem										.disableBlend		();
-			RenderSystem										.defaultBlendFunc	();
-			AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET	.clear				(ON_OSX);
-			MAIN_TARGET											.bindWrite			(false);
+			RenderSystem										.restoreProjectionMatrix();
+			RenderSystem										.disableBlend			();
+			RenderSystem										.defaultBlendFunc		();
+			AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET	.clear					(ON_OSX);
+			MAIN_TARGET											.bindWrite				(false);
+			GL46.glPopDebugGroup();
 		}
 	}
 }

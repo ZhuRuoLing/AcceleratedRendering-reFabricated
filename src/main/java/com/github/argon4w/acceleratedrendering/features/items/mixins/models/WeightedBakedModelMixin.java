@@ -13,7 +13,7 @@ import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandom;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.data.ModelData;
+import net.minecraftforge.client.model.data.ModelData;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -46,7 +46,7 @@ public class WeightedBakedModelMixin implements IAcceleratedBakedModel {
 		acceleratedInGui	= true;
 
 		for (WeightedEntry.Wrapper<BakedModel> wrapper : list) {
-			var extension = wrapper.data().getAccelerated();
+			var extension = wrapper.getData().getAccelerated();
 
 			accelerated			&= extension.isAccelerated		();
 			acceleratedInHand	&= extension.isAcceleratedInHand();
@@ -68,7 +68,7 @@ public class WeightedBakedModelMixin implements IAcceleratedBakedModel {
 		if (model.isPresent()) {
 			model
 					.get			()
-					.data			()
+					.getData		()
 					.getAccelerated	()
 					.renderItemFast	(
 							itemStack,
@@ -97,7 +97,7 @@ public class WeightedBakedModelMixin implements IAcceleratedBakedModel {
 		if (model.isPresent()) {
 			model
 					.get			()
-					.data			()
+					.getData		()
 					.getAccelerated	()
 					.renderBlockFast(
 							state,

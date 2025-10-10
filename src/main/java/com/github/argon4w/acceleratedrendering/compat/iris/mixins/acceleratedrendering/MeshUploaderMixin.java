@@ -17,11 +17,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MeshUploaderPool.MeshUploader.class)
 public abstract class MeshUploaderMixin {
 
-	@Shadow @Final private	IMeshInfoCache meshInfos;
+	@Shadow(remap = false) @Final private	IMeshInfoCache meshInfos;
 
-	@Unique private final	IMemoryInterface IRIS_INFO_ENTITY		= new SimpleDynamicMemoryInterface(5L * 4L + 0L * 2L, (MeshUploaderPool.MeshUploader) (Object) this);
-	@Unique private final	IMemoryInterface IRIS_INFO_BLOCK_ENTITY	= new SimpleDynamicMemoryInterface(5L * 4L + 1L * 2L, (MeshUploaderPool.MeshUploader) (Object) this);
-	@Unique private final	IMemoryInterface IRIS_INFO_ITEM			= new SimpleDynamicMemoryInterface(5L * 4L + 2L * 2L, (MeshUploaderPool.MeshUploader) (Object) this);
+	@Unique private final					IMemoryInterface IRIS_INFO_ENTITY		= new SimpleDynamicMemoryInterface(5L * 4L + 0L * 2L, (MeshUploaderPool.MeshUploader) (Object) this);
+	@Unique private final					IMemoryInterface IRIS_INFO_BLOCK_ENTITY	= new SimpleDynamicMemoryInterface(5L * 4L + 1L * 2L, (MeshUploaderPool.MeshUploader) (Object) this);
+	@Unique private final					IMemoryInterface IRIS_INFO_ITEM			= new SimpleDynamicMemoryInterface(5L * 4L + 2L * 2L, (MeshUploaderPool.MeshUploader) (Object) this);
 
 	@Inject(
 			method	= "upload",
@@ -30,7 +30,8 @@ public abstract class MeshUploaderMixin {
 					target	= "Lcom/github/argon4w/acceleratedrendering/core/buffers/memory/IMemoryInterface;putInt(JI)V",
 					ordinal	= 4,
 					shift	= At.Shift.AFTER
-			)
+			),
+			remap	= false
 	)
 	public void uploadIrisData(
 			CallbackInfo								ci,

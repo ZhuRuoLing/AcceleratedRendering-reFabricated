@@ -120,12 +120,37 @@ public abstract class AcceleratedVertexConsumerWrapper implements IAcceleratedVe
 	}
 
 	@Override
-	public VertexConsumer addVertex(
-			float x,
-			float y,
-			float z
+	public void endVertex() {
+		getDelegate().endVertex();
+	}
+
+	@Override
+	public void unsetDefaultColor() {
+		getDelegate().unsetDefaultColor();
+	}
+
+	@Override
+	public void defaultColor(
+			int defaultR,
+			int defaultG,
+			int defaultB,
+			int defaultA
 	) {
-		getDelegate().addVertex(
+		getDelegate().defaultColor(
+				defaultR,
+				defaultG,
+				defaultB,
+				defaultA
+		);
+	}
+
+	@Override
+	public VertexConsumer vertex(
+			double x,
+			double y,
+			double z
+	) {
+		getDelegate().vertex(
 				x,
 				y,
 				z
@@ -134,29 +159,13 @@ public abstract class AcceleratedVertexConsumerWrapper implements IAcceleratedVe
 	}
 
 	@Override
-	public VertexConsumer addVertex(
-			PoseStack.Pose	pose,
-			float			x,
-			float			y,
-			float			z
-	) {
-		getDelegate().addVertex(
-				pose,
-				x,
-				y,
-				z
-		);
-		return this;
-	}
-
-	@Override
-	public VertexConsumer setColor(
+	public VertexConsumer color(
 			int red,
 			int green,
 			int blue,
 			int alpha
 	) {
-		getDelegate().setColor(
+		getDelegate().color(
 				red,
 				green,
 				blue,
@@ -166,30 +175,30 @@ public abstract class AcceleratedVertexConsumerWrapper implements IAcceleratedVe
 	}
 
 	@Override
-	public VertexConsumer setUv(float u, float v) {
-		getDelegate().setUv(u, v);
+	public VertexConsumer uv(float u, float v) {
+		getDelegate().uv(u, v);
 		return this;
 	}
 
 	@Override
-	public VertexConsumer setUv1(int u, int v) {
-		getDelegate().setUv1(u, v);
+	public VertexConsumer overlayCoords(int u, int v) {
+		getDelegate().overlayCoords(u, v);
 		return this;
 	}
 
 	@Override
-	public VertexConsumer setUv2(int u, int v) {
-		getDelegate().setUv2(u, v);
+	public VertexConsumer uv2(int u, int v) {
+		getDelegate().uv2(u, v);
 		return this;
 	}
 
 	@Override
-	public VertexConsumer setNormal(
+	public VertexConsumer normal(
 			float normalX,
 			float normalY,
 			float normalZ
 	) {
-		getDelegate().setNormal(
+		getDelegate().normal(
 				normalX,
 				normalY,
 				normalZ
@@ -198,27 +207,14 @@ public abstract class AcceleratedVertexConsumerWrapper implements IAcceleratedVe
 	}
 
 	@Override
-	public VertexConsumer setNormal(
-			PoseStack.Pose	pose,
-			float			normalX,
-			float			normalY,
-			float			normalZ
-	) {
-		getDelegate().setNormal(
-				pose,
-				normalX,
-				normalY,
-				normalZ
-		);
-		return this;
-	}
-
-	@Override
-	public void addVertex(
+	public void vertex(
 			float	x,
 			float	y,
 			float	z,
-			int		color,
+			float	red,
+			float	green,
+			float	blue,
+			float	alpha,
 			float	u,
 			float	v,
 			int		packedOverlay,
@@ -227,11 +223,14 @@ public abstract class AcceleratedVertexConsumerWrapper implements IAcceleratedVe
 			float	normalY,
 			float	normalZ
 	) {
-		getDelegate().addVertex(
+		getDelegate().vertex(
 				x,
 				y,
 				z,
-				color,
+				red,
+				green,
+				blue,
+				alpha,
 				u,
 				v,
 				packedOverlay,

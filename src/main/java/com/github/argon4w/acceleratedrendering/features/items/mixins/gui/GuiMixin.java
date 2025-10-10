@@ -1,7 +1,6 @@
 package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
 import com.github.argon4w.acceleratedrendering.features.items.GuiBatchingController;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,24 +12,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class GuiMixin {
 
 	@Inject(
-			method	= "renderItemHotbar",
+			method	= "renderHotbar",
 			at		= @At("HEAD")
 	)
 	public void startBatching(
+			float			partialTicks,
 			GuiGraphics		guiGraphics,
-			DeltaTracker	deltaTracker,
 			CallbackInfo	ci
 	) {
 		GuiBatchingController.startBatching();
 	}
 
 	@Inject(
-			method	= "renderItemHotbar",
+			method	= "renderHotbar",
 			at		= @At("TAIL")
 	)
 	public void flushBatching(
+			float			partialTicks,
 			GuiGraphics		guiGraphics,
-			DeltaTracker	deltaTracker,
 			CallbackInfo	ci
 	) {
 		GuiBatchingController.flushBatching(guiGraphics);

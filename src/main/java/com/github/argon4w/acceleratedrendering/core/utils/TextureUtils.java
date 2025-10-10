@@ -9,17 +9,17 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.system.MemoryStack;
 
 import static org.lwjgl.opengl.GL46.*;
 
-@EventBusSubscriber(
+@Mod.EventBusSubscriber(
 		modid	= AcceleratedRenderingModEntry	.MOD_ID,
-	 	bus		= EventBusSubscriber.Bus		.MOD,
+	 	bus		= Mod.EventBusSubscriber.Bus	.MOD,
 		value	= Dist							.CLIENT
 )
 public class TextureUtils implements ResourceManagerReloadListener {

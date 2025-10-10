@@ -27,13 +27,4 @@ public class Vertex {
 	public int getPackedLight() {
 		return light.x | light.y << 16;
 	}
-
-	public int getPackedColor() {
-		return FastColor.ARGB32.color(
-				color.w,
-				color.x,
-				color.y,
-				color.z
-		);
-	}
 }

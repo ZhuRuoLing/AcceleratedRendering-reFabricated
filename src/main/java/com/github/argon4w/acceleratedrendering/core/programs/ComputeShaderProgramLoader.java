@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.neoforged.fml.ModLoader;
+import net.minecraftforge.fml.ModLoader;
 import org.apache.commons.io.IOUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -25,8 +25,8 @@ public class ComputeShaderProgramLoader extends SimplePreparableReloadListener<M
 	@Override
 	protected Map<ResourceLocation, ShaderSource> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
 		try {
-			var shaderSources	= new Object2ObjectOpenHashMap<ResourceLocation, ShaderSource>		();
-			var shaderLocations	= ModLoader.postEventWithReturn(new LoadComputeShaderEvent()).build	();
+			var shaderSources	= new Object2ObjectOpenHashMap<ResourceLocation, ShaderSource>				();
+			var shaderLocations	= ModLoader.get().postEventWithReturn(new LoadComputeShaderEvent()).build	();
 
 			for (ResourceLocation key : shaderLocations.keySet()) {
 				var definition			= shaderLocations	.get			(key);

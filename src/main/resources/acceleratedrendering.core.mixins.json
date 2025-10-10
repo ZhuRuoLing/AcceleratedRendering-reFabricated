@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.github.argon4w.acceleratedrendering.core.mixins",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_17",
   "client": [
     "BufferBuilderMixin",
     "BufferSourceMixin",
@@ -11,6 +11,7 @@
     "LevelRendererMixin",
     "MinecraftMixin",
     "ParticleEngineMixin",
+    "RenderTypeMixin",
     "SheetedDecalTextureGeneratorMixin",
     "SpriteCoordinateExpanderMixin",
     "VertexConsumerMixin",
@@ -19,5 +20,6 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "refmap": "acceleratedrendering.refmap.json"
 }

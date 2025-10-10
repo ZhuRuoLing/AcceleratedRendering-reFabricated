@@ -4,6 +4,7 @@ import com.github.argon4w.acceleratedrendering.features.items.mixins.accessors.B
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class BlockLayerColors implements ILayerColors {
 
@@ -12,7 +13,7 @@ public class BlockLayerColors implements ILayerColors {
 
 	public BlockLayerColors(BlockState blockState) {
 		this.blockState = blockState;
-		this.blockColor = ((BlockColorsAccessor) Minecraft.getInstance().getBlockColors()).getBlockColors().getOrDefault(this.blockState.getBlock(), EmptyBlockColor.INSTANCE);
+		this.blockColor = ((BlockColorsAccessor) Minecraft.getInstance().getBlockColors()).getBlockColors().getOrDefault(ForgeRegistries.BLOCKS.getDelegateOrThrow(this.blockState.getBlock()), EmptyBlockColor.INSTANCE);
 	}
 
 	@Override

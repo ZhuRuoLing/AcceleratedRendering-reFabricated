@@ -91,10 +91,14 @@ public class AcceleratedBakedGlyphRenderer implements IAcceleratedRenderer<Vecto
 			var texCoord = texCoords[i];
 
 			meshBuilder
-					.addVertex	(position)
-					.setColor	(-1)
-					.setUv		(texCoord.x, texCoord.y)
-					.setLight	(0);
+					.vertex	(
+							position.x,
+							position.y,
+							position.z
+					)
+					.color	(-1)
+					.uv		(texCoord.x, texCoord.y)
+					.uv2	(0);
 		}
 
 		mesh = AcceleratedTextRenderingFeature

@@ -19,7 +19,8 @@ public class AcceleratedBufferSourceMixin {
 					value	= "INVOKE",
 					target	= "Lcom/github/argon4w/acceleratedrendering/core/buffers/accelerated/builders/AcceleratedBufferBuilder;<init>(Lcom/github/argon4w/acceleratedrendering/core/buffers/accelerated/pools/StagingBufferPool$StagingBuffer;Lcom/github/argon4w/acceleratedrendering/core/buffers/accelerated/pools/StagingBufferPool$StagingBuffer;Lcom/github/argon4w/acceleratedrendering/core/buffers/accelerated/pools/ElementBufferPool$ElementSegment;Lcom/github/argon4w/acceleratedrendering/core/buffers/accelerated/AcceleratedRingBuffers$Buffers;Lcom/github/argon4w/acceleratedrendering/core/buffers/accelerated/layers/functions/ILayerFunction;Lnet/minecraft/client/renderer/RenderType;)V"
 			),
-			index	= 5
+			index	= 5,
+			remap	= false
 	)
 	public RenderType unwrapIrisRenderType(RenderType renderType) {
 		return renderType instanceof WrappableRenderType wrapped ? wrapped.unwrap() : renderType;
@@ -31,7 +32,8 @@ public class AcceleratedBufferSourceMixin {
 					value	= "INVOKE",
 					target	= "Lcom/github/argon4w/acceleratedrendering/core/buffers/accelerated/AcceleratedRingBuffers$Buffers;bindDrawBuffers()V",
 					shift	= At.Shift.BEFORE
-			)
+			),
+			remap	= false
 	)
 	private void beforeBindDrawBuffers(CallbackInfo ci) {
 		if (!ImmediateState.isRenderingLevel) {
@@ -45,7 +47,8 @@ public class AcceleratedBufferSourceMixin {
 					value	= "INVOKE",
 					target	= "Lcom/github/argon4w/acceleratedrendering/core/buffers/accelerated/AcceleratedRingBuffers$Buffers;bindDrawBuffers()V",
 					shift	= At.Shift.AFTER
-			)
+			),
+			remap	= false
 	)
 	private void afterBindDrawBuffers(CallbackInfo ci) {
 		if (!ImmediateState.isRenderingLevel) {

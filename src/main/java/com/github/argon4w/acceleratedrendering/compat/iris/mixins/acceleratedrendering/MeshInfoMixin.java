@@ -16,7 +16,11 @@ public class MeshInfoMixin implements IIrisMeshInfo {
 	@Unique private short renderedBlockEntity;
 	@Unique private short renderedItem;
 
-	@Inject(method = "setupMeshInfo", at = @At("TAIL"))
+	@Inject(
+			method	= "setupMeshInfo",
+			at		= @At("TAIL"),
+			remap	= false
+	)
 	public void setIrisData(
 			int				color,
 			int				light,

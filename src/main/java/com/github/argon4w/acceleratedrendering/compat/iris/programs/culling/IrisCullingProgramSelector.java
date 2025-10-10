@@ -34,7 +34,7 @@ public class IrisCullingProgramSelector implements ICullingProgramSelector {
 				&&		OrientationCullingFeature	.isEnabled					()
 				&&	(	OrientationCullingFeature	.shouldIgnoreCullState		()	|| 		RenderTypeUtils		.isCulled(renderType))
 		) {
-			return switch (renderType.mode) {
+			return switch (renderType.mode()) {
 				case QUADS		-> quadDispatcher;
 				case TRIANGLES	-> triangleDispatcher;
 				default			-> parent.select(renderType);

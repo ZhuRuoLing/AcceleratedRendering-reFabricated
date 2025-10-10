@@ -70,37 +70,21 @@ public class AcceleratedEntityOutlineGenerator extends AcceleratedVertexConsumer
 	}
 
 	@Override
-	public VertexConsumer addVertex(
-			float pX,
-			float pY,
-			float pZ
+	public VertexConsumer vertex(
+			double pX,
+			double pY,
+			double pZ
 	) {
-		delegate.addVertex(
+		delegate.vertex(
 				pX,
 				pY,
 				pZ
-		).setColor(color);
+		).color(color);
 		return this;
 	}
 
 	@Override
-	public VertexConsumer addVertex(
-			PoseStack.Pose	pPose,
-			float			pX,
-			float			pY,
-			float			pZ
-	) {
-		delegate.addVertex(
-				pPose,
-				pX,
-				pY,
-				pZ
-		).setColor(color);
-		return this;
-	}
-
-	@Override
-	public VertexConsumer setColor(
+	public VertexConsumer color(
 			int pRed,
 			int pGreen,
 			int pBlue,
@@ -110,17 +94,17 @@ public class AcceleratedEntityOutlineGenerator extends AcceleratedVertexConsumer
 	}
 
 	@Override
-	public VertexConsumer setUv1(int pU, int pV) {
+	public VertexConsumer overlayCoords(int pU, int pV) {
 		return this;
 	}
 
 	@Override
-	public VertexConsumer setUv2(int pU, int pV) {
+	public VertexConsumer uv2(int pU, int pV) {
 		return this;
 	}
 
 	@Override
-	public VertexConsumer setNormal(
+	public VertexConsumer normal(
 			float pNormalX,
 			float pNormalY,
 			float pNormalZ
@@ -129,21 +113,14 @@ public class AcceleratedEntityOutlineGenerator extends AcceleratedVertexConsumer
 	}
 
 	@Override
-	public VertexConsumer setNormal(
-			PoseStack.Pose	pPose,
-			float			pNormalX,
-			float			pNormalY,
-			float			pNormalZ
-	) {
-		return this;
-	}
-
-	@Override
-	public void addVertex(
+	public void vertex(
 			float	x,
 			float	y,
 			float	z,
-			int		color,
+			float	red,
+			float	green,
+			float	blue,
+			float	alpha,
 			float	u,
 			float	v,
 			int		packedOverlay,
@@ -152,11 +129,14 @@ public class AcceleratedEntityOutlineGenerator extends AcceleratedVertexConsumer
 			float	normalY,
 			float	normalZ
 	) {
-		getDelegate().addVertex(
+		getDelegate().vertex(
 				x,
 				y,
 				z,
-				this.color,
+				red,
+				green,
+				blue,
+				alpha,
 				u,
 				v,
 				packedOverlay,

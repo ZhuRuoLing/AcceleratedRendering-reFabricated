@@ -48,15 +48,16 @@ public abstract class AbstractContainerScreenMixin {
 	}
 
 	@Inject(
-			method	= "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;IIF)V",
-			at		= @At("HEAD")
+			method	= "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;IIII)V",
+			at		= @At("HEAD"),
+			remap	= false
 	)
-	public void startRenderHighlight(
+	private static void startRenderHighlight(
 			GuiGraphics		guiGraphics,
-			Slot			slot,
 			int				mouseX,
 			int				mouseY,
-			float			partialTick,
+			int				blitOffset,
+			int				color,
 			CallbackInfo	ci
 	) {
 		if (CoreFeature.isGuiBatching()) {
@@ -65,15 +66,16 @@ public abstract class AbstractContainerScreenMixin {
 	}
 
 	@Inject(
-			method	= "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;IIF)V",
-			at		= @At("TAIL")
+			method	= "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;IIII)V",
+			at		= @At("TAIL"),
+			remap	= false
 	)
-	public void stopRenderHighlight(
+	private static void stopRenderHighlight(
 			GuiGraphics		guiGraphics,
-			Slot			slot,
 			int				mouseX,
 			int				mouseY,
-			float			partialTick,
+			int				blitOffset,
+			int				color,
 			CallbackInfo	ci
 	) {
 		if (CoreFeature.isGuiBatching()) {

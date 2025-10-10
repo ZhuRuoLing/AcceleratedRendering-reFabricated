@@ -2,13 +2,14 @@ package com.github.argon4w.acceleratedrendering.core.meshes.collectors;
 
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IAcceleratedVertexConsumer;
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryLayout;
+import com.github.argon4w.acceleratedrendering.core.utils.ByteBufferBuilder;
 import com.github.argon4w.acceleratedrendering.core.utils.CullerUtils;
 import com.github.argon4w.acceleratedrendering.core.utils.Vertex;
 import com.mojang.blaze3d.platform.NativeImage;
-import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.FastColor;
 
 public class CulledMeshCollector implements VertexConsumer, IMeshCollector {
 
@@ -37,14 +38,18 @@ public class CulledMeshCollector implements VertexConsumer, IMeshCollector {
 			if (!CullerUtils.shouldCull(polygon, texture)) {
 				for (var vertex : polygon) {
 					var vertexPosition	= vertex.getPosition();
+					var vertexColor		= vertex.getColor	();
 					var vertexUV		= vertex.getUv		();
 					var vertexNormal	= vertex.getNormal	();
 
-					meshCollector.addVertex(
+					meshCollector.vertex(
 							vertexPosition	.x,
 							vertexPosition	.y,
 							vertexPosition	.z,
-							vertex			.getPackedColor(),
+							vertexColor		.x / 255.0f,
+							vertexColor		.y / 255.0f,
+							vertexColor		.z / 255.0f,
+							vertexColor		.w / 255.0f,
 							vertexUV		.x,
 							vertexUV		.y,
 							OverlayTexture	.NO_OVERLAY,
@@ -59,22 +64,47 @@ public class CulledMeshCollector implements VertexConsumer, IMeshCollector {
 	}
 
 	@Override
-	public VertexConsumer addVertex(
-			float pX,
-			float pY,
-			float pZ
+	public void endVertex() {
+		flush();
+	}
+
+	@Override
+	public void unsetDefaultColor() {
+		meshCollector.unsetDefaultColor();
+	}
+
+	@Override
+	public void defaultColor(
+			int defaultR,
+			int defaultG,
+			int defaultB,
+			int defaultA
+	) {
+		meshCollector.defaultColor(
+				defaultR,
+				defaultG,
+				defaultB,
+				defaultA
+		);
+	}
+
+	@Override
+	public VertexConsumer vertex(
+			double pX,
+			double pY,
+			double pZ
 	) {
 		flush();
 		polygon[++ vertexIndex]					= new Vertex();
-		polygon[vertexIndex].getPosition().x	= pX;
-		polygon[vertexIndex].getPosition().y	= pY;
-		polygon[vertexIndex].getPosition().z	= pZ;
+		polygon[vertexIndex].getPosition().x	= (float) pX;
+		polygon[vertexIndex].getPosition().y	= (float) pY;
+		polygon[vertexIndex].getPosition().z	= (float) pZ;
 
 		return this;
 	}
 
 	@Override
-	public VertexConsumer setColor(
+	public VertexConsumer color(
 			int pRed,
 			int pGreen,
 			int pBlue,
@@ -93,7 +123,7 @@ public class CulledMeshCollector implements VertexConsumer, IMeshCollector {
 	}
 
 	@Override
-	public VertexConsumer setUv(float pU, float pV) {
+	public VertexConsumer uv(float pU, float pV) {
 		if (vertexIndex < 0) {
 			throw new IllegalStateException("Vertex not building!");
 		}
@@ -105,12 +135,12 @@ public class CulledMeshCollector implements VertexConsumer, IMeshCollector {
 	}
 
 	@Override
-	public VertexConsumer setUv1(int pU, int pV) {
+	public VertexConsumer overlayCoords(int pU, int pV) {
 		return this;
 	}
 
 	@Override
-	public VertexConsumer setUv2(int pU, int pV) {
+	public VertexConsumer uv2(int pU, int pV) {
 		if (vertexIndex < 0) {
 			throw new IllegalStateException("Vertex not building!");
 		}
@@ -122,7 +152,7 @@ public class CulledMeshCollector implements VertexConsumer, IMeshCollector {
 	}
 
 	@Override
-	public VertexConsumer setNormal(
+	public VertexConsumer normal(
 			float pNormalX,
 			float pNormalY,
 			float pNormalZ

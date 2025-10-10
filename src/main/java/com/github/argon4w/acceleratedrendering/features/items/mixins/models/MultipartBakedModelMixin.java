@@ -11,7 +11,7 @@ import net.minecraft.client.resources.model.MultiPartBakedModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.data.ModelData;
+import net.minecraftforge.client.model.data.ModelData;
 import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,7 +37,7 @@ public abstract class MultipartBakedModelMixin implements IAcceleratedBakedModel
 
 	@Shadow @Final private	List<Pair<Predicate<BlockState>, BakedModel>>	selectors;
 
-	@Shadow public abstract BitSet getSelectors(BlockState p_235050_);
+	@Shadow(remap = false) public abstract BitSet getSelectors(BlockState p_235050_);
 
 
 	@Inject(

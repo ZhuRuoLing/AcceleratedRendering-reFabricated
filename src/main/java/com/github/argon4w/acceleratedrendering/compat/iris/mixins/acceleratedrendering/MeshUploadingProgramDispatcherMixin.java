@@ -24,7 +24,8 @@ public class MeshUploadingProgramDispatcherMixin {
 					target	= "Lcom/github/argon4w/acceleratedrendering/core/buffers/memory/IMemoryInterface;putInt(JI)V",
 					ordinal	= 2,
 					shift	= At.Shift.AFTER
-			)
+			),
+			remap	= false
 	)
 	public void addIrisData(
 			Collection<AcceleratedBufferBuilder>						builders,

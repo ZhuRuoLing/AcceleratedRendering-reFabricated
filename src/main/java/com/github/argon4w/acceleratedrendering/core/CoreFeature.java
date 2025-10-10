@@ -27,15 +27,15 @@ public class CoreFeature {
 	}
 
 	public static int getPooledRingBufferSize() {
-		return FeatureConfig.CONFIG.corePooledRingBufferSize.getAsInt();
+		return FeatureConfig.CONFIG.corePooledRingBufferSize.get();
 	}
 
 	public static int getPooledBatchingSize() {
-		return FeatureConfig.CONFIG.corePooledBatchingSize.getAsInt();
+		return FeatureConfig.CONFIG.corePooledBatchingSize.get();
 	}
 
 	public static int getCachedImageSize() {
-		return FeatureConfig.CONFIG.coreCachedImageSize.getAsInt();
+		return FeatureConfig.CONFIG.coreCachedImageSize.get();
 	}
 
 	public static boolean shouldForceAccelerateTranslucent() {

@@ -4,14 +4,14 @@ import com.github.argon4w.acceleratedrendering.AcceleratedRenderingModEntry;
 import com.github.argon4w.acceleratedrendering.core.backends.programs.BarrierFlags;
 import com.github.argon4w.acceleratedrendering.core.utils.ResourceLocationUtils;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
-@EventBusSubscriber(
+@Mod.EventBusSubscriber(
 		modid	= AcceleratedRenderingModEntry	.MOD_ID,
-		bus		= EventBusSubscriber.Bus		.MOD,
+		bus		= Mod.EventBusSubscriber.Bus	.MOD,
 		value	= Dist							.CLIENT
 )
 public class ComputeShaderPrograms {

@@ -60,24 +60,22 @@ public class AcceleratedEntityShadowRenderer implements IAcceleratedRenderer<Acc
 		}
 
 		var dimensionBrightness	= LightTexture.getBrightness(levelReader.dimensionType(), levelBrightness);
-		var shadowTransparency	= weight * 0.5F * dimensionBrightness * 255.0f;
+		var shadowTransparency	= weight * 0.5f * dimensionBrightness * 255.0f;
 
-		if (shadowTransparency < 0.0F) {
+		if (shadowTransparency < 0.0f) {
 			return;
 		}
 
-		if (shadowTransparency > 255.0F) {
-			shadowTransparency = 255.0F;
+		if (shadowTransparency > 255.0f) {
+			shadowTransparency = 255.0f;
 		}
 
-		var shadowColor	= FastColor.ARGB32	.color	((int) shadowTransparency, color);
-		var bounds		= voxelShape		.bounds	();
-
-		var minX = blockPos.getX() + (float) bounds.minX;
-		var maxX = blockPos.getX() + (float) bounds.maxX;
-		var minY = blockPos.getY() + (float) bounds.minY;
-		var minZ = blockPos.getZ() + (float) bounds.minZ;
-		var maxZ = blockPos.getZ() + (float) bounds.maxZ;
+		var bounds	= voxelShape.bounds	();
+		var minX	= blockPos	.getX	() + (float) bounds.minX;
+		var maxX	= blockPos	.getX	() + (float) bounds.maxX;
+		var minY	= blockPos	.getY	() + (float) bounds.minY;
+		var minZ	= blockPos	.getZ	() + (float) bounds.minZ;
+		var maxZ	= blockPos	.getZ	() + (float) bounds.maxZ;
 
 		var minPosX = minX - center.x;
 		var maxPosX = maxX - center.x;
@@ -110,11 +108,14 @@ public class AcceleratedEntityShadowRenderer implements IAcceleratedRenderer<Acc
 			var position = positions[i];
 			var texCoord = texCoords[i];
 
-			vertexConsumer.addVertex(
+			vertexConsumer.vertex(
 					position.x,
 					position.y,
 					position.z,
-					shadowColor,
+					FastColor.ARGB32.red	(color)	/ 255.0f,
+					FastColor.ARGB32.green	(color)	/ 255.0f,
+					FastColor.ARGB32.blue	(color)	/ 255.0f,
+					shadowTransparency				/ 255.0f,
 					texCoord.x,
 					texCoord.y,
 					overlay,

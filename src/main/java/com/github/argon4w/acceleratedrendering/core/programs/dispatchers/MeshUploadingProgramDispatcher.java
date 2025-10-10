@@ -8,15 +8,14 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.MeshUploaderPool;
 import com.github.argon4w.acceleratedrendering.core.programs.ComputeShaderProgramLoader;
 import com.github.argon4w.acceleratedrendering.core.programs.overrides.IUploadingShaderProgramOverride;
+import com.github.argon4w.acceleratedrendering.core.utils.FastColorUtils;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 import static org.lwjgl.opengl.GL46.GL_SHADER_STORAGE_BUFFER;
 import static org.lwjgl.opengl.GL46.glMemoryBarrier;
@@ -104,7 +103,7 @@ public class MeshUploadingProgramDispatcher {
 					var meshSize	= mesh		.size			();
 
 					for (var i = 0; i < meshCount; i ++) {
-						builder.getColorOffset		().at(offset)	.putInt			(vertexAddress, FastColor.ABGR32.fromArgb32		(meshInfos.getColor(i)));
+						builder.getColorOffset		().at(offset)	.putInt			(vertexAddress, FastColorUtils	.abgr32			(meshInfos.getColor(i)));
 						builder.getUv1Offset		().at(offset)	.putInt			(vertexAddress, meshInfos		.getOverlay		(i));
 						builder.getUv2Offset		().at(offset)	.putInt			(vertexAddress, meshInfos		.getLight		(i));
 

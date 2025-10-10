@@ -12,6 +12,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.experimental.ExtensionMethod;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.FastColor;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
@@ -43,7 +44,10 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
 			VertexConsumer	pBuffer,
 			int				pPackedLight,
 			int				pPackedOverlay,
-			int				pColor,
+			float			red,
+			float			green,
+			float			blue,
+			float			alpha,
 			CallbackInfo	ci
 	) {
 		var extension = pBuffer.getAccelerated();
@@ -63,7 +67,12 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
 					pPose.normal(),
 					pPackedLight,
 					pPackedOverlay,
-					pColor
+					FastColor.ARGB32.color(
+							(int) (alpha	* 255.0f),
+							(int) (red		* 255.0f),
+							(int) (green	* 255.0f),
+							(int) (blue		* 255.0f)
+					)
 			);
 		}
 	}
@@ -106,11 +115,14 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
 				for (var vertex : polygon.vertices) {
 					var vertexPosition = vertex.pos;
 
-					meshBuilder.addVertex(
+					meshBuilder.vertex(
 							vertexPosition.x / 16.0f,
 							vertexPosition.y / 16.0f,
 							vertexPosition.z / 16.0f,
-							-1,
+							1.0f,
+							1.0f,
+							1.0f,
+							1.0f,
 							vertex.u,
 							vertex.v,
 							overlay,

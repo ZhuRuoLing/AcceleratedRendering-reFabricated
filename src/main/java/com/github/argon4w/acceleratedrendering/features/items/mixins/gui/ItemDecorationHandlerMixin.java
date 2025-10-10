@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.ItemDecoratorHandler;
+import net.minecraftforge.client.ItemDecoratorHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,9 +19,10 @@ public class ItemDecorationHandlerMixin {
 			method	= "render",
 			at		= @At(
 					value	= "INVOKE",
-					target	= "Lcom/mojang/blaze3d/systems/RenderSystem;backupGlState(Lnet/neoforged/neoforge/client/GlStateBackup;)V",
+					target	= "Lnet/minecraftforge/client/ItemDecoratorHandler;resetRenderState()V",
 					shift	= At.Shift.AFTER
-			)
+			),
+			remap	= false
 	)
 	public void startRenderingCustomDecoration(
 			GuiGraphics		guiGraphics,
@@ -38,11 +39,8 @@ public class ItemDecorationHandlerMixin {
 
 	@Inject(
 			method	= "render",
-			at		= @At(
-					value	= "INVOKE",
-					target	= "Lcom/mojang/blaze3d/systems/RenderSystem;restoreGlState(Lnet/neoforged/neoforge/client/GlStateBackup;)V",
-					shift	= At.Shift.BEFORE
-			)
+			at		= @At("TAIL"),
+			remap	= false
 	)
 	public void stopRenderingCustomDecorationPart(
 			GuiGraphics		guiGraphics,

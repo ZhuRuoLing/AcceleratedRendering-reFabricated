@@ -11,6 +11,7 @@ import com.github.argon4w.acceleratedrendering.core.buffers.environments.IBuffer
 import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
 import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.MeshUploadingProgramDispatcher;
 import com.github.argon4w.acceleratedrendering.core.utils.RenderTypeUtils;
+import com.github.argon4w.acceleratedrendering.core.utils.ShaderUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import it.unimi.dsi.fastutil.ints.IntAVLTreeSet;
@@ -164,7 +165,7 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 						.get		(drawType)
 						.add		(drawContext);
 
-				barrier |= environment	.selectProcessingProgramDispatcher	(renderType.mode)	.dispatch(builder);
+				barrier |= environment	.selectProcessingProgramDispatcher	(renderType.mode())	.dispatch(builder);
 				barrier |= builder		.getCullingProgramDispatcher		()					.dispatch(builder);
 			}
 
@@ -197,11 +198,12 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 					var renderType	= drawContext	.getRenderType		();
 					renderType						.setupRenderState	();
 
-					var mode	= renderType	.mode;
+					var mode	= renderType	.mode();
 					var shader	= RenderSystem	.getShader();
 
-					shader.setDefaultUniforms(
+					ShaderUtils.setDefaultUniforms(
 							mode,
+							shader,
 							RenderSystem			.getModelViewMatrix	(),
 							RenderSystem			.getProjectionMatrix(),
 							Minecraft.getInstance()	.getWindow			()

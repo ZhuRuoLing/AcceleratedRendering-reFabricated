@@ -19,14 +19,14 @@ import java.lang.invoke.VarHandle;
 @Mixin(FlattenVarHandleMeshInfoCache.class)
 public class FlattenVarHandleMeshInfoCacheMixin implements IIrisMeshInfoCache {
 
-	@Shadow @Final public	static			VarHandle	HANDLE;
+	@Shadow(remap = false) @Final public	static			VarHandle	HANDLE;
 
-	@Shadow private							int[]		cache;
+	@Shadow(remap = false) private							int[]		cache;
 
-	@Unique private			static final	int			IRIS_MESH_INFO_SIZE				= 8;
-	@Unique private			static final	int			RENDERED_ENTITY_OFFSET			= 5;
-	@Unique private			static final	int			RENDERED_BLOCK_ENTITY_OFFSET	= 6;
-	@Unique private			static final	int			RENDERED_ITEM_OFFSET			= 7;
+	@Unique private							static final	int			IRIS_MESH_INFO_SIZE				= 8;
+	@Unique private							static final	int			RENDERED_ENTITY_OFFSET			= 5;
+	@Unique private							static final	int			RENDERED_BLOCK_ENTITY_OFFSET	= 6;
+	@Unique private							static final	int			RENDERED_ITEM_OFFSET			= 7;
 
 	@ModifyConstant(
 			method		= {
@@ -38,7 +38,8 @@ public class FlattenVarHandleMeshInfoCacheMixin implements IIrisMeshInfoCache {
 					"getLight",
 					"getOverlay"
 			},
-			constant	= @Constant(intValue = 5)
+			constant	= @Constant(intValue = 5),
+			remap		= false
 	)
 	public int modifySize(int constant) {
 		return IRIS_MESH_INFO_SIZE;
@@ -51,7 +52,8 @@ public class FlattenVarHandleMeshInfoCacheMixin implements IIrisMeshInfoCache {
 					target	= "Ljava/lang/invoke/VarHandle;set([III)V",
 					ordinal	= 4,
 					shift	= At.Shift.AFTER
-			)
+			),
+			remap	= false
 	)
 	public void addIrisData(
 			int									color,

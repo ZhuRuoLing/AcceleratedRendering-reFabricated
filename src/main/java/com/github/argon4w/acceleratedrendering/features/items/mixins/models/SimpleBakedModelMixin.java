@@ -22,11 +22,12 @@ import lombok.experimental.ExtensionMethod;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.IQuadTransformer;
-import net.neoforged.neoforge.client.model.data.ModelData;
+import net.minecraftforge.client.model.IQuadTransformer;
+import net.minecraftforge.client.model.data.ModelData;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -150,14 +151,18 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 					var uv2Offset		= vertexOffset	+ IQuadTransformer.UV2;
 					var normalOffset	= vertexOffset	+ IQuadTransformer.NORMAL;
 					var packedNormal	= data[normalOffset];
+					var packedColor		= data[colorOffset];
 
-					meshBuilder.addVertex(
-							Float.intBitsToFloat(data[posOffset + 0]),
-							Float.intBitsToFloat(data[posOffset + 1]),
-							Float.intBitsToFloat(data[posOffset + 2]),
-							data[colorOffset],
-							Float.intBitsToFloat(data[uv0Offset + 0]),
-							Float.intBitsToFloat(data[uv0Offset + 1]),
+					meshBuilder.vertex(
+							Float.intBitsToFloat	(data[posOffset + 0]),
+							Float.intBitsToFloat	(data[posOffset + 1]),
+							Float.intBitsToFloat	(data[posOffset + 2]),
+							FastColor.ARGB32.red	(packedColor) / 255.0f,
+							FastColor.ARGB32.green	(packedColor) / 255.0f,
+							FastColor.ARGB32.blue	(packedColor) / 255.0f,
+							FastColor.ARGB32.alpha	(packedColor) / 255.0f,
+							Float.intBitsToFloat	(data[uv0Offset + 0]),
+							Float.intBitsToFloat	(data[uv0Offset + 1]),
 							-1,
 							data[uv2Offset],
 							((byte) (	packedNormal		& 0xFF)) / 127.0f,

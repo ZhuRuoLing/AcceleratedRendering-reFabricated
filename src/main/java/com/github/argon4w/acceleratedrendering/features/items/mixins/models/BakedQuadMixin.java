@@ -9,7 +9,8 @@ import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedBakedQ
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.neoforged.neoforge.client.model.IQuadTransformer;
+import net.minecraft.util.FastColor;
+import net.minecraftforge.client.model.IQuadTransformer;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
@@ -68,12 +69,16 @@ public abstract class BakedQuadMixin implements IAcceleratedBakedQuad {
 			var uv2Offset		= vertexOffset	+ IQuadTransformer.UV2;
 			var normalOffset	= vertexOffset	+ IQuadTransformer.NORMAL;
 			var packedNormal	= vertices[normalOffset];
+			var packedColor		= vertices[colorOffset];
 
-			meshBuilder.addVertex(
+			meshBuilder.vertex(
 					Float.intBitsToFloat(vertices[posOffset + 0]),
 					Float.intBitsToFloat(vertices[posOffset + 1]),
 					Float.intBitsToFloat(vertices[posOffset + 2]),
-					vertices[colorOffset],
+					FastColor.ARGB32.red	(packedColor) / 255.0f,
+					FastColor.ARGB32.green	(packedColor) / 255.0f,
+					FastColor.ARGB32.blue	(packedColor) / 255.0f,
+					FastColor.ARGB32.alpha	(packedColor) / 255.0f,
 					Float.intBitsToFloat(vertices[uv0Offset + 0]),
 					Float.intBitsToFloat(vertices[uv0Offset + 1]),
 					combinedOverlay,

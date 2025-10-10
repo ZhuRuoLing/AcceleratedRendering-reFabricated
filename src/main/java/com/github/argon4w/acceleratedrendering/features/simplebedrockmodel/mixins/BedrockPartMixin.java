@@ -30,8 +30,8 @@ import java.util.Map;
 @Mixin			(BedrockPart			.class)
 public class BedrockPartMixin implements IAcceleratedRenderer<Void> {
 
-	@Unique	private static	final	PoseStack.Pose				POSE			= new PoseStack().last();
-	@Unique private static	final	Vector3f[]					FIXED_NORMALS	= {
+	@Unique	private static	final					PoseStack.Pose				POSE			= new PoseStack().last();
+	@Unique private static	final					Vector3f[]					FIXED_NORMALS	= {
 			new Vector3f(-0.0f, -1.0f, -0.0f),
 			new Vector3f(+0.0f, +1.0f, +0.0f),
 			new Vector3f(-0.0f, -0.0f, -1.0f),
@@ -40,14 +40,15 @@ public class BedrockPartMixin implements IAcceleratedRenderer<Void> {
 			new Vector3f(+1.0f, +0.0f, +0.0f)
 	};
 
-	@Shadow @Final public			ObjectList<BedrockCube>		cubes;
+	@Shadow(remap = false) @Final public			ObjectList<BedrockCube>		cubes;
 
-	@Unique private 		final	Map<IBufferGraph, IMesh>	meshes			= new Object2ObjectOpenHashMap<>();
+	@Unique private 		final					Map<IBufferGraph, IMesh>	meshes			= new Object2ObjectOpenHashMap<>();
 
 	@Inject(
 			method		= "compile",
 			at			= @At("HEAD"),
-			cancellable	= true
+			cancellable	= true,
+			remap		= false
 	)
 	public void compileFast(
 			PoseStack.Pose	pose,

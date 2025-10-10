@@ -2,12 +2,14 @@ package com.github.argon4w.acceleratedrendering.core.meshes.collectors;
 
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryInterface;
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryLayout;
-import com.mojang.blaze3d.vertex.ByteBufferBuilder;
+import com.github.argon4w.acceleratedrendering.core.utils.ByteBufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.DefaultedVertexConsumer;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
 import net.minecraft.util.FastColor;
 
-public class SimpleMeshCollector implements VertexConsumer, IMeshCollector {
+public class SimpleMeshCollector extends DefaultedVertexConsumer implements IMeshCollector {
 
 	private final	IMemoryLayout<VertexFormatElement>	layout;
 	private final	ByteBufferBuilder					buffer;
@@ -27,34 +29,39 @@ public class SimpleMeshCollector implements VertexConsumer, IMeshCollector {
 		this.buffer			= new ByteBufferBuilder		(1024);
 
 		this.vertexSize		= this.layout	.getSize	();
-		this.posOffset		= this.layout	.getElement	(VertexFormatElement.POSITION);
-		this.colorOffset	= this.layout	.getElement	(VertexFormatElement.COLOR);
-		this.uv0Offset		= this.layout	.getElement	(VertexFormatElement.UV);
-		this.uv2Offset		= this.layout	.getElement	(VertexFormatElement.UV2);
-		this.normalOffset	= this.layout	.getElement	(VertexFormatElement.NORMAL);
+		this.posOffset		= this.layout	.getElement	(DefaultVertexFormat.ELEMENT_POSITION);
+		this.colorOffset	= this.layout	.getElement	(DefaultVertexFormat.ELEMENT_COLOR);
+		this.uv0Offset		= this.layout	.getElement	(DefaultVertexFormat.ELEMENT_UV);
+		this.uv2Offset		= this.layout	.getElement	(DefaultVertexFormat.ELEMENT_UV2);
+		this.normalOffset	= this.layout	.getElement	(DefaultVertexFormat.ELEMENT_NORMAL);
 
 		this.vertexAddress	= -1L;
 		this.vertexCount	= 0;
 	}
 
 	@Override
-	public VertexConsumer addVertex(
-			float pX,
-			float pY,
-			float pZ
+	public void endVertex() {
+
+	}
+
+	@Override
+	public VertexConsumer vertex(
+			double pX,
+			double pY,
+			double pZ
 	) {
 		vertexCount ++;
 		vertexAddress = buffer.reserve((int) vertexSize);
 
-		posOffset.putFloat(vertexAddress + 0L, pX);
-		posOffset.putFloat(vertexAddress + 4L, pY);
-		posOffset.putFloat(vertexAddress + 8L, pZ);
+		posOffset.putFloat(vertexAddress + 0L, (float) pX);
+		posOffset.putFloat(vertexAddress + 4L, (float) pY);
+		posOffset.putFloat(vertexAddress + 8L, (float) pZ);
 
 		return this;
 	}
 
 	@Override
-	public VertexConsumer setColor(
+	public VertexConsumer color(
 			int pRed,
 			int pGreen,
 			int pBlue,
@@ -62,6 +69,13 @@ public class SimpleMeshCollector implements VertexConsumer, IMeshCollector {
 	) {
 		if (vertexAddress == -1) {
 			throw new IllegalStateException("Vertex not building!");
+		}
+
+		if (defaultColorSet) {
+			pRed	= defaultR;
+			pGreen	= defaultG;
+			pBlue	= defaultB;
+			pAlpha	= defaultA;
 		}
 
 		colorOffset.putByte(vertexAddress + 0L, (byte) pRed);
@@ -73,7 +87,7 @@ public class SimpleMeshCollector implements VertexConsumer, IMeshCollector {
 	}
 
 	@Override
-	public VertexConsumer setUv(float pU, float pV) {
+	public VertexConsumer uv(float pU, float pV) {
 		if (vertexAddress == -1) {
 			throw new IllegalStateException("Vertex not building!");
 		}
@@ -85,12 +99,12 @@ public class SimpleMeshCollector implements VertexConsumer, IMeshCollector {
 	}
 
 	@Override
-	public VertexConsumer setUv1(int pU, int pV) {
+	public VertexConsumer overlayCoords(int pU, int pV) {
 		return this;
 	}
 
 	@Override
-	public VertexConsumer setUv2(int pU, int pV) {
+	public VertexConsumer uv2(int pU, int pV) {
 		if (vertexAddress == -1) {
 			throw new IllegalStateException("Vertex not building!");
 		}
@@ -102,7 +116,7 @@ public class SimpleMeshCollector implements VertexConsumer, IMeshCollector {
 	}
 
 	@Override
-	public VertexConsumer setNormal(
+	public VertexConsumer normal(
 			float pNormalX,
 			float pNormalY,
 			float pNormalZ
@@ -119,11 +133,14 @@ public class SimpleMeshCollector implements VertexConsumer, IMeshCollector {
 	}
 
 	@Override
-	public void addVertex(
+	public void vertex(
 			float	pX,
 			float	pY,
 			float	pZ,
-			int		pColor,
+			float	red,
+			float	green,
+			float	blue,
+			float	alpha,
 			float	pU,
 			float	pV,
 			int		pPackedOverlay,
@@ -132,13 +149,25 @@ public class SimpleMeshCollector implements VertexConsumer, IMeshCollector {
 			float	pNormalY,
 			float	pNormalZ
 	) {
+		if (defaultColorSet) {
+			red		= defaultR / 255.0f;
+			green	= defaultG / 255.0f;
+			blue	= defaultB / 255.0f;
+			alpha	= defaultA / 255.0f;
+		}
+
 		vertexCount++;
 		vertexAddress = buffer.reserve((int) vertexSize);
 
 		posOffset	.putFloat	(vertexAddress + 0L,	pX);
 		posOffset	.putFloat	(vertexAddress + 4L,	pY);
 		posOffset	.putFloat	(vertexAddress + 8L,	pZ);
-		colorOffset	.putInt		(vertexAddress,			FastColor.ABGR32.fromArgb32(pColor));
+		colorOffset	.putInt		(vertexAddress,			FastColor.ABGR32.color(
+				(int) (alpha	* 255.0f),
+				(int) (blue		* 255.0f),
+				(int) (green	* 255.0f),
+				(int) (red		* 255.0f)
+		));
 		uv0Offset	.putFloat	(vertexAddress + 0L,	pU);
 		uv0Offset	.putFloat	(vertexAddress + 4L,	pV);
 		uv2Offset	.putInt		(vertexAddress,			pPackedLight);

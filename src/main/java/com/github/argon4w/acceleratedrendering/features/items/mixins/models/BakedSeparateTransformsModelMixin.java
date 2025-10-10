@@ -9,8 +9,8 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.SeparateTransformsModel;
-import net.neoforged.neoforge.client.model.data.ModelData;
+import net.minecraftforge.client.model.SeparateTransformsModel;
+import net.minecraftforge.client.model.data.ModelData;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin			(SeparateTransformsModel.Baked	.class)
 public class BakedSeparateTransformsModelMixin implements IAcceleratedBakedModel {
 
-	@Shadow @Final private BakedModel baseModel;
+	@Shadow(remap = false) @Final private BakedModel baseModel;
 
 	@Override
 	public void renderItemFast(

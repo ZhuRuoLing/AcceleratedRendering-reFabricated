@@ -30,20 +30,23 @@ public class AcceleratedSpriteCoordinateExpander extends AcceleratedVertexConsum
 	}
 
 	@Override
-	public VertexConsumer setUv(float pU, float pV) {
-		delegate.setUv(
-				sprite.getU(pU),
-				sprite.getV(pV)
+	public VertexConsumer uv(float pU, float pV) {
+		delegate.uv(
+				sprite.getU(pU * 16.0f),
+				sprite.getV(pV * 16.0f)
 		);
 		return this;
 	}
 
 	@Override
-	public void addVertex(
+	public void vertex(
 			float	pX,
 			float	pY,
 			float	pZ,
-			int		pColor,
+			float	red,
+			float	green,
+			float	blue,
+			float	alpha,
 			float	pU,
 			float	pV,
 			int		pPackedOverlay,
@@ -52,13 +55,16 @@ public class AcceleratedSpriteCoordinateExpander extends AcceleratedVertexConsum
 			float	pNormalY,
 			float	pNormalZ
 	) {
-		delegate.addVertex(
+		delegate.vertex(
 				pX,
 				pY,
 				pZ,
-				pColor,
-				sprite.getU(pU),
-				sprite.getV(pV),
+				red,
+				green,
+				blue,
+				alpha,
+				sprite.getU(pU * 16.0f),
+				sprite.getV(pV * 16.0f),
 				pPackedOverlay,
 				pPackedLight,
 				pNormalX,

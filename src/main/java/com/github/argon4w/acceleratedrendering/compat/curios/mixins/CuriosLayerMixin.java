@@ -27,7 +27,8 @@ public class CuriosLayerMixin {
 
 	@Inject(
 			method	= "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V",
-			at		= @At("HEAD")
+			at		= @At("HEAD"),
+			remap	= false
 	)
 	public void startRenderCuriosLayer(
 			PoseStack			matrixStack,
@@ -53,7 +54,8 @@ public class CuriosLayerMixin {
 
 	@Inject(
 			method	= "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V",
-			at		= @At("RETURN")
+			at		= @At("RETURN"),
+			remap	= false
 	)
 	public void stopRenderCuriosLayer(
 			PoseStack			matrixStack,
@@ -82,7 +84,8 @@ public class CuriosLayerMixin {
 			at		= @At(
 					value	= "INVOKE",
 					target	= "Ltop/theillusivec4/curios/api/client/ICurioRenderer;render(Lnet/minecraft/world/item/ItemStack;Ltop/theillusivec4/curios/api/SlotContext;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/entity/RenderLayerParent;Lnet/minecraft/client/renderer/MultiBufferSource;IFFFFFF)V"
-			)
+			),
+			remap	= false
 	)
 	public void filterCuriosItem(
 			ICurioRenderer			instance,

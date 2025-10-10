@@ -30,6 +30,10 @@ public class AcceleratedSheetedDecalTextureGenerator extends AcceleratedVertexCo
 	private										float			vertexY;
 	private										float			vertexZ;
 
+	private										float			normalX;
+	private										float			normalY;
+	private										float			normalZ;
+
 	public AcceleratedSheetedDecalTextureGenerator(
 			VertexConsumer	delegate,
 			Matrix4f		cameraInverse,
@@ -47,6 +51,10 @@ public class AcceleratedSheetedDecalTextureGenerator extends AcceleratedVertexCo
 		this.vertexX		= 0;
 		this.vertexY		= 0;
 		this.vertexZ		= 0;
+
+		this.normalX		= 0;
+		this.normalY		= 0;
+		this.normalZ		= 0;
 	}
 
 	@Override
@@ -103,16 +111,16 @@ public class AcceleratedSheetedDecalTextureGenerator extends AcceleratedVertexCo
 	}
 
 	@Override
-	public VertexConsumer addVertex(
-			float pX,
-			float pY,
-			float pZ
+	public VertexConsumer vertex(
+			double pX,
+			double pY,
+			double pZ
 	) {
-		vertexX = pX;
-		vertexY = pY;
-		vertexZ = pZ;
+		vertexX = (float) pX;
+		vertexY = (float) pY;
+		vertexZ = (float) pZ;
 
-		delegate.addVertex(
+		delegate.vertex(
 				pX,
 				pY,
 				pZ
@@ -121,37 +129,72 @@ public class AcceleratedSheetedDecalTextureGenerator extends AcceleratedVertexCo
 	}
 
 	@Override
-	public VertexConsumer setUv(float pU, float pV) {
+	public VertexConsumer uv(float pU, float pV) {
 		return this;
 	}
 
 	@Override
-	public VertexConsumer setColor(
+	public VertexConsumer color(
 			int pRed,
 			int pGreen,
 			int pBlue,
 			int pAlpha
 	) {
-		delegate.setColor(-1);
+		delegate.color(-1);
 		return this;
 	}
 
 	@Override
-	public VertexConsumer setNormal(
+	public VertexConsumer normal(
 			float pNormalX,
 			float pNormalY,
 			float pNormalZ
 	) {
-		delegate.setNormal(
+		this.normalX = pNormalX;
+		this.normalY = pNormalY;
+		this.normalZ = pNormalZ;
+
+		delegate.normal(
 				pNormalX,
 				pNormalY,
 				pNormalZ
 		);
+		return this;
+	}
 
+	@Override
+	public void vertex(
+			float	x,
+			float	y,
+			float	z,
+			float	red,
+			float	green,
+			float	blue,
+			float	alpha,
+			float	u,
+			float	v,
+			int		packedOverlay,
+			int		packedLight,
+			float	normalX,
+			float	normalY,
+			float	normalZ
+	) {
+		this
+				.vertex			(x,			y,			z)
+				.color			(red,		green,		blue, alpha)
+				.uv				(u,			v)
+				.overlayCoords	(packedOverlay)
+				.uv2			(packedLight)
+				.normal			(normalX,	normalY,	normalZ)
+				.endVertex		();
+	}
+
+	@Override
+	public void endVertex() {
 		var normal		= normalInverse.transform(
-				pNormalX,
-				pNormalY,
-				pNormalZ,
+				normalX,
+				normalY,
+				normalZ,
 				cachedNormal
 		);
 
@@ -168,34 +211,11 @@ public class AcceleratedSheetedDecalTextureGenerator extends AcceleratedVertexCo
 				normal.z()
 		);
 
-		camera	.rotateY((float) 	Math.PI);
-		camera	.rotateX((float) (-	Math.PI / 2));
-		camera	.rotate	(direction.getRotation());
+		camera	.rotateY	((float) 	Math.PI);
+		camera	.rotateX	((float) (-	Math.PI / 2));
+		camera	.rotate		(direction.getRotation());
 
-		delegate.setUv	(-camera.x() * textureScale, -camera.y() * textureScale);
-		return this;
-	}
-
-	@Override
-	public void addVertex(
-			float	x,
-			float	y,
-			float	z,
-			int		color,
-			float	u,
-			float	v,
-			int		packedOverlay,
-			int		packedLight,
-			float	normalX,
-			float	normalY,
-			float	normalZ
-	) {
-		this
-				.addVertex	(x,			y,			z)
-				.setColor	(color)
-				.setUv		(u,			v)
-				.setOverlay	(packedOverlay)
-				.setLight	(packedLight)
-				.setNormal	(normalX,	normalY,	normalZ);
+		delegate.uv			(-camera.x() * textureScale, -camera.y() * textureScale);
+		super	.endVertex	();
 	}
 }

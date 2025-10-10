@@ -2,8 +2,7 @@ package com.github.argon4w.acceleratedrendering.compat.iris.mixins.acceleratedre
 
 import com.github.argon4w.acceleratedrendering.AcceleratedRenderingModEntry;
 import com.github.argon4w.acceleratedrendering.compat.iris.programs.IrisPrograms;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModContainer;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -14,13 +13,13 @@ public class AcceleratedRenderingModEntryMixin {
 
 	@Inject(
 			method	= "<init>",
-			at		= @At("TAIL")
+			at		= @At("TAIL"),
+			remap	= false
 	)
-	public void registerIrisEvents(
-			IEventBus		modEventBus,
-			ModContainer	modContainer,
-			CallbackInfo	ci
-	) {
-		modEventBus.register(IrisPrograms.class);
+	public void registerIrisEvents(CallbackInfo	ci) {
+		FMLJavaModLoadingContext
+				.get			()
+				.getModEventBus	()
+				.register		(IrisPrograms.class);
 	}
 }

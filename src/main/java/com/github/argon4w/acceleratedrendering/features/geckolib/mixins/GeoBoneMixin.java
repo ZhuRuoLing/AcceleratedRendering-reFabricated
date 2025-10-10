@@ -17,7 +17,7 @@ import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.*;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.cache.object.GeoCube;
-import software.bernie.geckolib.util.RenderUtil;
+import software.bernie.geckolib.util.RenderUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -27,16 +27,16 @@ import java.util.Map;
 @Mixin			(GeoBone				.class)
 public class GeoBoneMixin implements IAcceleratedRenderer<Void> {
 
-	@Shadow @Final private	List<GeoCube>				cubes;
+	@Shadow(remap = false) @Final private	List<GeoCube>				cubes;
 
-	@Unique private	final	Map<IBufferGraph, IMesh>	meshes = new Object2ObjectOpenHashMap<>();
+	@Unique private	final					Map<IBufferGraph, IMesh>	meshes = new Object2ObjectOpenHashMap<>();
 
 	@Override
 	public void render(
 			VertexConsumer vertexConsumer,
 			Void			context,
-			Matrix4f transform,
-			Matrix3f normal,
+			Matrix4f		transform,
+			Matrix3f		normal,
 			int				light,
 			int				overlay,
 			int				color
@@ -64,9 +64,9 @@ public class GeoBoneMixin implements IAcceleratedRenderer<Void> {
 		for (GeoCube cube : cubes) {
 			var poseStack = new PoseStack();
 
-			RenderUtil.translateToPivotPoint		(poseStack, cube);
-			RenderUtil.rotateMatrixAroundCube		(poseStack, cube);
-			RenderUtil.translateAwayFromPivotPoint	(poseStack, cube);
+			RenderUtils.translateToPivotPoint		(poseStack, cube);
+			RenderUtils.rotateMatrixAroundCube		(poseStack, cube);
+			RenderUtils.translateAwayFromPivotPoint	(poseStack, cube);
 
 			var pose			= poseStack	.last	();
 			var cubeTransform	= pose		.pose	();
@@ -79,11 +79,14 @@ public class GeoBoneMixin implements IAcceleratedRenderer<Void> {
 					for (var vertex : quad.vertices()) {
 						var vertexPosition = cubeTransform.transform(new Vector4f(vertex.position(), 1.0f));
 
-						meshBuilder.addVertex(
+						meshBuilder.vertex(
 								vertexPosition	.x,
 								vertexPosition	.y,
 								vertexPosition	.z,
-								-1,
+								1.0f,
+								1.0f,
+								1.0f,
+								1.0f,
 								vertex			.texU(),
 								vertex			.texV(),
 								overlay,

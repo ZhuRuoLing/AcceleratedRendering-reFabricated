@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.github.argon4w.acceleratedrendering.compat.iris.mixins",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_17",
   "plugin": "com.github.argon4w.acceleratedrendering.compat.iris.mixins.plugin.IrisCompatMixinPlugin",
   "client": [
     "acceleratedrendering.AcceleratedBufferBuilderMixin",
@@ -27,5 +27,6 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "refmap": "acceleratedrendering.refmap.json"
 }
