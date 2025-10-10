@@ -1,8 +1,8 @@
 package com.github.argon4w.acceleratedrendering.core.utils;
 
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.MemoryUtil;
 
-import javax.annotation.Nullable;
 import java.nio.ByteBuffer;
 
 public class ByteBufferBuilder implements AutoCloseable {

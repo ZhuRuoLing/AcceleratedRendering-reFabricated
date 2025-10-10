@@ -29,7 +29,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.IQuadTransformer;
-import net.minecraftforge.client.model.data.ModelData;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -78,7 +77,6 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 			int							combinedLight,
 			int							combinedOverlay,
 			int							color,
-			ModelData					data,
 			RenderType					renderType
 	) {
 		extension.doRender(
@@ -157,6 +155,16 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 					var packedNormal	= data[normalOffset];
 					var packedColor		= data[colorOffset];
 
+					float normalX = ((byte) (packedNormal & 0xFF)) / 127.0f;
+					float normalY = ((byte) ((packedNormal >> 8) & 0xFF)) / 127.0f;
+					float normalZ = ((byte) ((packedNormal >> 16) & 0xFF)) / 127.0f;
+
+					if (normalX == 0 && normalY == 0 && normalZ == 0) {
+						normalX = quad.getDirection().getNormal().getX();
+						normalY = quad.getDirection().getNormal().getY();
+						normalZ = quad.getDirection().getNormal().getZ();
+					}
+
 					meshBuilder.vertex(
 							Float			.intBitsToFloat	(data[posOffset + 0]),
 							Float			.intBitsToFloat	(data[posOffset + 1]),
@@ -169,9 +177,9 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 							Float			.intBitsToFloat	(data[uv0Offset + 1]),
 							-1,
 							data[uv2Offset],
-							((byte) (	packedNormal		& 0xFF)) / 127.0f,
-							((byte) ((	packedNormal >> 8)	& 0xFF)) / 127.0f,
-							((byte) ((	packedNormal >> 16)	& 0xFF)) / 127.0f
+							normalX,
+							normalY,
+							normalZ
 					);
 				}
 			}
