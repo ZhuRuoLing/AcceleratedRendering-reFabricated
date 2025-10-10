@@ -7,6 +7,7 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.L
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.blaze3d.platform.Lighting;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -16,12 +17,13 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(InventoryScreen.class)
 public class InventoryScreenMixin {
 
-	@WrapMethod(method = "lambda$renderEntityInInventory$1")
-	private static void renderEntityInInventoryFast(
+	//lambda$renderEntityInInventory$1
+	@WrapMethod(method = "method_29977")
+	private static void startRenderingGui(
 			EntityRenderDispatcher	entityrenderdispatcher,
 			LivingEntity			entity,
 			GuiGraphics				guiGraphics,
-			Operation<Void>			operation
+            Operation<Void>			operation
 	) {
 		CoreFeature.setRenderingGui();
 
@@ -37,7 +39,6 @@ public class InventoryScreenMixin {
 				guiGraphics
 		);
 
-		CoreFeature.resetRenderingGui();
 
 		if (CoreFeature.isGuiBatching()) {
 			CoreFeature.resetDefaultLayer				();

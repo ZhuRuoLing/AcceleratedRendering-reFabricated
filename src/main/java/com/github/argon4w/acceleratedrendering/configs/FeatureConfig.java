@@ -369,8 +369,8 @@ public class FeatureConfig {
 				.defineEnum				("feature_Status",						FeatureStatus.ENABLED);
 
 		orientationCullingDefaultCulling				= builder
-				.comment				("- DISABLED: Faces will not be culled unless mods explicitly enable it temporarily when rendering their own geometries.")
-				.comment				("- ENABLED: All faces will be culled unless mods explicitly disable it temporarily when rendering their own geometries.")
+				.comment				("- DISABLED: Faces will not be culled unless mods explicitly enable it temporarily when rendering their own faces.")
+				.comment				("- ENABLED: All faces will be culled unless mods explicitly disable it temporarily when rendering their own faces.")
 				.translation			("acceleratedrendering.configuration.orientation_culling.default_culling")
 				.defineEnum				("default_culling",						FeatureStatus.ENABLED);
 
@@ -517,8 +517,8 @@ public class FeatureConfig {
 				.defineEnum				("shadow_culling",						FeatureStatus.ENABLED);
 
 		irisCompatPolygonProcessing						= builder
-				.comment				("- DISABLED: Extra information in vertices provided by Iris will not be included or calculated in the accelerated pipeline unless mods explicitly enable it temporarily when rendering their own geometries, which may cause visual glitches or incorrect rendering.")
-				.comment				("- ENABLED: Extra information in vertices provided by Iris will be included and calculated in the accelerated pipeline by a compute shader unless mods explicitly disable it temporarily when rendering their own geometries.")
+				.comment				("- DISABLED: Extra information in vertices provided by Iris will not be included or calculated in the accelerated pipeline unless mods explicitly enable it temporarily when rendering their own faces, which may cause visual glitches or incorrect rendering.")
+				.comment				("- ENABLED: Extra information in vertices provided by Iris will be included and calculated in the accelerated pipeline by a compute shader unless mods explicitly disable it temporarily when rendering their own faces.")
 				.translation			("acceleratedrendering.configuration.iris_compatibility.polygon_processing")
 				.defineEnum				("polygon_processing",					FeatureStatus.ENABLED);
 
