@@ -20,6 +20,7 @@ group = mod_group_id
 
 repositories {
     mavenLocal()
+
     exclusiveContent {
         forRepository {
             maven {
