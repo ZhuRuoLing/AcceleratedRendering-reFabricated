@@ -40,7 +40,7 @@ public class GuiBatchingController {
 					GlStateManager.DestFactor	.ONE
 			);
 
-
+			RenderSystem.setShaderTexture(0, AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET.getColorTextureId());
 			AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET.blitToScreen(
 					WINDOW.getWidth	(),
 					WINDOW.getHeight(),
