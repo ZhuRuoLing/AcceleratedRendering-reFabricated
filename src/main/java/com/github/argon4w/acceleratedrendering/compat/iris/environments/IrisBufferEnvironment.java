@@ -134,7 +134,6 @@ public class IrisBufferEnvironment implements IBufferEnvironment {
 			this.cullingProgramSelector			= ModLoader.get().postEventWithReturn		(new LoadCullingProgramSelectorEvent(this.irisVertexFormat)).getSelector	();
 			this.polygonProcessor				= ModLoader.get().postEventWithReturn		(new LoadPolygonProcessorEvent		(this.irisVertexFormat)).getProcessor	();
 
-
 			this.meshUploadingProgramDispatcher	= new MeshUploadingProgramDispatcher		();
 			this.transformProgramDispatcher		= new TransformProgramDispatcher			();
 		}
