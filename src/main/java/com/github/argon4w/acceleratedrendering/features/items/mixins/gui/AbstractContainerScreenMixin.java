@@ -45,33 +45,21 @@ public abstract class AbstractContainerScreenMixin {
 	}
 
 	@Inject(
-			method	= "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;IIII)V",
-			at		= @At("HEAD"),
-			remap	= false
+		method	= "renderSlotHighlight",
+		at		= @At("HEAD")
 	)
 	private static void startRenderHighlight(
-			GuiGraphics		guiGraphics,
-			int				mouseX,
-			int				mouseY,
-			int				blitOffset,
-			int				color,
-			CallbackInfo	ci
+		GuiGraphics guiGraphics, int x, int y, int blitOffset, CallbackInfo ci
 	) {
 		GuiBatchingController.INSTANCE.useOverlayTarget();
 	}
 
 	@Inject(
-			method	= "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;IIII)V",
-			at		= @At("TAIL"),
-			remap	= false
+		method	= "renderSlotHighlight",
+		at		= @At("TAIL")
 	)
 	private static void stopRenderHighlight(
-			GuiGraphics		guiGraphics,
-			int				mouseX,
-			int				mouseY,
-			int				blitOffset,
-			int				color,
-			CallbackInfo	ci
+		GuiGraphics guiGraphics, int x, int y, int blitOffset, CallbackInfo ci
 	) {
 		GuiBatchingController.INSTANCE.resetOverlayTarget();
 	}

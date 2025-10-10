@@ -1,6 +1,6 @@
 package com.github.argon4w.acceleratedrendering.compat;
 
-import net.minecraftforge.fml.loading.LoadingModList;
+import com.github.argon4w.acceleratedrendering.FabricUtils;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -16,7 +16,7 @@ public abstract class AbstractCompatMixinPlugin implements IMixinConfigPlugin {
 		var shouldApply	= false;
 
 		for (var id : getModIDs()) {
-			if (LoadingModList.get().getModFileById(id) != null) {
+			if (FabricUtils.modExists(id)) {
 				shouldApply = true;
 			}
 		}

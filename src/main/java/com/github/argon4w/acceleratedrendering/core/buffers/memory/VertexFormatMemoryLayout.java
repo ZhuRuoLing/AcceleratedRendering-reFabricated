@@ -21,7 +21,7 @@ public class VertexFormatMemoryLayout implements IMemoryLayout<VertexFormatEleme
 
 		for (var i = 0; i < count; i ++) {
 			var element		= elements		.get		(i);
-			var offset		= vertexFormat	.getOffset	(i);
+			var offset		= vertexFormat.offsets.getInt(i);
 
 			this.interfaces	.put(element, new SimpleMemoryInterface(offset, size));
 			this.offsets	.put(element, offset);
