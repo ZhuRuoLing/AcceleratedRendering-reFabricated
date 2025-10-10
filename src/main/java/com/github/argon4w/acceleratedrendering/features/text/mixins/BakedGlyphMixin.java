@@ -28,8 +28,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 
-@ExtensionMethod(VertexConsumerExtension.class)
-@Mixin			(value = BakedGlyph.class, priority = Integer.MIN_VALUE)
+@ExtensionMethod(value = VertexConsumerExtension.class)
+@Mixin			(value = BakedGlyph				.class, priority = Integer.MIN_VALUE)
 public class BakedGlyphMixin implements IAcceleratedRenderer<BakedGlyph.Effect> {
 
 	@Shadow @Final public			float												u0;
