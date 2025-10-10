@@ -21,7 +21,7 @@ public class AcceleratedItemRenderingFeature {
 	public static boolean isEnabled() {
 		return FeatureConfig.CONFIG.acceleratedItemRenderingFeatureStatus.get() == FeatureStatus.ENABLED;
 	}
-S
+
 	public static boolean shouldUseAcceleratedPipeline() {
 		return getPipelineSetting() == PipelineSetting.ACCELERATED;
 	}

@@ -8,7 +8,7 @@ import org.lwjgl.system.MemoryUtil;
 public class MemUtils {
 
 	public static void putNormal(long address, float value) {
-		MemoryUtil.memPutByte(address, (byte) ((int) (Mth.clamp(value, -1.0F, 1.0f) * 127.0f) & 0xFF));
+		MemoryUtil.memPutByte(address, (byte) ((int) (Mth.clamp(value, -1.0f, 1.0f) * 127.0f) & 0xFF));
 	}
 
 	public static void putMatrix3f(long address, Matrix3f matrix) {
