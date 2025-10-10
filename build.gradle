@@ -173,7 +173,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     modImplementation "io.github.llamalad7:mixinextras-forge:0.4.1"
     modImplementation "maven.modrinth:embeddium:0.3.31+mc1.20.1"
-    modCompileOnly "maven.modrinth:oculus:1.20.1-1.8.0"
+    modImplementation "maven.modrinth:oculus:1.20.1-1.8.0"
 
     modCompileOnly "maven.modrinth:entity-model-features:3.0.1"
     modCompileOnly "maven.modrinth:touhou-little-maid:1.4.0-forge+mc1.20.1"
