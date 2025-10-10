@@ -2,6 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.github.argon4w.acceleratedrendering.features.geckolib.mixins",
+  "plugin": "com.github.argon4w.acceleratedrendering.compat.BoosterRequiredMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "client": [
     "GeoBoneMixin",

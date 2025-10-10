@@ -16,9 +16,8 @@ public class AcceleratedRenderingModEntryMixin {
 			at		= @At("TAIL"),
 			remap	= false
 	)
-	public void registerIrisEvents(CallbackInfo	ci) {
-		FMLJavaModLoadingContext
-				.get			()
+	public void registerIrisEvents(FMLJavaModLoadingContext context, CallbackInfo	ci) {
+		context
 				.getModEventBus	()
 				.register		(IrisPrograms.class);
 	}

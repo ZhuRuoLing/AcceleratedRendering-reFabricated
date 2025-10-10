@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin			(IGeoRenderer			.class)
 public interface IGeoRendererMixin {
 
-	/*@SuppressWarnings	("unchecked")
+	@SuppressWarnings	("unchecked")
 	@WrapOperation		(
 			method		= "renderRecursively",
 			at			= @At(
@@ -82,5 +82,5 @@ public interface IGeoRendererMixin {
 				blue,
 				alpha
 		);
-	}*/
+	}
 }

@@ -21,7 +21,7 @@ import software.bernie.geckolib.renderer.GeoRenderer;
 @Mixin			(GeoRenderer			.class)
 public interface GeoRendererMixin {
 
-	/*@SuppressWarnings	("unchecked")
+	@SuppressWarnings	("unchecked")
 	@Inject				(
 			method		= "renderCubesOfBone",
 			cancellable	= true,
@@ -71,5 +71,5 @@ public interface GeoRendererMixin {
 					)
 			);
 		}
-	}*/
+	}
 }

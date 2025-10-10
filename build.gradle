@@ -44,6 +44,11 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+
+    maven {
+        name = 'Fabric'
+        url = 'https://maven.fabricmc.net/'
+    }
 }
 
 base {
@@ -180,9 +185,8 @@ dependencies {
 
     modRuntimeOnly "curse.maven:configured-457570:5180900"
 
-
     annotationProcessor "org.projectlombok:lombok:1.18.38"
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    annotationProcessor 'net.fabricmc:sponge-mixin:0.15.2+mixin.0.8.7'
     annotationProcessor "io.github.llamalad7:mixinextras-common:0.5.0"
 
     jarJar("io.github.llamalad7:mixinextras-forge:0.4.1")  {
