@@ -44,11 +44,11 @@ public class BakedGlyphMixin implements IAcceleratedRenderer<BakedGlyph.Effect> 
 	@Unique private			final	AcceleratedBakedGlyphRenderer						italicRenderer	= new AcceleratedBakedGlyphRenderer	((BakedGlyph) (Object) this, true);
 	@Unique private			final	Map<BakedGlyph.Effect, Map<IBufferGraph, IMesh>>	effectMeshes	= new Object2ObjectOpenHashMap<>	();
 
-	@Inject(
-			method		= "render",
-			at			= @At("HEAD"),
-			cancellable	= true
-	)
+//	@Inject(
+//			method		= "render",
+//			at			= @At("HEAD"),
+//			cancellable	= true
+//	)
 	public void renderFast(
 			boolean			pItalic,
 			float			pX,

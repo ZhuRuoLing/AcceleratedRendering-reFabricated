@@ -1,10 +1,7 @@
 package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
-import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import org.spongepowered.asm.mixin.Mixin;
@@ -87,35 +84,23 @@ public abstract class AbstractContainerScreenMixin {
 		GuiBatchingController.INSTANCE.flushBatching(guiGraphics);
 	}
 
-	@WrapMethod(
-			method	= "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;IIII)V",
-			remap	= false
+	@Inject(
+		method	= "renderSlotHighlight",
+		at		= @At("HEAD")
 	)
 	private static void startRenderHighlight(
-			GuiGraphics		guiGraphics,
-			int				highlightX,
-			int				highLightY,
-			int				blitOffset,
-			int				color,
-			Operation<Void>	original
+		GuiGraphics guiGraphics, int x, int y, int blitOffset, CallbackInfo ci
 	) {
-		if (!CoreFeature.isGuiBatching()) {
-			original.call(
-					guiGraphics,
-					highlightX,
-					highLightY,
-					blitOffset,
-					color
-			);
-			return;
-		}
+		GuiBatchingController.INSTANCE.useOverlayTarget(guiGraphics);
+	}
 
-		GuiBatchingController.INSTANCE.recordHighlight(
-				guiGraphics,
-				highlightX,
-				highLightY,
-				blitOffset,
-				color
-		);
+	@Inject(
+		method	= "renderSlotHighlight",
+		at		= @At("TAIL")
+	)
+	private static void stopRenderHighlight(
+		GuiGraphics guiGraphics, int x, int y, int blitOffset, CallbackInfo ci
+	) {
+		GuiBatchingController.INSTANCE.resetOverlayTarget();
 	}
 }

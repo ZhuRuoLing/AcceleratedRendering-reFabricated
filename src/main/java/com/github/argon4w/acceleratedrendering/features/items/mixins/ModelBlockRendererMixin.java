@@ -11,14 +11,11 @@ import com.github.argon4w.acceleratedrendering.features.items.contexts.Accelerat
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lombok.experimental.ExtensionMethod;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.util.FastColor;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,7 +27,7 @@ public class ModelBlockRendererMixin {
 
 	@Inject(
 			cancellable	= true,
-			method		= "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/client/resources/model/BakedModel;FFFIILnet/minecraftforge/client/model/data/ModelData;Lnet/minecraft/client/renderer/RenderType;)V",
+			method		= "renderModel",
 			at			= @At("HEAD"),
 			remap		= false
 	)
@@ -44,7 +41,6 @@ public class ModelBlockRendererMixin {
 			float				blue,
 			int					packedLight,
 			int					packedOverlay,
-			ModelData			modelData,
 			RenderType			renderType,
 			CallbackInfo		ci
 	) {
@@ -82,7 +78,6 @@ public class ModelBlockRendererMixin {
 							(int) (green	* 255.0f),
 							(int) (blue		* 255.0f)
 					),
-					modelData,
 					renderType
 			);
 			return;
@@ -104,9 +99,7 @@ public class ModelBlockRendererMixin {
 							model.getQuads(
 									state,
 									direction,
-									randomSource,
-									modelData,
-									renderType
+									randomSource
 							),
 							new FixedColors(FastColor.ARGB32.color(
 									255,

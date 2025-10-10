@@ -6,12 +6,11 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
 
 public interface IAcceleratedBakedModel {
 
 	void	renderItemFast		(ItemStack	itemStack,	RandomSource	random, PoseStack.Pose pose, IAcceleratedVertexConsumer extension, int light, int overlay);
-	void	renderBlockFast		(BlockState	blockState, RandomSource	random, PoseStack.Pose pose, IAcceleratedVertexConsumer extension, int light, int overlay, int color, ModelData data, RenderType renderType);
+	void	renderBlockFast		(BlockState	blockState, RandomSource	random, PoseStack.Pose pose, IAcceleratedVertexConsumer extension, int light, int overlay, int color, RenderType renderType);
 	int		getCustomColor 		(int		layer,		int				color);
 	boolean	isAccelerated		();
 	boolean	isAcceleratedInHand	();

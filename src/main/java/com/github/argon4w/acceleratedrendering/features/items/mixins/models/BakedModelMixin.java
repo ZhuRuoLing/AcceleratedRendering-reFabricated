@@ -8,7 +8,6 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -38,7 +37,6 @@ public interface BakedModelMixin extends IAcceleratedBakedModel {
 			int							light,
 			int							overlay,
 			int							color,
-			ModelData					data,
 			RenderType					renderType
 	) {
 		throw new UnsupportedOperationException("Unsupported Operation.");

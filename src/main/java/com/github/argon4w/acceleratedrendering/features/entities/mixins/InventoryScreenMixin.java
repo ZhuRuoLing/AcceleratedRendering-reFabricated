@@ -4,10 +4,10 @@ import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.core.CoreStates;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerDrawType;
-import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.blaze3d.platform.Lighting;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -17,25 +17,15 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(InventoryScreen.class)
 public class InventoryScreenMixin {
 
-	@WrapMethod(method = "lambda$renderEntityInInventory$1")
-	private static void renderEntityInInventoryFast(
-			EntityRenderDispatcher	entityRenderDispatcher,
+	//lambda$renderEntityInInventory$1
+	@WrapMethod(method = "method_29977")
+	private static void startRenderingGui(
+			EntityRenderDispatcher	entityrenderdispatcher,
 			LivingEntity			entity,
 			GuiGraphics				guiGraphics,
-			Operation<Void>			operation
+            Operation<Void>			operation
 	) {
-		if (		!AcceleratedEntityRenderingFeature	.isEnabled						()
-				||	!AcceleratedEntityRenderingFeature	.shouldUseAcceleratedPipeline	()
-				||	!AcceleratedEntityRenderingFeature	.shouldAccelerateInGui			()
-				||	!CoreFeature						.isLoaded						()
-		) {
-			operation.call(
-					entityRenderDispatcher,
-					entity,
-					guiGraphics
-			);
-			return;
-		}
+		CoreFeature.setRenderingGui();
 
 		if (CoreFeature.isGuiBatching()) {
 			CoreFeature.forceSetDefaultLayer				(2);
@@ -43,15 +33,12 @@ public class InventoryScreenMixin {
 			CoreFeature.forceSetDefaultLayerAfterFunction	(Lighting::setupFor3DItems);
 		}
 
-		CoreFeature.setRenderingGui();
-
 		operation.call(
-				entityRenderDispatcher,
+				entityrenderdispatcher,
 				entity,
 				guiGraphics
 		);
 
-		CoreFeature.resetRenderingGui();
 
 		if (CoreFeature.isGuiBatching()) {
 			CoreFeature.resetDefaultLayer				();
@@ -62,7 +49,6 @@ public class InventoryScreenMixin {
 			CoreBuffers.ENTITY				.prepareBuffers	();
 			CoreBuffers.BLOCK				.prepareBuffers	();
 			CoreBuffers.POS					.prepareBuffers	();
-			CoreBuffers.POS_COLOR			.prepareBuffers	();
 			CoreBuffers.POS_TEX				.prepareBuffers	();
 			CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
 			CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
@@ -71,7 +57,6 @@ public class InventoryScreenMixin {
 			CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.ALL);
 			CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.ALL);
 			CoreBuffers.POS					.drawBuffers	(LayerDrawType.ALL);
-			CoreBuffers.POS_COLOR			.drawBuffers	(LayerDrawType.ALL);
 			CoreBuffers.POS_TEX				.drawBuffers	(LayerDrawType.ALL);
 			CoreBuffers.POS_TEX_COLOR		.drawBuffers	(LayerDrawType.ALL);
 			CoreBuffers.POS_COLOR_TEX_LIGHT	.drawBuffers	(LayerDrawType.ALL);
@@ -79,7 +64,6 @@ public class InventoryScreenMixin {
 			CoreBuffers.ENTITY				.clearBuffers	();
 			CoreBuffers.BLOCK				.clearBuffers	();
 			CoreBuffers.POS					.clearBuffers	();
-			CoreBuffers.POS_COLOR			.clearBuffers	();
 			CoreBuffers.POS_TEX				.clearBuffers	();
 			CoreBuffers.POS_TEX_COLOR		.clearBuffers	();
 			CoreBuffers.POS_COLOR_TEX_LIGHT	.clearBuffers	();
