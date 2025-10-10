@@ -12,7 +12,7 @@ import java.util.Deque;
 
 public class AcceleratedItemRenderingFeature {
 
-	public	static final TextureTarget			GUI_OVERLAY_TARGET					= new SimpleTextureTarget	(false);
+	public	static final TextureTarget			GUI_OVERLAY_TARGET					= new SimpleTextureTarget	(true);
 	private	static final Deque<PipelineSetting>	PIPELINE_CONTROLLER_STACK			= new ArrayDeque<>			();
 	private	static final Deque<FeatureStatus>	BAKE_QUAD_MESH_CONTROLLER_STACK		= new ArrayDeque<>			();
 	private	static final Deque<FeatureStatus>	HAND_ACCELERATION_CONTROLLER_STACK	= new ArrayDeque<>			();
@@ -21,7 +21,7 @@ public class AcceleratedItemRenderingFeature {
 	public static boolean isEnabled() {
 		return FeatureConfig.CONFIG.acceleratedItemRenderingFeatureStatus.get() == FeatureStatus.ENABLED;
 	}
-
+S
 	public static boolean shouldUseAcceleratedPipeline() {
 		return getPipelineSetting() == PipelineSetting.ACCELERATED;
 	}

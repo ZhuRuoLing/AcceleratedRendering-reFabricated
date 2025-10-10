@@ -31,7 +31,7 @@ public class LevelRendererMixin {
 			at		= @At("HEAD")
 	)
 	public void startRenderLevel(
-			PoseStack poseStack,
+			PoseStack		poseStack,
 			float			partialTick,
 			long			finishNanoTime,
 			boolean			renderBlockOutline,
