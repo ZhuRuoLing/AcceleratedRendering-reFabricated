@@ -6,6 +6,6 @@ public class IrisCompatMixinPlugin extends AbstractCompatMixinPlugin {
 
 	@Override
 	protected String getModID() {
-		return "oculus";
+		return "iris";
 	}
 }

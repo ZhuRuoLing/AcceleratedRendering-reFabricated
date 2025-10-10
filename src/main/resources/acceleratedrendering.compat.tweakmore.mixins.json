@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.github.argon4w.acceleratedrendering.compat.tweakmore.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "TextRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
