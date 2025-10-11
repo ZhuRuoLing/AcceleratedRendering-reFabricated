@@ -48,6 +48,7 @@ public class BakedGlyphMixin implements IAcceleratedRenderer<BakedGlyph.Effect> 
 //			at			= @At("HEAD"),
 //			cancellable	= true
 //	)
+	@Unique
 	public void renderFast(
 			boolean			pItalic,
 			float			pX,
