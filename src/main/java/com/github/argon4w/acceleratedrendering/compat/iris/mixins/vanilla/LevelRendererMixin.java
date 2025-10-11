@@ -2,7 +2,7 @@ package com.github.argon4w.acceleratedrendering.compat.iris.mixins.vanilla;
 
 import com.github.argon4w.acceleratedrendering.compat.iris.IrisCompatBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
-import com.github.argon4w.acceleratedrendering.core.CoreRestorers;
+import com.github.argon4w.acceleratedrendering.core.CoreStates;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerDrawType;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -43,14 +43,14 @@ public class LevelRendererMixin {
 			Matrix4f		projectionMatrix,
 			CallbackInfo	ci
 	) {
-		CoreRestorers					.record			();
+		CoreStates						.record			();
 		CoreBuffers.ENTITY				.prepareBuffers	();
 		CoreBuffers.BLOCK				.prepareBuffers	();
 		CoreBuffers.POS					.prepareBuffers	();
 		CoreBuffers.POS_TEX				.prepareBuffers	();
 		CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
-		CoreRestorers					.restore		();
+		CoreStates						.restore		();
 
 		CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.ALL);
@@ -86,14 +86,14 @@ public class LevelRendererMixin {
 			Matrix4f		projectionMatrix,
 			CallbackInfo	ci
 	) {
-		CoreRestorers					.record			();
+		CoreStates						.record			();
 		CoreBuffers.ENTITY				.prepareBuffers	();
 		CoreBuffers.BLOCK				.prepareBuffers	();
 		CoreBuffers.POS					.prepareBuffers	();
 		CoreBuffers.POS_TEX				.prepareBuffers	();
 		CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
-		CoreRestorers					.restore		();
+		CoreStates						.restore		();
 
 		CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.OPAQUE);
 		CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.OPAQUE);

@@ -2,7 +2,7 @@ package com.github.argon4w.acceleratedrendering.core.mixins;
 
 import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
-import com.github.argon4w.acceleratedrendering.core.CoreRestorers;
+import com.github.argon4w.acceleratedrendering.core.CoreStates;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerDrawType;
 import com.github.argon4w.acceleratedrendering.core.meshes.ClientMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
@@ -81,11 +81,13 @@ public class LevelRendererMixin {
 			Matrix4f		projectionMatrix,
 			CallbackInfo	ci
 	) {
-		CoreRestorers						.record			();
+		CoreStates							.record			();
 		CoreBuffers.POS_TEX_COLOR_OUTLINE	.prepareBuffers	();
+		CoreStates							.restore		();
+
 		CoreBuffers.POS_TEX_COLOR_OUTLINE	.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS_TEX_COLOR_OUTLINE	.clearBuffers	();
-		CoreRestorers						.restore		();
+
 	}
 
 	@WrapOperation(
@@ -96,14 +98,14 @@ public class LevelRendererMixin {
 			)
 	)
 	public void drawCoreBuffers(MultiBufferSource.BufferSource instance, Operation<Void> original) {
-		CoreRestorers					.record			();
+		CoreStates						.record			();
 		CoreBuffers.ENTITY				.prepareBuffers	();
 		CoreBuffers.BLOCK				.prepareBuffers	();
 		CoreBuffers.POS					.prepareBuffers	();
 		CoreBuffers.POS_TEX				.prepareBuffers	();
 		CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
-		CoreRestorers					.restore		();
+		CoreStates						.restore		();
 
 		CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.ALL);
@@ -133,7 +135,7 @@ public class LevelRendererMixin {
 		CoreBuffers.POS_TEX				.delete();
 		CoreBuffers.POS_TEX_COLOR		.delete();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.delete();
-		CoreRestorers					.delete();
+		CoreStates						.delete();
 		ComputeShaderProgramLoader		.delete();
 		ServerMesh.Builder.INSTANCE		.delete();
 		ClientMesh.Builder.INSTANCE		.delete();
