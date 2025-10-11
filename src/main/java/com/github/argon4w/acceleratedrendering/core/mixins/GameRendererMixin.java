@@ -2,6 +2,7 @@ package com.github.argon4w.acceleratedrendering.core.mixins;
 
 import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
+import com.github.argon4w.acceleratedrendering.core.CoreRestorers;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerDrawType;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
@@ -48,12 +49,14 @@ public class GameRendererMixin {
 	) {
 		CoreFeature						.resetRenderingHand	();
 
+		CoreRestorers					.record				();
 		CoreBuffers.ENTITY				.prepareBuffers		();
 		CoreBuffers.BLOCK				.prepareBuffers		();
 		CoreBuffers.POS					.prepareBuffers		();
 		CoreBuffers.POS_TEX				.prepareBuffers		();
 		CoreBuffers.POS_TEX_COLOR		.prepareBuffers		();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers		();
+		CoreRestorers					.restore			();
 
 		CoreBuffers.ENTITY				.drawBuffers		(LayerDrawType.ALL);
 		CoreBuffers.BLOCK				.drawBuffers		(LayerDrawType.ALL);

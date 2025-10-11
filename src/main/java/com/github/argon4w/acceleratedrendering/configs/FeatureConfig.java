@@ -1,5 +1,7 @@
 package com.github.argon4w.acceleratedrendering.configs;
 
+import com.github.argon4w.acceleratedrendering.core.buffers.blocks.BlockBufferBindingRestorerType;
+import com.github.argon4w.acceleratedrendering.core.buffers.blocks.cache.BlockBufferBindingCacheType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.LayerStorageType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.MeshInfoCacheType;
 import com.github.argon4w.acceleratedrendering.core.meshes.MeshType;
@@ -13,64 +15,71 @@ import java.util.List;
 
 public class FeatureConfig {
 
-	public static	final	FeatureConfig										CONFIG;
-	public static	final	ForgeConfigSpec										SPEC;
+	public static	final	FeatureConfig												CONFIG;
+	public static	final	ForgeConfigSpec												SPEC;
 
-	public			final	ForgeConfigSpec.IntValue							corePooledRingBufferSize;
-	public			final	ForgeConfigSpec.IntValue							corePooledBatchingSize;
-	public			final	ForgeConfigSpec.IntValue							coreCachedImageSize;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			coreDebugContextEnabled;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			coreForceTranslucentAcceleration;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			coreCacheIdenticalPose;
-	public			final	ForgeConfigSpec.ConfigValue<MeshInfoCacheType>		coreMeshInfoCacheType;
-	public			final	ForgeConfigSpec.ConfigValue<LayerStorageType>		coreLayerStorageType;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			coreUploadMeshImmediately;
+	public			final	ForgeConfigSpec.IntValue									corePooledRingBufferSize;
+	public			final	ForgeConfigSpec.IntValue									corePooledBatchingSize;
+	public			final	ForgeConfigSpec.IntValue									coreCachedImageSize;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					coreDebugContextEnabled;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					coreForceTranslucentAcceleration;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					coreCacheIdenticalPose;
+	public			final	ForgeConfigSpec.ConfigValue<MeshInfoCacheType>				coreMeshInfoCacheType;
+	public			final	ForgeConfigSpec.ConfigValue<LayerStorageType>				coreLayerStorageType;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					coreUploadMeshImmediately;
 
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			acceleratedEntityRenderingFeatureStatus;
-	public			final	ForgeConfigSpec.ConfigValue<PipelineSetting>		acceleratedEntityRenderingDefaultPipeline;
-	public			final	ForgeConfigSpec.ConfigValue<MeshType>				acceleratedEntityRenderingMeshType;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			acceleratedEntityRenderingGuiAcceleration;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					restoringFeatureStatus;
+	public			final	ForgeConfigSpec.ConfigValue<BlockBufferBindingCacheType>	restoringBindingCacheType;
+	public			final	ForgeConfigSpec.ConfigValue<BlockBufferBindingRestorerType>	restoringShaderStorageType;
+	public			final	ForgeConfigSpec.ConfigValue<BlockBufferBindingRestorerType>	restoringAtomicCounterType;
+	public			final	ForgeConfigSpec.IntValue									restoringShaderStorageRange;
+	public			final	ForgeConfigSpec.IntValue									restoringAtomicCounterRange;
 
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			acceleratedTextRenderingFeatureStatus;
-	public			final	ForgeConfigSpec.ConfigValue<PipelineSetting>		acceleratedTextRenderingDefaultPipeline;
-	public			final	ForgeConfigSpec.ConfigValue<MeshType>				acceleratedTextRenderingMeshType;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					acceleratedEntityRenderingFeatureStatus;
+	public			final	ForgeConfigSpec.ConfigValue<PipelineSetting>				acceleratedEntityRenderingDefaultPipeline;
+	public			final	ForgeConfigSpec.ConfigValue<MeshType>						acceleratedEntityRenderingMeshType;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					acceleratedEntityRenderingGuiAcceleration;
 
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingFeatureStatus;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingBakeMeshForQuads;
-	public			final	ForgeConfigSpec.ConfigValue<PipelineSetting>		acceleratedItemRenderingDefaultPipeline;
-	public			final	ForgeConfigSpec.ConfigValue<MeshType>				acceleratedItemRenderingMeshType;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingHandAcceleration;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingGuiAcceleration;
-	public 			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingGuiItemBatching;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					acceleratedTextRenderingFeatureStatus;
+	public			final	ForgeConfigSpec.ConfigValue<PipelineSetting>				acceleratedTextRenderingDefaultPipeline;
+	public			final	ForgeConfigSpec.ConfigValue<MeshType>						acceleratedTextRenderingMeshType;
 
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			orientationCullingFeatureStatus;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			orientationCullingDefaultCulling;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			orientationCullingIgnoreCullState;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingFeatureStatus;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingBakeMeshForQuads;
+	public			final	ForgeConfigSpec.ConfigValue<PipelineSetting>				acceleratedItemRenderingDefaultPipeline;
+	public			final	ForgeConfigSpec.ConfigValue<MeshType>						acceleratedItemRenderingMeshType;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingHandAcceleration;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingGuiAcceleration;
+	public 			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingGuiItemBatching;
 
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			filterFeatureStatus;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			filterEntityFilter;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			filterBlockEntityFilter;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			filterItemFilter;
-	public			final	ForgeConfigSpec.ConfigValue<FilterType>				filterEntityFilterType;
-	public			final	ForgeConfigSpec.ConfigValue<FilterType>				filterBlockEntityFilterType;
-	public			final	ForgeConfigSpec.ConfigValue<FilterType>				filterItemFilterType;
-	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>	filterEntityFilterValues;
-	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>	filterBlockEntityFilterValues;
-	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>	filterItemFilterValues;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					orientationCullingFeatureStatus;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					orientationCullingDefaultCulling;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					orientationCullingIgnoreCullState;
 
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			irisCompatFeatureStatus;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			irisCompatOrientationCullingCompat;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			irisCompatShadowCulling;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			irisCompatPolygonProcessing;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					filterFeatureStatus;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					filterEntityFilter;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					filterBlockEntityFilter;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					filterItemFilter;
+	public			final	ForgeConfigSpec.ConfigValue<FilterType>						filterEntityFilterType;
+	public			final	ForgeConfigSpec.ConfigValue<FilterType>						filterBlockEntityFilterType;
+	public			final	ForgeConfigSpec.ConfigValue<FilterType>						filterItemFilterType;
+	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>			filterEntityFilterValues;
+	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>			filterBlockEntityFilterValues;
+	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>			filterItemFilterValues;
 
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			sodiumCompatFeatureStatus;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			sodiumCompatDisableOptimizedPath;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					irisCompatFeatureStatus;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					irisCompatOrientationCullingCompat;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					irisCompatShadowCulling;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					irisCompatPolygonProcessing;
 
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			curiosCompatFeatureStatus;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			curiosCompatLayerAcceleration;
-	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			curiosItemFilter;
-	public			final	ForgeConfigSpec.ConfigValue<FilterType>				curiosItemFilterType;
-	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>	curiosItemFilterValues;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					sodiumCompatFeatureStatus;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					sodiumCompatDisableOptimizedPath;
+
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					curiosCompatFeatureStatus;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					curiosCompatLayerAcceleration;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					curiosItemFilter;
+	public			final	ForgeConfigSpec.ConfigValue<FilterType>						curiosItemFilterType;
+	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>			curiosItemFilterValues;
 
 	static {
 		Pair<FeatureConfig, ForgeConfigSpec> pair	= new ForgeConfigSpec.Builder()	.configure	(FeatureConfig::new);
@@ -125,7 +134,7 @@ public class FeatureConfig {
 				.defineEnum				("cache_identical_pose",				FeatureStatus.ENABLED);
 
 		coreMeshInfoCacheType							= builder
-				.comment				("- SIMPLE: The most basic implementation of cache. Usually used for testing if other cache types are working properly.")
+				.comment				("- SIMPLE: The most basic implementation of cache. Usually used for testing if other cache types are working correctly.")
 				.comment				("- HANDLE: Faster implementation of cache using VarHandle and flatten values to improve performance on read/write operations.")
 				.comment				("- UNSAFE: Fastest implementation of cache using unsafe memory operations that skip multiple safety checks to read/write.")
 				.translation			("acceleratedrendering.configuration.core_settings.mesh_info_cache_type")
@@ -144,6 +153,57 @@ public class FeatureConfig {
 				.comment				("- ENABLED: Meshes that is going to be accelerated will be uploaded immediately after the draw command. It is less efficient and only have about 2GB mesh cache (generally enough) but will follow the original draw order to get the most compatibility.")
 				.translation			("acceleratedrendering.configuration.core_settings.upload_mesh_immediately")
 				.defineEnum				("upload_mesh_immediately",				FeatureStatus.DISABLED);
+
+		builder
+				.comment				("Block Buffer Restoring Settings")
+				.comment				("A few mods and shader packs will use their on block buffers when rendering, which may introduce conflicts when working with Accelerated Rendering that also uses block buffers.")
+				.comment				("Block Buffer Restoring can record the binding of block buffers before the acceleration and restore them after the acceleration to work correctly with them.")
+				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring")
+				.push					("block_buffer_binding_restoring");
+
+		restoringFeatureStatus							= builder
+				.comment				("- DISABLED: Disable block buffer restoring, which is faster but may cause visual glitches with mods and shaders that uses block buffers.")
+				.comment				("- ENABLED: Enable block buffer restoring, which may be slower due to recording and restoring block buffer bindings that ensures working correctly with mods and shaders that use block buffers.")
+				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.feature_status")
+				.defineEnum				("feature_status",						FeatureStatus.ENABLED);
+
+		restoringBindingCacheType						= builder
+				.comment				("- SIMPLE: The most basic implementation of cache. Usually used for testing if other cache types are working properly.")
+				.comment				("- HANDLE: Faster implementation of cache using VarHandle and flatten values to improve performance on read/write operations.")
+				.comment				("- UNSAFE: Fastest implementation of cache using unsafe memory operations that skip multiple safety checks to read/write.")
+				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.binding_cache_type")
+				.worldRestart			()
+				.defineEnum				("binding_cache_type",					BlockBufferBindingCacheType.HANDLE);
+
+		restoringShaderStorageType						= builder
+				.comment				("- IGNORE: Shader storage buffers will not be restored which improves FPS but reduces compatibility with mods and shaders that ues shader storage buffers.")
+				.comment				("- ENABLED: Shader storage buffers will be restored, which is slight slower but has better compatibility with mods and shaders that ues shader storage buffers.")
+				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.shader_storage_type")
+				.worldRestart			()
+				.defineEnum				("shader_storage_type",					BlockBufferBindingRestorerType.RESTORED);
+
+		restoringAtomicCounterType						= builder
+				.comment				("- IGNORE: Atomic counter buffers will not be restored which improves FPS but reduces compatibility with mods and shaders that ues atomic counter buffers.")
+				.comment				("- ENABLED: Atomic counter buffers will be restored, which is slight slower but has better compatibility with mods and shaders that ues atomic counter buffers.")
+				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.atomic_counter_type")
+				.worldRestart			()
+				.defineEnum				("atomic_counter_type",					BlockBufferBindingRestorerType.RESTORED);
+
+		restoringShaderStorageRange						= builder
+				.comment				("Range of shader storage buffer bindings that will be restored.")
+				.comment				("Changing this value may affects your FPS. Smaller value means less shader storage buffer restored but less compatibility, while larger values means more shader storage buffer restored and better compatibility. More shader storage buffers means less FPS.")
+				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.shader_storage_range")
+				.worldRestart			()
+				.defineInRange			("shader_storage_range",		9,	0,	9);
+
+		restoringAtomicCounterRange						= builder
+				.comment				("Range of atomic counter buffer bindings that will be restored.")
+				.comment				("Changing this value may affects your FPS. Smaller value means less atomic counter buffer restored but less compatibility, while larger values means more atomic counter buffer restored and better compatibility. More atomic counter buffers means less FPS.")
+				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.atomic_counter_range")
+				.worldRestart			()
+				.defineInRange			("atomic_counter_range",		1,	0,	1);
+
+		builder.pop();
 
 		builder.pop();
 

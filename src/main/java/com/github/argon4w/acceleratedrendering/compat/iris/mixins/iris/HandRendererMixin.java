@@ -2,6 +2,7 @@ package com.github.argon4w.acceleratedrendering.compat.iris.mixins.iris;
 
 import com.github.argon4w.acceleratedrendering.compat.iris.IrisCompatBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
+import com.github.argon4w.acceleratedrendering.core.CoreRestorers;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerDrawType;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.irisshaders.iris.pathways.HandRenderer;
@@ -56,12 +57,14 @@ public class HandRendererMixin {
 	) {
 		CoreFeature									.resetRenderingHand	();
 
+		CoreRestorers								.record				();
 		IrisCompatBuffers.ENTITY_HAND				.prepareBuffers		();
 		IrisCompatBuffers.BLOCK_HAND				.prepareBuffers		();
 		IrisCompatBuffers.POS_HAND					.prepareBuffers		();
 		IrisCompatBuffers.POS_TEX_HAND				.prepareBuffers		();
 		IrisCompatBuffers.POS_TEX_COLOR_HAND		.prepareBuffers		();
 		IrisCompatBuffers.POS_COLOR_TEX_LIGHT_HAND	.prepareBuffers		();
+		CoreRestorers								.restore			();
 
 		IrisCompatBuffers.ENTITY_HAND				.drawBuffers		(LayerDrawType.ALL);
 		IrisCompatBuffers.BLOCK_HAND				.drawBuffers		(LayerDrawType.ALL);
@@ -117,12 +120,14 @@ public class HandRendererMixin {
 	) {
 		CoreFeature									.resetRenderingHand	();
 
+		CoreRestorers								.record				();
 		IrisCompatBuffers.ENTITY_HAND				.prepareBuffers		();
 		IrisCompatBuffers.BLOCK_HAND				.prepareBuffers		();
 		IrisCompatBuffers.POS_HAND					.prepareBuffers		();
 		IrisCompatBuffers.POS_TEX_HAND				.prepareBuffers		();
 		IrisCompatBuffers.POS_TEX_COLOR_HAND		.prepareBuffers		();
 		IrisCompatBuffers.POS_COLOR_TEX_LIGHT_HAND	.prepareBuffers		();
+		CoreRestorers								.restore			();
 
 		IrisCompatBuffers.ENTITY_HAND				.drawBuffers		(LayerDrawType.ALL);
 		IrisCompatBuffers.BLOCK_HAND				.drawBuffers		(LayerDrawType.ALL);

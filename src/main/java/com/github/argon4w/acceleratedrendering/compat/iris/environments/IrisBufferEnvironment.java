@@ -1,8 +1,10 @@
 package com.github.argon4w.acceleratedrendering.compat.iris.environments;
 
+import com.github.argon4w.acceleratedrendering.core.backends.buffers.IServerBuffer;
 import com.github.argon4w.acceleratedrendering.core.buffers.environments.IBufferEnvironment;
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryLayout;
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.VertexFormatMemoryLayout;
+import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
 import com.github.argon4w.acceleratedrendering.core.programs.culling.ICullingProgramDispatcher;
 import com.github.argon4w.acceleratedrendering.core.programs.culling.ICullingProgramSelector;
 import com.github.argon4w.acceleratedrendering.core.programs.culling.LoadCullingProgramSelectorEvent;
@@ -63,6 +65,11 @@ public class IrisBufferEnvironment implements IBufferEnvironment {
 	@Override
 	public IMemoryLayout<VertexFormatElement> getLayout() {
 		return getSubSet().getLayout();
+	}
+
+	@Override
+	public IServerBuffer getImmediateMeshBuffer() {
+		return getSubSet().getImmediateMeshBuffer();
 	}
 
 	@Override
@@ -156,6 +163,11 @@ public class IrisBufferEnvironment implements IBufferEnvironment {
 		@Override
 		public IMemoryLayout<VertexFormatElement> getLayout() {
 			return layout;
+		}
+
+		@Override
+		public IServerBuffer getImmediateMeshBuffer() {
+			return ServerMesh.Builder.BUFFERS.get(layout).getFirst();
 		}
 
 		@Override

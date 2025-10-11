@@ -1,6 +1,7 @@
 package com.github.argon4w.acceleratedrendering.compat.iris.mixins.iris;
 
 import com.github.argon4w.acceleratedrendering.compat.iris.IrisCompatBuffers;
+import com.github.argon4w.acceleratedrendering.core.CoreRestorers;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerDrawType;
 import net.irisshaders.iris.mixin.LevelRendererAccessor;
 import net.irisshaders.iris.shadows.ShadowRenderer;
@@ -26,11 +27,13 @@ public class ShadowRendererMixin {
 			Camera					playerCamera,
 			CallbackInfo			ci
 	) {
+		CoreRestorers							.record			();
 		IrisCompatBuffers.BLOCK_SHADOW			.prepareBuffers	();
 		IrisCompatBuffers.ENTITY_SHADOW			.prepareBuffers	();
 		IrisCompatBuffers.GLYPH_SHADOW			.prepareBuffers	();
 		IrisCompatBuffers.POS_TEX_SHADOW		.prepareBuffers	();
 		IrisCompatBuffers.POS_TEX_COLOR_SHADOW	.prepareBuffers	();
+		CoreRestorers							.restore		();
 
 		IrisCompatBuffers.BLOCK_SHADOW			.drawBuffers	(LayerDrawType.ALL);
 		IrisCompatBuffers.ENTITY_SHADOW			.drawBuffers	(LayerDrawType.ALL);

@@ -1,7 +1,7 @@
 package com.github.argon4w.acceleratedrendering.compat.iris.mixins.acceleratedrendering;
 
 import com.github.argon4w.acceleratedrendering.compat.iris.interfaces.IIrisMeshInfo;
-import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.MeshInfo;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.SimpleMeshInfo;
 import net.irisshaders.iris.uniforms.CapturedRenderingState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(MeshInfo.class)
-public class MeshInfoMixin implements IIrisMeshInfo {
+@Mixin(SimpleMeshInfo.class)
+public class SimpleMeshInfoMixin implements IIrisMeshInfo {
 
 	@Unique private short renderedEntity;
 	@Unique private short renderedBlockEntity;
