@@ -1,11 +1,11 @@
-package com.github.argon4w.acceleratedrendering.core.buffers.blocks;
+package com.github.argon4w.acceleratedrendering.core.buffers.blocks.states;
 
 import com.github.argon4w.acceleratedrendering.core.buffers.blocks.cache.BlockBufferBindingCacheType;
 import com.github.argon4w.acceleratedrendering.core.buffers.blocks.cache.IBlockBufferBindingCache;
 
 import static org.lwjgl.opengl.GL46.*;
 
-public class SimpleBlockBufferBindingRestorer implements IBlockBufferBindingRestorer {
+public class SimpleBlockBufferBindingState implements IBlockBufferBindingState {
 
 	private final IBlockBufferBindingCache	bindingCache;
 	private final int						bindingRange;
@@ -14,7 +14,7 @@ public class SimpleBlockBufferBindingRestorer implements IBlockBufferBindingRest
 	private final int						offsetParam;
 	private final int						sizeParam;
 
-	public SimpleBlockBufferBindingRestorer(
+	public SimpleBlockBufferBindingState(
 			BlockBufferBindingCacheType	type,
 			int							bindingRange,
 			int							bindingBlock,

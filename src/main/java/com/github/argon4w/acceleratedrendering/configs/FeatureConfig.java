@@ -1,9 +1,9 @@
 package com.github.argon4w.acceleratedrendering.configs;
 
-import com.github.argon4w.acceleratedrendering.core.buffers.blocks.BlockBufferBindingRestorerType;
-import com.github.argon4w.acceleratedrendering.core.buffers.blocks.cache.BlockBufferBindingCacheType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.LayerStorageType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.MeshInfoCacheType;
+import com.github.argon4w.acceleratedrendering.core.buffers.blocks.states.BlockBufferBindingStateType;
+import com.github.argon4w.acceleratedrendering.core.buffers.blocks.cache.BlockBufferBindingCacheType;
 import com.github.argon4w.acceleratedrendering.core.meshes.MeshType;
 import com.github.argon4w.acceleratedrendering.features.filter.FilterType;
 import net.minecraft.resources.ResourceLocation;
@@ -30,8 +30,8 @@ public class FeatureConfig {
 
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					restoringFeatureStatus;
 	public			final	ModConfigSpec.ConfigValue<BlockBufferBindingCacheType>		restoringBindingCacheType;
-	public			final	ModConfigSpec.ConfigValue<BlockBufferBindingRestorerType>	restoringShaderStorageType;
-	public			final	ModConfigSpec.ConfigValue<BlockBufferBindingRestorerType>	restoringAtomicCounterType;
+	public			final	ModConfigSpec.ConfigValue<BlockBufferBindingStateType>	restoringShaderStorageType;
+	public			final	ModConfigSpec.ConfigValue<BlockBufferBindingStateType>	restoringAtomicCounterType;
 	public			final	ModConfigSpec.IntValue										restoringShaderStorageRange;
 	public			final	ModConfigSpec.IntValue										restoringAtomicCounterRange;
 
@@ -177,14 +177,14 @@ public class FeatureConfig {
 				.comment				("- ENABLED: Shader storage buffers will be restored, which is slight slower but has better compatibility with mods and shaders that ues shader storage buffers.")
 				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.shader_storage_type")
 				.gameRestart			()
-				.defineEnum				("shader_storage_type",					BlockBufferBindingRestorerType.RESTORED);
+				.defineEnum				("shader_storage_type",					BlockBufferBindingStateType.RESTORED);
 
 		restoringAtomicCounterType						= builder
 				.comment				("- IGNORE: Atomic counter buffers will not be restored which improves FPS but reduces compatibility with mods and shaders that ues atomic counter buffers.")
 				.comment				("- ENABLED: Atomic counter buffers will be restored, which is slight slower but has better compatibility with mods and shaders that ues atomic counter buffers.")
 				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.atomic_counter_type")
 				.gameRestart			()
-				.defineEnum				("atomic_counter_type",					BlockBufferBindingRestorerType.RESTORED);
+				.defineEnum				("atomic_counter_type",					BlockBufferBindingStateType.RESTORED);
 
 		restoringShaderStorageRange						= builder
 				.comment				("Range of shader storage buffer bindings that will be restored.")

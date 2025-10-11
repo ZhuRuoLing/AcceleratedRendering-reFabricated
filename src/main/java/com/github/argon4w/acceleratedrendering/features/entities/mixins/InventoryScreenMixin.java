@@ -2,7 +2,7 @@ package com.github.argon4w.acceleratedrendering.features.entities.mixins;
 
 import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
-import com.github.argon4w.acceleratedrendering.core.CoreRestorers;
+import com.github.argon4w.acceleratedrendering.core.CoreStates;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerDrawType;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -36,14 +36,14 @@ public class InventoryScreenMixin {
 		CoreFeature.resetRenderingGui();
 
 		if (!CoreFeature.isGuiBatching()) {
-			CoreRestorers					.record			();
+			CoreStates						.record			();
 			CoreBuffers.ENTITY				.prepareBuffers	();
 			CoreBuffers.BLOCK				.prepareBuffers	();
 			CoreBuffers.POS					.prepareBuffers	();
 			CoreBuffers.POS_TEX				.prepareBuffers	();
 			CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
 			CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
-			CoreRestorers					.restore		();
+			CoreStates						.restore		();
 
 			CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.ALL);
 			CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.ALL);

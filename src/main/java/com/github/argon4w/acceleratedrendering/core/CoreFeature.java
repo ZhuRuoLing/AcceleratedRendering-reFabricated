@@ -6,9 +6,9 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.s
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.LayerStorageType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.IMeshInfoCache;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.MeshInfoCacheType;
-import com.github.argon4w.acceleratedrendering.core.buffers.blocks.BlockBufferBindingRestorerType;
+import com.github.argon4w.acceleratedrendering.core.buffers.blocks.states.BlockBufferBindingStateType;
 import com.github.argon4w.acceleratedrendering.core.buffers.blocks.BufferBlockType;
-import com.github.argon4w.acceleratedrendering.core.buffers.blocks.IBlockBufferBindingRestorer;
+import com.github.argon4w.acceleratedrendering.core.buffers.blocks.states.IBlockBufferBindingState;
 import com.github.argon4w.acceleratedrendering.core.buffers.blocks.cache.BlockBufferBindingCacheType;
 import com.google.common.util.concurrent.Runnables;
 
@@ -66,11 +66,11 @@ public class CoreFeature {
 		return FeatureConfig.CONFIG.restoringBindingCacheType.get();
 	}
 
-	public static BlockBufferBindingRestorerType getShaderStorageRestorerType() {
+	public static BlockBufferBindingStateType getShaderStorageStateType() {
 		return FeatureConfig.CONFIG.restoringShaderStorageType.get();
 	}
 
-	public static BlockBufferBindingRestorerType getAtomicCounterRestorerType() {
+	public static BlockBufferBindingStateType getAtomicCounterStateType() {
 		return FeatureConfig.CONFIG.restoringAtomicCounterType.get();
 	}
 
@@ -94,12 +94,12 @@ public class CoreFeature {
 		return getLayerStorageType().create(getPooledBatchingSize());
 	}
 
-	public static IBlockBufferBindingRestorer createShaderStorageRestorer() {
-		return getShaderStorageRestorerType().create(BufferBlockType.SHADER_STORAGE, getShaderStorageRestoringRange());
+	public static IBlockBufferBindingState createShaderStorageState() {
+		return getShaderStorageStateType().create(getBlockBufferBindingCacheType(), BufferBlockType.SHADER_STORAGE, getShaderStorageRestoringRange());
 	}
 
-	public static IBlockBufferBindingRestorer createAtomicCounterRestorer() {
-		return getAtomicCounterRestorerType().create(BufferBlockType.ATOMIC_COUNTER, getAtomicCounterRestoringRange());
+	public static IBlockBufferBindingState createAtomicCounterState() {
+		return getAtomicCounterStateType().create(getBlockBufferBindingCacheType(), BufferBlockType.ATOMIC_COUNTER, getAtomicCounterRestoringRange());
 	}
 
 	public static void disableForceTranslucentAcceleration() {
