@@ -63,6 +63,9 @@ public class FeatureConfig {
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			irisCompatShadowCulling;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			irisCompatPolygonProcessing;
 
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			sodiumCompatFeatureStatus;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			sodiumCompatDisableOptimizedPath;
+
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			curiosCompatFeatureStatus;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			curiosCompatLayerAcceleration;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>			curiosItemFilter;
@@ -110,8 +113,8 @@ public class FeatureConfig {
 				.defineEnum				("debug_context",						FeatureStatus.ENABLED);
 
 		coreForceTranslucentAcceleration				= builder
-				.comment				("- DISABLED: Translucent RenderType will fallback to vanilla rendering pipeline if the accelerated pipeline does not support translucent sorting unless mods explicitly enable force translucent acceleration temporarily when rendering their own faces.")
-				.comment				("- ENABLED: Translucent RenderType will still be rendered in accelerated pipeline even if the pipeline does not support translucent sorting unless mods explicitly disable force translucent acceleration temporarily when rendering their own faces.")
+				.comment				("- DISABLED: Translucent RenderType will fallback to vanilla rendering pipeline if the accelerated pipeline does not support translucent sorting unless mods explicitly enable force translucent acceleration temporarily when rendering their own geometries.")
+				.comment				("- ENABLED: Translucent RenderType will still be rendered in accelerated pipeline even if the pipeline does not support translucent sorting unless mods explicitly disable force translucent acceleration temporarily when rendering their own geometries.")
 				.translation			("acceleratedrendering.configuration.core_settings.force_translucent_acceleration")
 				.defineEnum				("force_translucent_acceleration",		FeatureStatus.ENABLED);
 
@@ -268,8 +271,8 @@ public class FeatureConfig {
 				.defineEnum				("feature_Status",						FeatureStatus.ENABLED);
 
 		orientationCullingDefaultCulling				= builder
-				.comment				("- DISABLED: Faces will not be culled unless mods explicitly enable it temporarily when rendering their own faces.")
-				.comment				("- ENABLED: All faces will be culled unless mods explicitly disable it temporarily when rendering their own faces.")
+				.comment				("- DISABLED: Faces will not be culled unless mods explicitly enable it temporarily when rendering their own geometries.")
+				.comment				("- ENABLED: All faces will be culled unless mods explicitly disable it temporarily when rendering their own geometries.")
 				.translation			("acceleratedrendering.configuration.orientation_culling.default_culling")
 				.defineEnum				("default_culling",						FeatureStatus.ENABLED);
 
@@ -377,10 +380,30 @@ public class FeatureConfig {
 				.defineEnum				("shadow_culling",						FeatureStatus.ENABLED);
 
 		irisCompatPolygonProcessing						= builder
-				.comment				("- DISABLED: Extra information in vertices provided by Iris will not be included or calculated in the accelerated pipeline unless mods explicitly enable it temporarily when rendering their own faces, which may cause visual glitches or incorrect rendering.")
-				.comment				("- ENABLED: Extra information in vertices provided by Iris will be included and calculated in the accelerated pipeline by a compute shader unless mods explicitly disable it temporarily when rendering their own faces.")
+				.comment				("- DISABLED: Extra information in vertices provided by Iris will not be included or calculated in the accelerated pipeline unless mods explicitly enable it temporarily when rendering their own geometries, which may cause visual glitches or incorrect rendering.")
+				.comment				("- ENABLED: Extra information in vertices provided by Iris will be included and calculated in the accelerated pipeline by a compute shader unless mods explicitly disable it temporarily when rendering their own geometries.")
 				.translation			("acceleratedrendering.configuration.iris_compatibility.polygon_processing")
 				.defineEnum				("polygon_processing",					FeatureStatus.ENABLED);
+
+		builder.pop();
+
+		builder
+				.comment				("Sodium Compatibility Settings")
+				.comment				("Sodium Compatibility Settings allows Accelerated Rendering to work correctly with Sodium.")
+				.translation			("acceleratedrendering.configuration.sodium_compatibility")
+				.push					("sodium_compatibility");
+
+		sodiumCompatFeatureStatus						= builder
+				.comment				("- DISABLED: Accelerated Rendering may be incompatible with Sodium that takes over the rendering before Accelerated Rendering.")
+				.comment				("- ENABLED: Accelerated Rendering will take over the rendering before Sodium to work correctly with Sodium.")
+				.translation			("acceleratedrendering.configuration.sodium_compatibility.feature_status")
+				.defineEnum				("feature_status",						FeatureStatus.ENABLED);
+
+		sodiumCompatDisableOptimizedPath				= builder
+				.comment				("- DISABLED: Sodium's optimized vertex writing code path will not be disabled unless mods explicitly enable it temporarily when rendering their on geometries, which will take over the rendering before Accelerated Rendering's pipeline.")
+				.comment				("- ENABLED: Sodium's optimized vertex writing code path will be disabled unless mods explicitly disable it temporarily when rendering their on geometries and Accelerated Rendering's pipeline can take over the rendering. However, when acceleration feature is disabled, it's highly recommend to enable the optimized code path.")
+				.translation			("acceleratedrendering.configuration.sodium_compatibility.disabled_optimized_path")
+				.defineEnum				("disabled_optimized_path",				FeatureStatus.ENABLED);
 
 		builder.pop();
 
