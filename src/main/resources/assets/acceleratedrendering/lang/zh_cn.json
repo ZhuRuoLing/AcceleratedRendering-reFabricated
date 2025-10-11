@@ -110,7 +110,7 @@
   "acceleratedrendering.configuration.sodium_compatibility.tooltip": "Sodium兼容性配置允许加速渲染在Sodium环境下正常工作.",
   "acceleratedrendering.configuration.sodium_compatibility.feature_status": "启用Sodium兼容性",
   "acceleratedrendering.configuration.sodium_compatibility.feature_status.tooltip": "- DISABLED: 加速渲染将与Sodium不兼容, 因其在加速渲染管线之前接管渲染.\n- ENABLED: 加速渲染管线将正确地在Sodium之前接管渲染以在Sodium环境中正常工作并兼容Sodium.",
-  "acceleratedrendering.configuration.sodium_compatibility.disabled_optimized_path": "Disable Sodium Optimized Path",
+  "acceleratedrendering.configuration.sodium_compatibility.disabled_optimized_path": "禁用Sodium的优化路径",
   "acceleratedrendering.configuration.sodium_compatibility.disabled_optimized_path.tooltip": "- DISABLED: 除非其他MOD在渲染其模型时显式声明禁用优化路径, 否则Sodium的优化顶点写入路径将不会被禁用, 导致Sodium在加速渲染管线前提前接管渲染.\n- ENABLED: 除非其他MOD在渲染其模型时显式声明启用优化路径, 否则Sodium的优化顶点写入路径将会被禁用, 允许加速渲染管线在Sodium之前接管渲染. 在加速特性被关闭后, 强烈建议启用优化路径.",
   "acceleratedrendering.configuration.sodium_compatibility.button": "配置",
   "acceleratedrendering.configuration.curios_compatibility": "Curios兼容性配置",
