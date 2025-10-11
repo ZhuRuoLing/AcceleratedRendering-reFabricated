@@ -1,5 +1,7 @@
 package com.github.argon4w.acceleratedrendering.configs;
 
+import com.github.argon4w.acceleratedrendering.core.buffers.blocks.BlockBufferBindingRestorerType;
+import com.github.argon4w.acceleratedrendering.core.buffers.blocks.cache.BlockBufferBindingCacheType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.LayerStorageType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.MeshInfoCacheType;
 import com.github.argon4w.acceleratedrendering.core.meshes.MeshType;
@@ -13,61 +15,68 @@ import java.util.List;
 
 public class FeatureConfig {
 
-	public static	final	FeatureConfig										CONFIG;
-	public static	final	ModConfigSpec										SPEC;
+	public static	final	FeatureConfig												CONFIG;
+	public static	final	ModConfigSpec												SPEC;
 
-	public			final	ModConfigSpec.IntValue								corePooledRingBufferSize;
-	public			final	ModConfigSpec.IntValue								corePooledBatchingSize;
-	public			final	ModConfigSpec.IntValue								coreCachedImageSize;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			coreDebugContextEnabled;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			coreForceTranslucentAcceleration;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			coreCacheIdenticalPose;
-	public			final	ModConfigSpec.ConfigValue<MeshInfoCacheType>		coreMeshInfoCacheType;
-	public			final	ModConfigSpec.ConfigValue<LayerStorageType>			coreLayerStorageType;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			coreUploadMeshImmediately;
+	public			final	ModConfigSpec.IntValue										corePooledRingBufferSize;
+	public			final	ModConfigSpec.IntValue										corePooledBatchingSize;
+	public			final	ModConfigSpec.IntValue										coreCachedImageSize;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					coreDebugContextEnabled;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					coreForceTranslucentAcceleration;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					coreCacheIdenticalPose;
+	public			final	ModConfigSpec.ConfigValue<MeshInfoCacheType>				coreMeshInfoCacheType;
+	public			final	ModConfigSpec.ConfigValue<LayerStorageType>					coreLayerStorageType;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					coreUploadMeshImmediately;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedEntityRenderingFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<PipelineSetting>			acceleratedEntityRenderingDefaultPipeline;
-	public			final	ModConfigSpec.ConfigValue<MeshType>					acceleratedEntityRenderingMeshType;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedEntityRenderingGuiAcceleration;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					restoringFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<BlockBufferBindingCacheType>		restoringBindingCacheType;
+	public			final	ModConfigSpec.ConfigValue<BlockBufferBindingRestorerType>	restoringShaderStorageType;
+	public			final	ModConfigSpec.ConfigValue<BlockBufferBindingRestorerType>	restoringAtomicCounterType;
+	public			final	ModConfigSpec.IntValue										restoringShaderStorageRange;
+	public			final	ModConfigSpec.IntValue										restoringAtomicCounterRange;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedTextRenderingFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<PipelineSetting>			acceleratedTextRenderingDefaultPipeline;
-	public			final	ModConfigSpec.ConfigValue<MeshType>					acceleratedTextRenderingMeshType;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedEntityRenderingFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<PipelineSetting>					acceleratedEntityRenderingDefaultPipeline;
+	public			final	ModConfigSpec.ConfigValue<MeshType>							acceleratedEntityRenderingMeshType;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedEntityRenderingGuiAcceleration;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingBakeMeshForQuads;
-	public			final	ModConfigSpec.ConfigValue<PipelineSetting>			acceleratedItemRenderingDefaultPipeline;
-	public			final	ModConfigSpec.ConfigValue<MeshType>					acceleratedItemRenderingMeshType;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingHandAcceleration;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingGuiAcceleration;
-	public 			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingGuiItemBatching;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedTextRenderingFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<PipelineSetting>					acceleratedTextRenderingDefaultPipeline;
+	public			final	ModConfigSpec.ConfigValue<MeshType>							acceleratedTextRenderingMeshType;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			orientationCullingFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			orientationCullingDefaultCulling;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			orientationCullingIgnoreCullState;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingBakeMeshForQuads;
+	public			final	ModConfigSpec.ConfigValue<PipelineSetting>					acceleratedItemRenderingDefaultPipeline;
+	public			final	ModConfigSpec.ConfigValue<MeshType>							acceleratedItemRenderingMeshType;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingHandAcceleration;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingGuiAcceleration;
+	public 			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingGuiItemBatching;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			filterFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			filterEntityFilter;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			filterBlockEntityFilter;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			filterItemFilter;
-	public			final	ModConfigSpec.ConfigValue<FilterType>				filterEntityFilterType;
-	public			final	ModConfigSpec.ConfigValue<FilterType>				filterBlockEntityFilterType;
-	public			final	ModConfigSpec.ConfigValue<FilterType>				filterItemFilterType;
-	public			final	ModConfigSpec.ConfigValue<List<? extends String>>	filterEntityFilterValues;
-	public			final	ModConfigSpec.ConfigValue<List<? extends String>>	filterBlockEntityFilterValues;
-	public			final	ModConfigSpec.ConfigValue<List<? extends String>>	filterItemFilterValues;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					orientationCullingFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					orientationCullingDefaultCulling;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					orientationCullingIgnoreCullState;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			irisCompatFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			irisCompatOrientationCullingCompat;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			irisCompatShadowCulling;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			irisCompatPolygonProcessing;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					filterFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					filterEntityFilter;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					filterBlockEntityFilter;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					filterItemFilter;
+	public			final	ModConfigSpec.ConfigValue<FilterType>						filterEntityFilterType;
+	public			final	ModConfigSpec.ConfigValue<FilterType>						filterBlockEntityFilterType;
+	public			final	ModConfigSpec.ConfigValue<FilterType>						filterItemFilterType;
+	public			final	ModConfigSpec.ConfigValue<List<? extends String>>			filterEntityFilterValues;
+	public			final	ModConfigSpec.ConfigValue<List<? extends String>>			filterBlockEntityFilterValues;
+	public			final	ModConfigSpec.ConfigValue<List<? extends String>>			filterItemFilterValues;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			curiosCompatFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			curiosCompatLayerAcceleration;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			curiosItemFilter;
-	public			final	ModConfigSpec.ConfigValue<FilterType>				curiosItemFilterType;
-	public			final	ModConfigSpec.ConfigValue<List<? extends String>>	curiosItemFilterValues;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					irisCompatFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					irisCompatOrientationCullingCompat;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					irisCompatShadowCulling;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					irisCompatPolygonProcessing;
+
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					curiosCompatFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					curiosCompatLayerAcceleration;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					curiosItemFilter;
+	public			final	ModConfigSpec.ConfigValue<FilterType>						curiosItemFilterType;
+	public			final	ModConfigSpec.ConfigValue<List<? extends String>>			curiosItemFilterValues;
 
 	static {
 		Pair<FeatureConfig, ModConfigSpec> pair	= new ModConfigSpec.Builder()	.configure	(FeatureConfig::new);
@@ -122,7 +131,7 @@ public class FeatureConfig {
 				.defineEnum				("cache_identical_pose",				FeatureStatus.ENABLED);
 
 		coreMeshInfoCacheType							= builder
-				.comment				("- SIMPLE: The most basic implementation of cache. Usually used for testing if other cache types are working properly.")
+				.comment				("- SIMPLE: The most basic implementation of cache. Usually used for testing if other cache types are working correctly.")
 				.comment				("- HANDLE: Faster implementation of cache using VarHandle and flatten values to improve performance on read/write operations.")
 				.comment				("- UNSAFE: Fastest implementation of cache using unsafe memory operations that skip multiple safety checks to read/write.")
 				.translation			("acceleratedrendering.configuration.core_settings.mesh_info_cache_type")
@@ -141,6 +150,57 @@ public class FeatureConfig {
 				.comment				("- ENABLED: Meshes that is going to be accelerated will be uploaded immediately after the draw command. It is less efficient and only have about 2GB mesh cache (generally enough) but will follow the original draw order to get the most compatibility.")
 				.translation			("acceleratedrendering.configuration.core_settings.upload_mesh_immediately")
 				.defineEnum				("upload_mesh_immediately",				FeatureStatus.DISABLED);
+
+		builder
+				.comment				("Block Buffer Restoring Settings")
+				.comment				("A few mods and shader packs will use their on block buffers when rendering, which may introduce conflicts when working with Accelerated Rendering that also uses block buffers.")
+				.comment				("Block Buffer Restoring can record the binding of block buffers before the acceleration and restore them after the acceleration to work correctly with them.")
+				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring")
+				.push					("block_buffer_binding_restoring");
+
+		restoringFeatureStatus							= builder
+				.comment				("- DISABLED: Disable block buffer restoring, which is faster but may cause visual glitches with mods and shaders that uses block buffers.")
+				.comment				("- ENABLED: Enable block buffer restoring, which may be slower due to recording and restoring block buffer bindings that ensures working correctly with mods and shaders that use block buffers.")
+				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.feature_status")
+				.defineEnum				("feature_status",						FeatureStatus.ENABLED);
+
+		restoringBindingCacheType						= builder
+				.comment				("- SIMPLE: The most basic implementation of cache. Usually used for testing if other cache types are working properly.")
+				.comment				("- HANDLE: Faster implementation of cache using VarHandle and flatten values to improve performance on read/write operations.")
+				.comment				("- UNSAFE: Fastest implementation of cache using unsafe memory operations that skip multiple safety checks to read/write.")
+				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.binding_cache_type")
+				.gameRestart			()
+				.defineEnum				("binding_cache_type",					BlockBufferBindingCacheType.HANDLE);
+
+		restoringShaderStorageType						= builder
+				.comment				("- IGNORE: Shader storage buffers will not be restored which improves FPS but reduces compatibility with mods and shaders that ues shader storage buffers.")
+				.comment				("- ENABLED: Shader storage buffers will be restored, which is slight slower but has better compatibility with mods and shaders that ues shader storage buffers.")
+				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.shader_storage_type")
+				.gameRestart			()
+				.defineEnum				("shader_storage_type",					BlockBufferBindingRestorerType.RESTORED);
+
+		restoringAtomicCounterType						= builder
+				.comment				("- IGNORE: Atomic counter buffers will not be restored which improves FPS but reduces compatibility with mods and shaders that ues atomic counter buffers.")
+				.comment				("- ENABLED: Atomic counter buffers will be restored, which is slight slower but has better compatibility with mods and shaders that ues atomic counter buffers.")
+				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.atomic_counter_type")
+				.gameRestart			()
+				.defineEnum				("atomic_counter_type",					BlockBufferBindingRestorerType.RESTORED);
+
+		restoringShaderStorageRange						= builder
+				.comment				("Range of shader storage buffer bindings that will be restored.")
+				.comment				("Changing this value may affects your FPS. Smaller value means less shader storage buffer restored but less compatibility, while larger values means more shader storage buffer restored and better compatibility. More shader storage buffers means less FPS.")
+				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.shader_storage_range")
+				.gameRestart			()
+				.defineInRange			("shader_storage_range",		9,	0,	9);
+
+		restoringAtomicCounterRange						= builder
+				.comment				("Range of atomic counter buffer bindings that will be restored.")
+				.comment				("Changing this value may affects your FPS. Smaller value means less atomic counter buffer restored but less compatibility, while larger values means more atomic counter buffer restored and better compatibility. More atomic counter buffers means less FPS.")
+				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.atomic_counter_range")
+				.gameRestart			()
+				.defineInRange			("atomic_counter_range",		1,	0,	1);
+
+		builder.pop();
 
 		builder.pop();
 

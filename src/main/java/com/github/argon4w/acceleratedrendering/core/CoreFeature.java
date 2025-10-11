@@ -6,6 +6,10 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.s
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.LayerStorageType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.IMeshInfoCache;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.MeshInfoCacheType;
+import com.github.argon4w.acceleratedrendering.core.buffers.blocks.BlockBufferBindingRestorerType;
+import com.github.argon4w.acceleratedrendering.core.buffers.blocks.BufferBlockType;
+import com.github.argon4w.acceleratedrendering.core.buffers.blocks.IBlockBufferBindingRestorer;
+import com.github.argon4w.acceleratedrendering.core.buffers.blocks.cache.BlockBufferBindingCacheType;
 import com.google.common.util.concurrent.Runnables;
 
 import java.util.ArrayDeque;
@@ -54,16 +58,48 @@ public class CoreFeature {
 		return FeatureConfig.CONFIG.coreLayerStorageType.get();
 	}
 
+	public static boolean shouldRestoreBlockBuffers() {
+		return FeatureConfig.CONFIG.restoringFeatureStatus.get() == FeatureStatus.ENABLED;
+	}
+
+	public static BlockBufferBindingCacheType getBlockBufferBindingCacheType() {
+		return FeatureConfig.CONFIG.restoringBindingCacheType.get();
+	}
+
+	public static BlockBufferBindingRestorerType getShaderStorageRestorerType() {
+		return FeatureConfig.CONFIG.restoringShaderStorageType.get();
+	}
+
+	public static BlockBufferBindingRestorerType getAtomicCounterRestorerType() {
+		return FeatureConfig.CONFIG.restoringAtomicCounterType.get();
+	}
+
+	public static int getShaderStorageRestoringRange() {
+		return FeatureConfig.CONFIG.restoringShaderStorageRange.getAsInt();
+	}
+
+	public static int getAtomicCounterRestoringRange() {
+		return FeatureConfig.CONFIG.restoringAtomicCounterRange.getAsInt();
+	}
+
 	public static boolean shouldUploadMeshImmediately() {
 		return FeatureConfig.CONFIG.coreUploadMeshImmediately.get() == FeatureStatus.ENABLED;
 	}
 
 	public static IMeshInfoCache createMeshInfoCache() {
-		return MeshInfoCacheType.create(getMeshInfoCacheType());
+		return getMeshInfoCacheType().create();
 	}
 
 	public static ILayerStorage createLayerStorage() {
-		return LayerStorageType.create(getLayerStorageType(), getPooledBatchingSize());
+		return getLayerStorageType().create(getPooledBatchingSize());
+	}
+
+	public static IBlockBufferBindingRestorer createShaderStorageRestorer() {
+		return getShaderStorageRestorerType().create(BufferBlockType.SHADER_STORAGE, getShaderStorageRestoringRange());
+	}
+
+	public static IBlockBufferBindingRestorer createAtomicCounterRestorer() {
+		return getAtomicCounterRestorerType().create(BufferBlockType.ATOMIC_COUNTER, getAtomicCounterRestoringRange());
 	}
 
 	public static void disableForceTranslucentAcceleration() {

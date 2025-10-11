@@ -19,7 +19,6 @@ public class IrisCompatBuffers {
 	public static final AcceleratedBufferSource POS_TEX_HAND				= new AcceleratedBufferSource(IBufferEnvironment.Presets.POS_TEX);
 	public static final AcceleratedBufferSource POS_TEX_COLOR_HAND			= new AcceleratedBufferSource(IBufferEnvironment.Presets.POS_TEX_COLOR);
 	public static final AcceleratedBufferSource POS_COLOR_TEX_LIGHT_HAND	= new AcceleratedBufferSource(IBufferEnvironment.Presets.POS_COLOR_TEX_LIGHT);
-	public static final AcceleratedBufferSource POS_TEX_COLOR_OUTLINE_HAND	= new AcceleratedBufferSource(IBufferEnvironment.Presets.POS_TEX_COLOR);
 
 	public static final AcceleratedBufferSources HAND = AcceleratedBufferSources
 			.builder()

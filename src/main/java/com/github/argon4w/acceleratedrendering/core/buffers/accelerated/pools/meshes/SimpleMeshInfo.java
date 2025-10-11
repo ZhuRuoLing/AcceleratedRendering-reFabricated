@@ -4,7 +4,7 @@ import com.github.argon4w.acceleratedrendering.core.utils.SimpleCachedArray;
 import lombok.Getter;
 
 @Getter
-public class MeshInfo implements SimpleCachedArray.Element {
+public class SimpleMeshInfo implements SimpleCachedArray.Element {
 
 	private int color;
 	private int light;
@@ -12,11 +12,11 @@ public class MeshInfo implements SimpleCachedArray.Element {
 	private int sharing;
 	private int shouldCull;
 
-	public MeshInfo() {
-		this.color = -1;
-		this.light = -1;
-		this.overlay = -1;
-		this.sharing = -1;
+	public SimpleMeshInfo() {
+		this.color		= -1;
+		this.light		= -1;
+		this.overlay	= -1;
+		this.sharing	= -1;
 	}
 
 	public void setupMeshInfo(
@@ -26,11 +26,11 @@ public class MeshInfo implements SimpleCachedArray.Element {
 			int sharing,
 			int shouldCull
 	) {
-		this.color = color;
-		this.light = light;
-		this.overlay = overlay;
-		this.sharing = sharing;
-		this.shouldCull = shouldCull;
+		this.color		= color;
+		this.light		= light;
+		this.overlay	= overlay;
+		this.sharing	= sharing;
+		this.shouldCull	= shouldCull;
 	}
 
 	@Override

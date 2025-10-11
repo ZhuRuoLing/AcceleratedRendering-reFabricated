@@ -1,7 +1,7 @@
 package com.github.argon4w.acceleratedrendering.compat.iris.mixins.acceleratedrendering;
 
 import com.github.argon4w.acceleratedrendering.compat.iris.interfaces.IIrisMeshInfoCache;
-import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.FlattenVarHandleMeshInfoCache;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.FlattenMeshInfoCache;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.irisshaders.iris.uniforms.CapturedRenderingState;
 import org.spongepowered.asm.mixin.Final;
@@ -16,8 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.lang.invoke.VarHandle;
 
-@Mixin(FlattenVarHandleMeshInfoCache.class)
-public class FlattenVarHandleMeshInfoCacheMixin implements IIrisMeshInfoCache {
+@Mixin(FlattenMeshInfoCache.class)
+public class FlattenMeshInfoCacheMixin implements IIrisMeshInfoCache {
 
 	@Shadow @Final public	static			VarHandle	HANDLE;
 

@@ -4,9 +4,9 @@ import com.github.argon4w.acceleratedrendering.core.utils.SimpleCachedArray;
 
 import java.util.function.IntFunction;
 
-public class SimpleMeshInfoCache implements IMeshInfoCache, IntFunction<MeshInfo> {
+public class SimpleMeshInfoCache implements IMeshInfoCache, IntFunction<SimpleMeshInfo> {
 
-	private final SimpleCachedArray<MeshInfo> meshInfos;
+	private final SimpleCachedArray<SimpleMeshInfo> meshInfos;
 
 	public SimpleMeshInfoCache() {
 		this.meshInfos = new SimpleCachedArray<>(128, this);
@@ -70,7 +70,7 @@ public class SimpleMeshInfoCache implements IMeshInfoCache, IntFunction<MeshInfo
 	}
 
 	@Override
-	public MeshInfo apply(int value) {
-		return new MeshInfo();
+	public SimpleMeshInfo apply(int value) {
+		return new SimpleMeshInfo();
 	}
 }

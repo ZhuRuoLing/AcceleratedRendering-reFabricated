@@ -15,10 +15,10 @@ import java.util.Set;
 
 public class AcceleratedBufferSources implements IAcceleratedBufferSource {
 
-	private			final	Map<VertexFormat, AcceleratedBufferSource>	sources;
-	private			final	Set<VertexFormat.Mode>						validModes;
-	private			final	Set<String>									invalidNames;
-	private			final	boolean										canSort;
+	private final Map<VertexFormat, AcceleratedBufferSource>	sources;
+	private final Set<VertexFormat.Mode>						validModes;
+	private final Set<String>									invalidNames;
+	private final boolean										canSort;
 
 	private AcceleratedBufferSources(
 			Map<VertexFormat, AcceleratedBufferSource>	sources,
@@ -79,10 +79,12 @@ public class AcceleratedBufferSources implements IAcceleratedBufferSource {
 		}
 
 		public Builder source(AcceleratedBufferSource bufferSource) {
-			bufferSource
+			for (var format : bufferSource
 					.getEnvironment		()
 					.getVertexFormats	()
-					.forEach			(vertexFormat -> sources.put(vertexFormat, bufferSource));
+			) {
+				sources.put(format, bufferSource);
+			}
 
 			return this;
 		}

@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.util.FastColor;
 
-import java.util.function.IntFunction;
 import java.util.function.LongSupplier;
 
 import static org.lwjgl.opengl.GL43.GL_SHADER_STORAGE_BUFFER;
@@ -43,7 +42,7 @@ public class MeshUploaderPool extends SimpleResetPool<MeshUploaderPool.MeshUploa
 		return get();
 	}
 
-	public static class MeshUploader implements IntFunction<MeshInfo>, LongSupplier {
+	public static class MeshUploader implements LongSupplier {
 
 		public static	final	int								MESH_INFO_BUFFER_INDEX	= 8;
 
@@ -115,11 +114,6 @@ public class MeshUploaderPool extends SimpleResetPool<MeshUploaderPool.MeshUploa
 		public void delete() {
 			meshInfos		.delete();
 			meshInfoBuffer	.delete();
-		}
-
-		@Override
-		public MeshInfo apply(int value) {
-			return new MeshInfo();
 		}
 
 		@Override

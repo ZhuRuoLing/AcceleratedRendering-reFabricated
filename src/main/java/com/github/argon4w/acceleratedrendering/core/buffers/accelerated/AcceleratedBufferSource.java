@@ -5,7 +5,6 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.*;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.functions.CustomLayerFunction;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.functions.EmptyLayerFunction;
-import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.SeparatedLayerStorage;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.empty.EmptyLayerStorage;
 import com.github.argon4w.acceleratedrendering.core.buffers.environments.IBufferEnvironment;
 import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
@@ -135,9 +134,9 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 				continue;
 			}
 
-			ServerMesh.Builder.BUFFERS.get(environment.getLayout())	.getFirst								().bindBase(GL_SHADER_STORAGE_BUFFER,	MeshUploadingProgramDispatcher.SPARSE_MESH_BUFFER_INDEX);
-			environment												.selectMeshUploadingProgramDispatcher	().dispatch(builders.values(),			buffer);
-			environment												.selectTransformProgramDispatcher		().dispatch(builders.values());
+			environment.getImmediateMeshBuffer					().bindBase(GL_SHADER_STORAGE_BUFFER,	MeshUploadingProgramDispatcher.SPARSE_MESH_BUFFER_INDEX);
+			environment.selectMeshUploadingProgramDispatcher	().dispatch(builders.values(),			buffer);
+			environment.selectTransformProgramDispatcher		().dispatch(builders.values());
 
 			for (var layerKey : builders.keySet()) {
 				var builder = builders.get(layerKey);

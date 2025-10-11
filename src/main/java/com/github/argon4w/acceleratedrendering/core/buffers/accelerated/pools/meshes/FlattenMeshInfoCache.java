@@ -4,7 +4,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
 import java.util.Arrays;
 
-public class FlattenVarHandleMeshInfoCache implements IMeshInfoCache {
+public class FlattenMeshInfoCache implements IMeshInfoCache {
 
 	public static final VarHandle	HANDLE				= MethodHandles.arrayElementVarHandle(int[].class).withInvokeExactBehavior();
 	public static final int			MESH_INFO_SIZE		= 5;
@@ -18,7 +18,7 @@ public class FlattenVarHandleMeshInfoCache implements IMeshInfoCache {
 	private				int			size;
 	private				int			count;
 
-	public FlattenVarHandleMeshInfoCache() {
+	public FlattenMeshInfoCache() {
 		this.size	= 128;
 		this.cache	= new int[this.size * MESH_INFO_SIZE];
 		this.count	= 0;
