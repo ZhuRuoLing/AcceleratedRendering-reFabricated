@@ -47,6 +47,7 @@ public class GuiBatchingController {
 					false
 			);
 
+			RenderSystem										.setShaderTexture		(0, AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET.getColorTextureId());
 			RenderSystem										.restoreProjectionMatrix();
 			RenderSystem										.disableBlend			();
 			RenderSystem										.defaultBlendFunc		();

@@ -10,13 +10,25 @@ import java.util.Set;
 
 public abstract class AbstractCompatMixinPlugin implements IMixinConfigPlugin {
 
-	protected abstract String getModID();
+	private final boolean shouldApply;
+
+	public AbstractCompatMixinPlugin() {
+		var shouldApply	= false;
+
+		for (var id : getModIDs()) {
+			if (LoadingModList.get().getModFileById(id) != null) {
+				shouldApply = true;
+			}
+		}
+
+		this.shouldApply = shouldApply;
+	}
+
+	protected abstract List<String> getModIDs();
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		return LoadingModList
-				.get			()
-				.getModFileById	(getModID()) != null;
+		return shouldApply;
 	}
 
 	@Override
