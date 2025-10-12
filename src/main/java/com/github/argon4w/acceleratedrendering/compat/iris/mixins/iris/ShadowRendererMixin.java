@@ -19,8 +19,7 @@ public class ShadowRendererMixin {
 			at		= @At(
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V"
-			),
-			remap	= false
+			)
 	)
 	public void endAllBatches(
 			LevelRendererAccessor	levelRenderer,
