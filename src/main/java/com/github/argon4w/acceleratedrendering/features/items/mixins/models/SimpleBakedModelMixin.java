@@ -19,6 +19,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.experimental.ExtensionMethod;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraft.core.Direction;
@@ -74,7 +75,8 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 			int							combinedLight,
 			int							combinedOverlay,
 			int							color,
-			ModelData					data
+			ModelData					data,
+			RenderType					renderType
 	) {
 		extension.doRender(
 				this,

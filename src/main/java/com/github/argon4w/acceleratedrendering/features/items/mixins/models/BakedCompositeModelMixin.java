@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lombok.Getter;
 import lombok.experimental.ExtensionMethod;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -95,7 +96,8 @@ public class BakedCompositeModelMixin implements IAcceleratedBakedModel {
 			int							light,
 			int							overlay,
 			int							color,
-			ModelData					data
+			ModelData					data,
+			RenderType					renderType
 	) {
 		if (blockState == null) {
 			return;
@@ -108,7 +110,7 @@ public class BakedCompositeModelMixin implements IAcceleratedBakedModel {
 					data
 			);
 
-			if (renderTypeSet.contains(extension.getRenderType())) {
+			if (renderTypeSet.contains(renderType)) {
 				child
 						.getAccelerated	()
 						.renderBlockFast(
@@ -119,7 +121,8 @@ public class BakedCompositeModelMixin implements IAcceleratedBakedModel {
 								light,
 								overlay,
 								getCustomColor(-1, color),
-								data
+								data,
+								renderType
 						);
 			}
 		}
