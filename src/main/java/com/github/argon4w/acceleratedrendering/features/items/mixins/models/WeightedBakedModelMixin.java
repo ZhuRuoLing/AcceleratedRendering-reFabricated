@@ -6,6 +6,7 @@ import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedBakedM
 import com.mojang.blaze3d.vertex.PoseStack;
 import lombok.Getter;
 import lombok.experimental.ExtensionMethod;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.WeightedBakedModel;
 import net.minecraft.util.RandomSource;
@@ -90,7 +91,8 @@ public class WeightedBakedModelMixin implements IAcceleratedBakedModel {
 			int							light,
 			int							overlay,
 			int							color,
-			ModelData					data
+			ModelData					data,
+			RenderType					renderType
 	) {
 		var model = WeightedRandom.getWeightedItem(list, Math.abs((int) random.nextLong()) % totalWeight);
 
@@ -107,7 +109,8 @@ public class WeightedBakedModelMixin implements IAcceleratedBakedModel {
 							light,
 							overlay,
 							getCustomColor(-1, color),
-							data
+							data,
+							renderType
 					);
 		}
 	}

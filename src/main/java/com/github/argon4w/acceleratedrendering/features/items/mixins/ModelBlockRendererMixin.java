@@ -82,7 +82,8 @@ public class ModelBlockRendererMixin {
 							(int) (green	* 255.0f),
 							(int) (blue		* 255.0f)
 					),
-					modelData
+					modelData,
+					renderType
 			);
 			return;
 		}

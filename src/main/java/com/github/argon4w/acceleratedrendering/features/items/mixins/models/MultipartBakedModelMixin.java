@@ -6,6 +6,7 @@ import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedBakedM
 import com.mojang.blaze3d.vertex.PoseStack;
 import lombok.Getter;
 import lombok.experimental.ExtensionMethod;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.MultiPartBakedModel;
 import net.minecraft.util.RandomSource;
@@ -79,7 +80,8 @@ public abstract class MultipartBakedModelMixin implements IAcceleratedBakedModel
 			int							light,
 			int							overlay,
 			int							color,
-			ModelData					data
+			ModelData					data,
+			RenderType					renderType
 	) {
 		if (blockState == null) {
 			return;
@@ -98,7 +100,7 @@ public abstract class MultipartBakedModelMixin implements IAcceleratedBakedModel
 						data
 				);
 
-				if (renderTypeSet.contains(extension.getRenderType())) {
+				if (renderTypeSet.contains(renderType)) {
 					selected
 							.getAccelerated	()
 							.renderBlockFast(
@@ -109,7 +111,8 @@ public abstract class MultipartBakedModelMixin implements IAcceleratedBakedModel
 									light,
 									overlay,
 									getCustomColor(-1, color),
-									data
+									data,
+									renderType
 							);
 				}
 			}
