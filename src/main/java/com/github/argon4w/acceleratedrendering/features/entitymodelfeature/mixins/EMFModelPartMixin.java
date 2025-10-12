@@ -24,8 +24,7 @@ public class EMFModelPartMixin {
 	@Inject				(
 			method		= "compile",
 			at			= @At("HEAD"),
-			cancellable	= true,
-			remap		= false
+			cancellable	= true
 	)
 	public void compileFast(
 			PoseStack.Pose	pPose,
