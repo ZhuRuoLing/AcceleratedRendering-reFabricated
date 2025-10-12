@@ -84,7 +84,7 @@ public record ServerMesh(
 				meshBuffers	.add						(meshBuffer);
 				BUFFERS		.put 						(layout, meshBuffers);
 			} else {
-				meshBuffer	= (MappedBuffer) meshBuffers.getLast();
+				meshBuffer	= (MappedBuffer) meshBuffers.get(meshBuffers.size() - 1);
 			}
 
 			if (		meshBuffer.getPosition	() + capacity >= GLConstants.MAX_SHADER_STORAGE_BLOCK_SIZE

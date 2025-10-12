@@ -71,7 +71,7 @@ public class VanillaBufferEnvironment implements IBufferEnvironment {
 
 	@Override
 	public IServerBuffer getImmediateMeshBuffer() {
-		return ServerMesh.Builder.BUFFERS.get(layout).getFirst();
+		return ServerMesh.Builder.BUFFERS.get(layout).get(0);
 	}
 
 	@Override

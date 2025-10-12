@@ -25,11 +25,9 @@ public class LoadShaderProgramOverridesEvent extends Event implements IModBusEve
 			IShaderProgramOverride	override
 	) {
 		if (this.vertexFormat == vertexFormat) {
-			switch (override) {
-				case ITransformShaderProgramOverride transform	-> transformOverrides.put					(renderType, transform);
-				case IUploadingShaderProgramOverride uploading	-> uploadingOverrides.put					(renderType, uploading);
-				default											-> throw new UnsupportedOperationException	("Unsupported override type: " + override.getClass().getSimpleName());
-			}
+					if (override instanceof ITransformShaderProgramOverride transform)	transformOverrides.put					(renderType, transform);
+			else	if (override instanceof IUploadingShaderProgramOverride uploading)	uploadingOverrides.put					(renderType, uploading);
+			else																		throw new UnsupportedOperationException	("Unsupported override type: " + override.getClass().getSimpleName());
 		}
 	}
 
