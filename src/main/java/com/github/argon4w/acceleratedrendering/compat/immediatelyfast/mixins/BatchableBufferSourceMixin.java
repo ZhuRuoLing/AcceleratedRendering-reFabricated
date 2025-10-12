@@ -17,8 +17,7 @@ public class BatchableBufferSourceMixin {
 
 	@ModifyReturnValue(
 			method	= "getBuffer",
-			at		= @At("RETURN"),
-			remap	= false
+			at		= @At("RETURN")
 	)
 	public VertexConsumer initAcceleration(VertexConsumer original, RenderType renderType) {
 		return original
