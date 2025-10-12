@@ -52,8 +52,7 @@ public class AcceleratedBufferBuilderMixin implements IIrisAcceleratedBufferBuil
 
 	@Inject(
 			method	= "vertex(FFFFFFFFFIIFFF)V",
-			at		= @At("TAIL"),
-			remap	= false
+			at		= @At("TAIL")
 	)
 	public void addIrisVertex(
 			float								pX,
@@ -78,8 +77,7 @@ public class AcceleratedBufferBuilderMixin implements IIrisAcceleratedBufferBuil
 
 	@Inject(
 			method	= "vertex(DDD)Lcom/mojang/blaze3d/vertex/VertexConsumer;",
-			at		= @At("TAIL"),
-			remap	= false
+			at		= @At("TAIL")
 	)
 	public void addIrisVertex(
 			double									pX,

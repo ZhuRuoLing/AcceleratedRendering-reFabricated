@@ -24,8 +24,7 @@ public class HandRendererMixin {
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderHandsWithItems(FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/player/LocalPlayer;I)V",
 					shift	= At.Shift.BEFORE
-			),
-			remap	= false
+			)
 	)
 	public void startRenderSolidFast(
 			PoseStack				poseStack,
@@ -44,8 +43,7 @@ public class HandRendererMixin {
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderHandsWithItems(FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/player/LocalPlayer;I)V",
 					shift	= At.Shift.AFTER
-			),
-			remap	= false
+			)
 	)
 	public void stopRenderSolidFast(
 			PoseStack				poseStack,
@@ -87,8 +85,7 @@ public class HandRendererMixin {
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderHandsWithItems(FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/player/LocalPlayer;I)V",
 					shift	= At.Shift.BEFORE
-			),
-			remap	= false
+			)
 	)
 	public void startRenderTranslucentFast(
 			PoseStack				poseStack,
@@ -107,8 +104,7 @@ public class HandRendererMixin {
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderHandsWithItems(FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/player/LocalPlayer;I)V",
 					shift	= At.Shift.AFTER
-			),
-			remap	= false
+			)
 	)
 	public void stopRenderTranslucentFast(
 			PoseStack				poseStack,

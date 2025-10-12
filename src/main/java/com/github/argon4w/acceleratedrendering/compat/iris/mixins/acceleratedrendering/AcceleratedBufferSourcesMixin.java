@@ -16,8 +16,7 @@ public class AcceleratedBufferSourcesMixin {
 			at		= @At(
 					value	= "FIELD",
 					target	= "Lnet/minecraft/client/renderer/RenderType;name:Ljava/lang/String;"
-			),
-			remap	= false
+			)
 	)
 	public String unwrapIrisRenderType(RenderType instance, Operation<String> original) {
 		return original.call(instance instanceof WrappableRenderType wrapped ? wrapped.unwrap() : instance);
