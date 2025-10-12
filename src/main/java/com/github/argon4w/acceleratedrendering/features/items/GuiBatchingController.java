@@ -11,10 +11,11 @@ import org.lwjgl.opengl.GL46;
 
 public class GuiBatchingController {
 
-	private static final boolean		ON_OSX			= Minecraft.ON_OSX;
-	private static final Minecraft		MINECRAFT		= Minecraft.getInstance			();
-	private static final RenderTarget	MAIN_TARGET		= MINECRAFT.getMainRenderTarget	();
-	private static final Window			WINDOW			= MINECRAFT.getWindow			();
+	private static final boolean		ON_OSX			= Minecraft							.ON_OSX;
+	private static final Minecraft		MINECRAFT		= Minecraft							.getInstance		();
+	private static final Window			WINDOW			= MINECRAFT							.getWindow			();
+	private static final RenderTarget	MAIN_TARGET		= MINECRAFT							.getMainRenderTarget();
+	private static final RenderTarget	OVERLAY_TARGET	= AcceleratedItemRenderingFeature	.GUI_OVERLAY_TARGET;
 
 	public static void startBatching() {
 		if (		AcceleratedItemRenderingFeature.isEnabled				()
@@ -27,33 +28,30 @@ public class GuiBatchingController {
 
 	public static void flushBatching(GuiGraphics graphics) {
 		if (CoreFeature.isGuiBatching()) {
-			GL46.glPushDebugGroup(GL46.GL_DEBUG_SOURCE_APPLICATION, 419, "Flush Batching");
-			CoreFeature							.resetGuiBatching	();
-			((IAcceleratedGuiGraphics) graphics).flushItemBatching	();
+			CoreFeature							.resetGuiBatching		();
+			((IAcceleratedGuiGraphics) graphics).flushItemBatching		();
 
-			RenderSystem.backupProjectionMatrix	();
-			RenderSystem.enableBlend			();
-			RenderSystem.blendFuncSeparate		(
+			RenderSystem						.setShaderTexture		(0, OVERLAY_TARGET.getColorTextureId());
+			RenderSystem						.backupProjectionMatrix	();
+			RenderSystem						.enableBlend			();
+			RenderSystem						.blendFuncSeparate		(
 					GlStateManager.SourceFactor	.SRC_ALPHA,
 					GlStateManager.DestFactor	.ONE_MINUS_SRC_ALPHA,
 					GlStateManager.SourceFactor	.ZERO,
 					GlStateManager.DestFactor	.ONE
 			);
 
-
-			AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET.blitToScreen(
+			OVERLAY_TARGET.blitToScreen(
 					WINDOW.getWidth	(),
 					WINDOW.getHeight(),
 					false
 			);
 
-			RenderSystem										.setShaderTexture		(0, AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET.getColorTextureId());
-			RenderSystem										.restoreProjectionMatrix();
-			RenderSystem										.disableBlend			();
-			RenderSystem										.defaultBlendFunc		();
-			AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET	.clear					(ON_OSX);
-			MAIN_TARGET											.bindWrite				(false);
-			GL46.glPopDebugGroup();
+			RenderSystem	.restoreProjectionMatrix();
+			RenderSystem	.disableBlend			();
+			RenderSystem	.defaultBlendFunc		();
+			OVERLAY_TARGET	.clear					(ON_OSX);
+			MAIN_TARGET		.bindWrite				(false);
 		}
 	}
 }
