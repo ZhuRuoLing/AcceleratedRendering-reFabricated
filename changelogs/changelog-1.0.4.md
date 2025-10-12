@@ -12,8 +12,8 @@
 - Fixes compatibility with mods and shaders that uses block buffers.
 - Ports to 1.20.1 Forge.
 
-## Important Nodes
+## Important Notes
 - 1.20.1 port requires **Java 21** to boot.
 - 1.20.1 port requires Configured to modify configurations in game.
 - 1.20.1 port of GeckoLib acceleration requires MixinBooster to enable.
-- 1.20.1 port of TouhouLittleMaid acceleration required MixinBooster to enable.
+- 1.20.1 port of TouhouLittleMaid acceleration requires MixinBooster to enable.
