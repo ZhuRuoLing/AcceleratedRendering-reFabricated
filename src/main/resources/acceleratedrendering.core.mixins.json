@@ -22,5 +22,5 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "acceleratedrendering.refmap.json"
+  "refmap": "acceleratedrendering-refmap.json"
 }
