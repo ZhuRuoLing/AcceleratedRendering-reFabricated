@@ -148,6 +148,11 @@ dependencies {
     implementation "maven.modrinth:sodium:mc1.21.1-0.6.13-neoforge"
     implementation "maven.modrinth:iris:1.8.8+1.21.1-neoforge"
 
+    implementation "maven.modrinth:cyclops-core:FYnBoRWV"
+    implementation "maven.modrinth:common-capabilities:1.21.1-2.10.0"
+    implementation "maven.modrinth:integrated-dynamics:1.21.1-1.28.1-1340"
+    implementation "maven.modrinth:jei:DFIjSzbJ"
+
     compileOnly "maven.modrinth:entity-model-features:Z0UKemxw"
     compileOnly "maven.modrinth:touhou-little-maid:3XPwCAVd"
     compileOnly "maven.modrinth:geckolib:QEqpUJ1G"

@@ -17,6 +17,6 @@ public class ItemLayerColors implements ILayerColors {
 
 	@Override
 	public int getColor(int layer) {
-		return itemColor.getColor(itemStack, layer);
+		return layer == -1 ? -1 : itemColor.getColor(itemStack, layer);
 	}
 }
