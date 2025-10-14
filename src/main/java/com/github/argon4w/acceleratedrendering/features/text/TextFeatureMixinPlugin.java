@@ -84,7 +84,7 @@ public class TextFeatureMixinPlugin implements IMixinConfigPlugin {
             ListIterator<AbstractInsnNode> it = instructions.iterator();
             it.add(new TypeInsnNode(Opcodes.NEW, CI));
             it.add(new InsnNode(Opcodes.DUP));
-            it.add(new LdcInsnNode("ARInjectionCI_invoke_BakedGlyphEffectMixin;renderFast(ZFFLorg/joml/Matrix4f;Lcom/mojang/blaze3d/vertex/VertexConsumer;FFFFILorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V"));
+            it.add(new LdcInsnNode("ARMagicInjectionCI_invoke_BakedGlyphMixin;renderFast(ZFFLorg/joml/Matrix4f;Lcom/mojang/blaze3d/vertex/VertexConsumer;FFFFILorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V"));
             it.add(
                 new InsnNode(
                     Opcodes.ICONST_1
