@@ -18,7 +18,7 @@ public class BlockLayerColors implements ILayerColors {
 
 	@Override
 	public int getColor(int layer) {
-		return blockColor.getColor(
+		return layer == -1 ? -1 : blockColor.getColor(
 				blockState,
 				null,
 				null,

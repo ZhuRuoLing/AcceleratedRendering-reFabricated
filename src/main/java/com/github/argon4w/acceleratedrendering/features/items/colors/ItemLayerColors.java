@@ -19,6 +19,6 @@ public class ItemLayerColors implements ILayerColors {
 
 	@Override
 	public int getColor(int layer) {
-		return FastColorUtils.opaque(itemColor.getColor(itemStack, layer));
+		return layer == -1 ? -1 : FastColorUtils.opaque(itemColor.getColor(itemStack, layer));
 	}
 }
