@@ -390,7 +390,7 @@ public class FeatureConfig {
 				.comment				("- DISABLED: Filters will be disabled and all entities, block entities and items will be accelerated when rendering.")
 				.comment				("- ENABLED: Filters will test if the entities, block entities and items should be accelerated when rendering based on the filter values and the filter type.")
 				.translation			("acceleratedrendering.configuration.filter.feature_status")
-				.defineEnum				("feature_status",						FeatureStatus.ENABLED);
+				.defineEnum				("feature_status",						FeatureStatus.DISABLED);
 
 		filterEntityFilter								= builder
 				.comment				("- DISABLED: Entity filter will be disabled and all entities will be accelerated.")

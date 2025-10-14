@@ -78,7 +78,13 @@ base {
 }
 
 // Mojang ships Java 17 to end users in 1.20.1, so mods should target Java 17.
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java {
+    sourceCompatibility = 17
+    targetCompatibility = 17
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 
 dependencies {
@@ -129,20 +135,6 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand replaceProperties
     }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    it.options.release = 21
-}
-
-java {
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
-    withSourcesJar()
-
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
 }
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
