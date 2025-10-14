@@ -32,8 +32,7 @@ public class IrisVertexFormatsMixin {
 					value	= "FIELD",
 					target	= "Lnet/irisshaders/iris/vertices/IrisVertexFormats;ENTITY:Lcom/mojang/blaze3d/vertex/VertexFormat;",
 					opcode	= Opcodes.PUTSTATIC
-			),
-			remap	= false
+			)
 	)
 	private static void addPaddingForEntityFormat(VertexFormat value, Operation<Void> original) {
 		original.call(new VertexFormat(ImmutableMap
@@ -60,8 +59,7 @@ public class IrisVertexFormatsMixin {
 					value	= "FIELD",
 					target	= "Lnet/irisshaders/iris/vertices/IrisVertexFormats;GLYPH:Lcom/mojang/blaze3d/vertex/VertexFormat;",
 					opcode	= Opcodes.PUTSTATIC
-			),
-			remap	= false
+			)
 	)
 	private static void addPaddingForGlyphFormat(VertexFormat value, Operation<Void> original) {
 		original.call(new VertexFormat(ImmutableMap
