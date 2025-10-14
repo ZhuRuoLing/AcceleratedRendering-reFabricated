@@ -397,22 +397,21 @@ public class FeatureConfig {
 				.comment				("Entity filter will use this list and the filter type to determine if a entity can pass the filter.")
 				.translation			("acceleratedrendering.configuration.filter.entity_filter_values")
 				.worldRestart			()
-				.defineListAllowEmpty	("entity_filter_values",				new ArrayList<>(), object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
+				.defineListAllowEmpty	(List.of("entity_filter_values"), ArrayList::new, object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
 
 		filterBlockEntityFilterValues					= builder
 				.comment				("You can configure the block entity filter by this list.")
 				.comment				("Block entity filter will use this list and the filter type to determine if a block entity can pass the filter.")
 				.translation			("acceleratedrendering.configuration.filter.block_entity_filter_values")
 				.worldRestart			()
-				.defineListAllowEmpty	("block_entity_filter_values",			new ArrayList<>(), object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
+				.defineListAllowEmpty	(List.of("block_entity_filter_values"), ArrayList::new, object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
 
 		filterItemFilterValues							= builder
 				.comment				("You can configure the item filter by this list.")
 				.comment				("Item filter will use this list and the filter type to determine if an item can pass the filter.")
 				.translation			("acceleratedrendering.configuration.filter.item_filter_values")
 				.worldRestart			()
-				.defineListAllowEmpty	("item_filter_values",					new ArrayList<>(), object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
-
+				.defineListAllowEmpty	(List.of("item_filter_values"), ArrayList::new, object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
 		builder.pop();
 
 		builder

@@ -6,7 +6,6 @@ import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedBakedM
 import com.mojang.blaze3d.vertex.PoseStack;
 import lombok.Getter;
 import lombok.experimental.ExtensionMethod;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.MultiPartBakedModel;
 import net.minecraft.util.RandomSource;
@@ -79,8 +78,7 @@ public abstract class MultipartBakedModelMixin implements IAcceleratedBakedModel
 			IAcceleratedVertexConsumer	extension,
 			int							light,
 			int							overlay,
-			int							color,
-			RenderType					renderType
+			int							color
 	) {
 		if (state == null) {
 			return;
@@ -112,8 +110,7 @@ public abstract class MultipartBakedModelMixin implements IAcceleratedBakedModel
 						extension,
 						light,
 						overlay,
-						getCustomColor(-1, color),
-                        renderType
+						getCustomColor(-1, color)
 					);
 			}
 		}

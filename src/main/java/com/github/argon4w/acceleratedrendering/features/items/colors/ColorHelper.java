@@ -1,6 +1,5 @@
 package com.github.argon4w.acceleratedrendering.features.items.colors;
 
-import com.github.argon4w.acceleratedrendering.features.items.mixins.MCItemColorsAccessor;
 import com.github.argon4w.acceleratedrendering.features.items.mixins.accessors.BlockColorsAccessor;
 import com.github.argon4w.acceleratedrendering.features.items.mixins.accessors.ItemColorsAccessor;
 import net.minecraft.client.Minecraft;
@@ -21,9 +20,8 @@ public class ColorHelper {
     }
 
     public static ItemColor getItemColorOrDefault(ItemStack itemStack) {
-        MCItemColorsAccessor accessor = (MCItemColorsAccessor) Minecraft.getInstance();
         int id = BuiltInRegistries.ITEM.getId(itemStack.getItem());
-        ItemColor color = ((ItemColorsAccessor) (accessor.getItemColors())).getItemColors().byId(id);
+        ItemColor color = ((ItemColorsAccessor) Minecraft.getInstance().itemColors).getItemColors().byId(id);
         if (color == null) return EmptyItemColor.INSTANCE;
         return color;
     }

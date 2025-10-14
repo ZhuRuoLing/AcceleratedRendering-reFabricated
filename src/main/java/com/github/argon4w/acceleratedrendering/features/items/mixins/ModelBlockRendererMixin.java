@@ -28,21 +28,19 @@ public class ModelBlockRendererMixin {
 	@Inject(
 			cancellable	= true,
 			method		= "renderModel",
-			at			= @At("HEAD"),
-			remap		= false
+			at			= @At("HEAD")
 	)
 	public void renderModelFast(
-			PoseStack.Pose		pose,
-			VertexConsumer		consumer,
-			BlockState			state,
-			BakedModel			model,
-			float				red,
-			float				green,
-			float				blue,
-			int					packedLight,
-			int					packedOverlay,
-			RenderType			renderType,
-			CallbackInfo		ci
+		PoseStack.Pose pose,
+		VertexConsumer consumer,
+		BlockState state,
+		BakedModel model,
+		float red,
+		float green,
+		float blue,
+		int packedLight,
+		int packedOverlay,
+		CallbackInfo ci
 	) {
 		var extension1 = consumer	.getAccelerated();
 		var extension2 = model		.getAccelerated();
@@ -77,8 +75,7 @@ public class ModelBlockRendererMixin {
 							(int) (red		* 255.0f),
 							(int) (green	* 255.0f),
 							(int) (blue		* 255.0f)
-					),
-					renderType
+					)
 			);
 			return;
 		}

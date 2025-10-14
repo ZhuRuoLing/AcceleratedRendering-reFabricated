@@ -2,7 +2,6 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.github.argon4w.acceleratedrendering.features.touhoulittlemaid.mixins",
-  "plugin": "com.github.argon4w.acceleratedrendering.compat.BoosterRequiredMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "client": [
     "GeoBoneMixin",
@@ -11,5 +10,5 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "acceleratedrendering.refmap.json"
+  "refmap": "acceleratedrendering-refmap.json"
 }
