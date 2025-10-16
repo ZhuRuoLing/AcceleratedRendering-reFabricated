@@ -1,4 +1,4 @@
-package net.minecraftforge.neoforgespi.language;
+package net.neoforged.neoforgespi.language;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;

@@ -1,4 +1,4 @@
-package net.minecraftforge.neoforgespi.language;
+package net.neoforged.neoforgespi.language;
 
 public interface IModInfo {
 

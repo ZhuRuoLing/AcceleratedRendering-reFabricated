@@ -5,8 +5,8 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.IModBusEvent;
-import net.minecraftforge.neoforgespi.language.IModInfo;
-import net.minecraftforge.neoforgespi.language.ModInfo;
+import net.neoforged.neoforgespi.language.IModInfo;
+import net.neoforged.neoforgespi.language.ModInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

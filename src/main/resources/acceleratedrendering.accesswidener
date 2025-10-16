@@ -58,3 +58,5 @@ accessible field com/mojang/blaze3d/vertex/BufferBuilder vertices I
 accessible method com/mojang/blaze3d/vertex/BufferBuilder reset ()V
 
 accessible field net/minecraft/client/Minecraft itemColors Lnet/minecraft/client/color/item/ItemColors;
+
+accessible method net/minecraft/client/gui/components/OptionsList$Entry <init> (Ljava/util/Map;)V

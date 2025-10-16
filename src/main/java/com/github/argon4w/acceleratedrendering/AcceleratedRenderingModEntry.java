@@ -28,7 +28,7 @@ public class AcceleratedRenderingModEntry implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		ForgeConfigRegistry.INSTANCE.register(MOD_ID, ModConfig.Type.CLIENT, FeatureConfig.SPEC);
+		ModConfig config = ForgeConfigRegistry.INSTANCE.register(MOD_ID, ModConfig.Type.CLIENT, FeatureConfig.SPEC);
 		container = ModLoader.get().createModContainer(MOD_ID);
 		IEventBus eventBus = container.getModEventBus();
 		eventBus.register(ComputeShaderPrograms.class);
