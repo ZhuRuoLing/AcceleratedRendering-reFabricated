@@ -44,6 +44,12 @@ public class RenderTypeUtilsMixin {
 			remap		= false
 	)
 	private static void getIrisRenderTypeDrawType(RenderType renderType, CallbackInfoReturnable<LayerDrawType> cir) {
-		cir.setReturnValue(((BlendingStateHolder) renderType).getTransparencyType() == TransparencyType.GENERAL_TRANSPARENT ? LayerDrawType.TRANSLUCENT : LayerDrawType.OPAQUE);
+		var holder = (BlendingStateHolder) renderType;
+
+		cir.setReturnValue(	holder.getTransparencyType() == TransparencyType.GENERAL_TRANSPARENT
+				||			holder.getTransparencyType() == TransparencyType.DECAL
+				? LayerDrawType.TRANSLUCENT
+				: LayerDrawType.OPAQUE
+		);
 	}
 }
