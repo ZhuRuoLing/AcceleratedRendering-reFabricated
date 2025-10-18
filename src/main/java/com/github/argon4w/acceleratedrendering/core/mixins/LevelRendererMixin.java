@@ -81,9 +81,9 @@ public class LevelRendererMixin {
 			Matrix4f		projectionMatrix,
 			CallbackInfo	ci
 	) {
-		CoreStates							.record			();
+		CoreStates							.recordBuffers	();
 		CoreBuffers.POS_TEX_COLOR_OUTLINE	.prepareBuffers	();
-		CoreStates							.restore		();
+		CoreStates							.restoreBuffers	();
 
 		CoreBuffers.POS_TEX_COLOR_OUTLINE	.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS_TEX_COLOR_OUTLINE	.clearBuffers	();
@@ -98,14 +98,14 @@ public class LevelRendererMixin {
 			)
 	)
 	public void drawCoreBuffers(MultiBufferSource.BufferSource instance, Operation<Void> original) {
-		CoreStates						.record			();
+		CoreStates						.recordBuffers	();
 		CoreBuffers.ENTITY				.prepareBuffers	();
 		CoreBuffers.BLOCK				.prepareBuffers	();
 		CoreBuffers.POS					.prepareBuffers	();
 		CoreBuffers.POS_TEX				.prepareBuffers	();
 		CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
-		CoreStates						.restore		();
+		CoreStates						.restoreBuffers	();
 
 		CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.ALL);

@@ -99,18 +99,17 @@ public class BakedCompositeModelMixin implements IAcceleratedBakedModel {
 			ModelData					data,
 			RenderType					renderType
 	) {
-		if (blockState == null) {
-			return;
-		}
-
 		for (BakedModel child : children.values()) {
-			var renderTypeSet = child.getRenderTypes(
+			var renderTypeSet = blockState == null ? null : child.getRenderTypes(
 					blockState,
 					random,
 					data
 			);
 
-			if (renderTypeSet.contains(renderType)) {
+			if (			renderType		== null
+					||	(	renderTypeSet	!= null
+					&&		renderTypeSet.contains(renderType))
+			) {
 				child
 						.getAccelerated	()
 						.renderBlockFast(

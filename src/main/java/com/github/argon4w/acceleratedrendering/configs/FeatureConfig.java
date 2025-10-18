@@ -1,16 +1,18 @@
 package com.github.argon4w.acceleratedrendering.configs;
 
+import com.github.argon4w.acceleratedrendering.core.backends.states.buffers.BlockBufferBindingStateType;
+import com.github.argon4w.acceleratedrendering.core.backends.states.buffers.cache.BlockBufferBindingCacheType;
+import com.github.argon4w.acceleratedrendering.core.backends.states.viewports.ViewportBindingStateType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.LayerStorageType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.MeshInfoCacheType;
-import com.github.argon4w.acceleratedrendering.core.buffers.blocks.states.BlockBufferBindingStateType;
-import com.github.argon4w.acceleratedrendering.core.buffers.blocks.cache.BlockBufferBindingCacheType;
 import com.github.argon4w.acceleratedrendering.core.meshes.MeshType;
+import com.github.argon4w.acceleratedrendering.core.meshes.identity.MeshMergeType;
 import com.github.argon4w.acceleratedrendering.features.filter.FilterType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FeatureConfig {
@@ -21,12 +23,16 @@ public class FeatureConfig {
 	public			final	ForgeConfigSpec.IntValue									corePooledRingBufferSize;
 	public			final	ForgeConfigSpec.IntValue									corePooledBatchingSize;
 	public			final	ForgeConfigSpec.IntValue									coreCachedImageSize;
+	public			final	ForgeConfigSpec.IntValue									coreDynamicUVResolution;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					coreDebugContextEnabled;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					coreForceTranslucentAcceleration;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					coreCacheIdenticalPose;
 	public			final	ForgeConfigSpec.ConfigValue<MeshInfoCacheType>				coreMeshInfoCacheType;
 	public			final	ForgeConfigSpec.ConfigValue<LayerStorageType>				coreLayerStorageType;
+	public			final	ForgeConfigSpec.ConfigValue<MeshMergeType>					coreMeshMergeType;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					coreUploadMeshImmediately;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					coreCacheDynamicRenderType;
+	public			final	ForgeConfigSpec.ConfigValue<ViewportBindingStateType>		coreViewportBindingType;
 
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					restoringFeatureStatus;
 	public			final	ForgeConfigSpec.ConfigValue<BlockBufferBindingCacheType>	restoringBindingCacheType;
@@ -60,12 +66,15 @@ public class FeatureConfig {
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					filterEntityFilter;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					filterBlockEntityFilter;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					filterItemFilter;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					filterStageFilter;
 	public			final	ForgeConfigSpec.ConfigValue<FilterType>						filterEntityFilterType;
 	public			final	ForgeConfigSpec.ConfigValue<FilterType>						filterBlockEntityFilterType;
 	public			final	ForgeConfigSpec.ConfigValue<FilterType>						filterItemFilterType;
+	public			final	ForgeConfigSpec.ConfigValue<FilterType>						filterStageFilterType;
 	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>			filterEntityFilterValues;
 	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>			filterBlockEntityFilterValues;
 	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>			filterItemFilterValues;
+	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>			filterStageFilterValues;
 
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					irisCompatFeatureStatus;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					irisCompatOrientationCullingCompat;
@@ -99,20 +108,26 @@ public class FeatureConfig {
 				.comment				("Count of buffer sets that holds data for in-flight frame rendering.")
 				.comment				("Changing this value may affects your FPS. Smaller value means less in-flight frames, while larger values means more in-flight frames. More in-flight frames means more FPS but more VRAM.")
 				.translation			("acceleratedrendering.configuration.core_settings.pooled_ring_buffer_size")
-				.defineInRange			("pooled_ring_buffer_size",		8,	1,	Integer.MAX_VALUE);
+				.defineInRange			("pooled_ring_buffer_size",				8,	1,	Integer.MAX_VALUE);
 
 		corePooledBatchingSize							= builder
 				.worldRestart			()
 				.comment				("Count of batches of RenderTypes that is allowed in a draw call.")
 				.comment				("Changing this value may affects your FPS. Smaller value means less batches allowed in a draw call, while larger values means more batches. More batches means more FPS but more VRAM and more CPU pressure on handling RenderTypes.")
 				.translation			("acceleratedrendering.configuration.core_settings.pooled_batching_size")
-				.defineInRange			("pooled_batching_size",		32,	1,	Integer.MAX_VALUE);
+				.defineInRange			("pooled_batching_size",				32,	1,	Integer.MAX_VALUE);
 
 		coreCachedImageSize								= builder
 				.comment				("Count of images that cached for static mesh culling.")
 				.comment				("Changing this value may affects your FPS. Smaller value means less images allowed to be cached, while larger means more cached images. More cached images means more FPS but more RAM pressure.")
 				.translation			("acceleratedrendering.configuration.core_settings.cached_image_size")
-				.defineInRange			("cached_image_size",			32,	1,	Integer.MAX_VALUE);
+				.defineInRange			("cached_image_size",					32,	1,	Integer.MAX_VALUE);
+
+		coreDynamicUVResolution							= builder
+				.comment				("Resolution of UV scrolling in caching dynamic render types.")
+				.comment				("Changing this value may affects your visual effects and VRAM usage. Smaller value means lower resolution in UV scrolling and less cached render types, while larger means higher resolution and more cached render types. Higher resolution means smoother animations on charged creepers and breezes but more VRAM usage.")
+				.translation			("acceleratedrendering.configuration.core_settings.dynamic_uv_resolution")
+				.defineInRange			("dynamic_uv_resolution",				64,	1,	Integer.MAX_VALUE);
 
 		coreDebugContextEnabled							= builder
 				.comment				("- DISABLED: Debug context will be disabled, which may cause significant rendering glitches on some NVIDIA cards because of the \"theaded optimization\".")
@@ -148,11 +163,32 @@ public class FeatureConfig {
 				.worldRestart			()
 				.defineEnum				("layer_storage_type",					LayerStorageType.SEPARATED);
 
+		coreMeshMergeType								= builder
+				.comment				("- IGNORED: Meshes with identical vertices will not be merged, which will use less RAM but more VRAM in storing duplicated meshes.")
+				.comment				("- MERGED: Meshes with identical vertices will be merged together, which will use less VRAM more RAM in storing the data of meshes used in merging.")
+				.translation			("acceleratedrendering.configuration.core_settings.mesh_merge_type")
+				.worldRestart			()
+				.defineEnum				("mesh_merge_type",						MeshMergeType.MERGED);
+
 		coreUploadMeshImmediately						= builder
 				.comment				("- DISABLED: Meshes that is going to be accelerated will be collected and uploaded together at the end for choosing better uploading method and increasing memory access efficiency to reach the best performance. Also this method allows mesh cache with bigger capacity (up to VRAM limit), but it may not follow the correct draw order.")
 				.comment				("- ENABLED: Meshes that is going to be accelerated will be uploaded immediately after the draw command. It is less efficient and only have about 2GB mesh cache (generally enough) but will follow the original draw order to get the most compatibility.")
 				.translation			("acceleratedrendering.configuration.core_settings.upload_mesh_immediately")
 				.defineEnum				("upload_mesh_immediately",				FeatureStatus.DISABLED);
+
+		coreCacheDynamicRenderType						= builder
+				.comment				("- DISABLED: Dynamic render types like lightning on charged creepers and winds on breezes will not be accelerated for less VRAM usage and smoother animations, but may exceptionally skip acceleration in modded geometries using these render types.")
+				.comment				("- ENABLED: Dynamic render types like lightning on charged creepers and winds on breezes will be accelerated to accelerate modded geometries using these render types, but may have more VRAM usage and less smooth animations based on resolution settings.")
+				.translation			("acceleratedrendering.configuration.core_settings.cache_dynamic_render_type")
+				.defineEnum				("cache_dynamic_render_type",			FeatureStatus.ENABLED);
+
+		coreViewportBindingType							= builder
+				.comment				("- IGNORED: Viewport settings that will be modified by other mods will not be restored after the acceleration, which is faster but reduces compatibility with them.")
+				.comment				("- MOJANG: Viewport settings that will be modified by other mods will be recorded and restored using Mojang's GLStateManager to work correctly with them.")
+				.comment				("- OPENGL: Viewport settings that will be modified by other mods will be recorded and restored using OpenGL to work correctly with them even if they don't set viewport using Mojang's GLStateManager, which is slower but has most compatibility.")
+				.translation			("acceleratedrendering.configuration.core_settings.viewport_binding_state")
+				.worldRestart			()
+				.defineEnum				("viewport_binding_state",				ViewportBindingStateType.IGNORED);
 
 		builder
 				.comment				("Block Buffer Restoring Settings")
@@ -176,15 +212,15 @@ public class FeatureConfig {
 				.defineEnum				("binding_cache_type",					BlockBufferBindingCacheType.HANDLE);
 
 		restoringShaderStorageType						= builder
-				.comment				("- IGNORE: Shader storage buffers will not be restored which improves FPS but reduces compatibility with mods and shaders that ues shader storage buffers.")
-				.comment				("- ENABLED: Shader storage buffers will be restored, which is slight slower but has better compatibility with mods and shaders that ues shader storage buffers.")
+				.comment				("- IGNORED: Shader storage buffers will not be restored which improves FPS but reduces compatibility with mods and shaders that ues shader storage buffers.")
+				.comment				("- RESTORED: Shader storage buffers will be restored, which is slight slower but has better compatibility with mods and shaders that ues shader storage buffers.")
 				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.shader_storage_type")
 				.worldRestart			()
 				.defineEnum				("shader_storage_type",					BlockBufferBindingStateType.RESTORED);
 
 		restoringAtomicCounterType						= builder
-				.comment				("- IGNORE: Atomic counter buffers will not be restored which improves FPS but reduces compatibility with mods and shaders that ues atomic counter buffers.")
-				.comment				("- ENABLED: Atomic counter buffers will be restored, which is slight slower but has better compatibility with mods and shaders that ues atomic counter buffers.")
+				.comment				("- IGNORED: Atomic counter buffers will not be restored which improves FPS but reduces compatibility with mods and shaders that ues atomic counter buffers.")
+				.comment				("- RESTORED: Atomic counter buffers will be restored, which is slight slower but has better compatibility with mods and shaders that ues atomic counter buffers.")
 				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.atomic_counter_type")
 				.worldRestart			()
 				.defineEnum				("atomic_counter_type",					BlockBufferBindingStateType.RESTORED);
@@ -194,14 +230,14 @@ public class FeatureConfig {
 				.comment				("Changing this value may affects your FPS. Smaller value means less shader storage buffer restored but less compatibility, while larger values means more shader storage buffer restored and better compatibility. More shader storage buffers means less FPS.")
 				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.shader_storage_range")
 				.worldRestart			()
-				.defineInRange			("shader_storage_range",		9,	0,	9);
+				.defineInRange			("shader_storage_range",				9,	0,	9);
 
 		restoringAtomicCounterRange						= builder
 				.comment				("Range of atomic counter buffer bindings that will be restored.")
 				.comment				("Changing this value may affects your FPS. Smaller value means less atomic counter buffer restored but less compatibility, while larger values means more atomic counter buffer restored and better compatibility. More atomic counter buffers means less FPS.")
 				.translation			("acceleratedrendering.configuration.core_settings.block_buffer_binding_restoring.atomic_counter_range")
 				.worldRestart			()
-				.defineInRange			("atomic_counter_range",		1,	0,	1);
+				.defineInRange			("atomic_counter_range",				1,	0,	1);
 
 		builder.pop();
 
@@ -354,7 +390,7 @@ public class FeatureConfig {
 				.comment				("- DISABLED: Filters will be disabled and all entities, block entities and items will be accelerated when rendering.")
 				.comment				("- ENABLED: Filters will test if the entities, block entities and items should be accelerated when rendering based on the filter values and the filter type.")
 				.translation			("acceleratedrendering.configuration.filter.feature_status")
-				.defineEnum				("feature_status",						FeatureStatus.DISABLED);
+				.defineEnum				("feature_status",						FeatureStatus.ENABLED);
 
 		filterEntityFilter								= builder
 				.comment				("- DISABLED: Entity filter will be disabled and all entities will be accelerated.")
@@ -374,6 +410,12 @@ public class FeatureConfig {
 				.translation			("acceleratedrendering.configuration.filter.item_filter")
 				.defineEnum				("item_filter",							FeatureStatus.DISABLED);
 
+		filterStageFilter								= builder
+				.comment				("- DISABLED: Custom rendering stage filter will be disabled and geometries in all custom rendering stages will be accelerated.")
+				.comment				("- ENABLED: Custom rendering stage filter will test if geometries in specific custom rendering stage should be accelerated when rendering based on the filter values and the filter type.")
+				.translation			("acceleratedrendering.configuration.filter.stage_filter")
+				.defineEnum				("stage_filter",						FeatureStatus.ENABLED);
+
 		filterEntityFilterType							= builder
 				.comment				("- BLACKLIST: Entities that are not in the filter values can pass the filter and be accelerated when rendering.")
 				.comment				("- WHITELIST: Entities that are in the filter values can pass the filter and be accelerated when rendering.")
@@ -392,26 +434,40 @@ public class FeatureConfig {
 				.translation			("acceleratedrendering.configuration.filter.item_filter_type")
 				.defineEnum				("item_filter_type",					FilterType.BLACKLIST);
 
+		filterStageFilterType							= builder
+				.comment				("- BLACKLIST: Custom rendering stages that are not in the filter values can pass the filter and be accelerated when rendering.")
+				.comment				("- WHITELIST: Custom rendering stages that are in the filter values can pass the filter and be accelerated when rendering.")
+				.translation			("acceleratedrendering.configuration.filter.stage_filter_type")
+				.defineEnum				("stage_filter_type",					FilterType.WHITELIST);
+
 		filterEntityFilterValues						= builder
 				.comment				("You can configure the entity filter by this list.")
 				.comment				("Entity filter will use this list and the filter type to determine if a entity can pass the filter.")
 				.translation			("acceleratedrendering.configuration.filter.entity_filter_values")
 				.worldRestart			()
-				.defineListAllowEmpty	("entity_filter_values",				new ArrayList<>(), object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
+				.defineListAllowEmpty	("entity_filter_values",				new ObjectArrayList<>(),										object -> object instanceof String);
 
 		filterBlockEntityFilterValues					= builder
 				.comment				("You can configure the block entity filter by this list.")
 				.comment				("Block entity filter will use this list and the filter type to determine if a block entity can pass the filter.")
 				.translation			("acceleratedrendering.configuration.filter.block_entity_filter_values")
 				.worldRestart			()
-				.defineListAllowEmpty	("block_entity_filter_values",			new ArrayList<>(), object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
+				.defineListAllowEmpty	("block_entity_filter_values",			new ObjectArrayList<>(),										object -> object instanceof String);
 
 		filterItemFilterValues							= builder
 				.comment				("You can configure the item filter by this list.")
 				.comment				("Item filter will use this list and the filter type to determine if an item can pass the filter.")
 				.translation			("acceleratedrendering.configuration.filter.item_filter_values")
 				.worldRestart			()
-				.defineListAllowEmpty	("item_filter_values",					new ArrayList<>(), object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
+				.defineListAllowEmpty	("item_filter_values",					new ObjectArrayList<>(),										object -> object instanceof String);
+
+		filterStageFilterValues							= builder
+				.comment				("You can configure the custom rendering stage filter by this list.")
+				.comment				("Custom rendering stage filter will use this list and the filter type to determine if a custom rendering stage can pass the filter.")
+				.comment				("It's not recommend to modify this list unless other mods adds their own custom rendering stages.")
+				.translation			("acceleratedrendering.configuration.filter.stage_filter_values")
+				.worldRestart			()
+				.defineListAllowEmpty	("stage_filter_values",					ObjectArrayList.of("after_entities", "after_block_entities"),	object -> object instanceof String);
 
 		builder.pop();
 
@@ -502,7 +558,7 @@ public class FeatureConfig {
 				.comment				("Curios item filter will use this list and the filter type to determine if a curios item can pass the filter.")
 				.translation			("acceleratedrendering.configuration.curios_compatibility.item_filter_values")
 				.worldRestart			()
-				.defineListAllowEmpty	("item_filter_values",					new ArrayList<>(), object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
+				.defineListAllowEmpty	("item_filter_values",					new ObjectArrayList<>(), object -> object instanceof String);
 
 		builder.pop();
 	}

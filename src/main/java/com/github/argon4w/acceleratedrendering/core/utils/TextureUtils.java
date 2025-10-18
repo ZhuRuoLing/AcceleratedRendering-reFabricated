@@ -38,13 +38,13 @@ public class TextureUtils implements ResourceManagerReloadListener {
 	}
 
 	public static NativeImage downloadTexture(RenderType renderType, int mipmapLevel) {
-		var textureResourceLocation = RenderTypeUtils.getTextureLocation(renderType);
+		var textureLocation = RenderTypeUtils.getTextureLocation(renderType);
 
-		if (textureResourceLocation == null) {
+		if (textureLocation == null) {
 			return null;
 		}
 
-		var image = IMAGE_CACHE.getAndMoveToFirst(textureResourceLocation);
+		var image = IMAGE_CACHE.getAndMoveToFirst(textureLocation);
 
 		if (image != null) {
 			return image;
@@ -53,7 +53,7 @@ public class TextureUtils implements ResourceManagerReloadListener {
 		Minecraft
 				.getInstance		()
 				.getTextureManager	()
-				.getTexture			(textureResourceLocation)
+				.getTexture			(textureLocation)
 				.bind				();
 
 		try (var stack = MemoryStack.stackPush()) {
@@ -87,8 +87,8 @@ public class TextureUtils implements ResourceManagerReloadListener {
 					false
 			);
 
-			nativeImage	.downloadTexture	(mipmapLevel,				false);
-			IMAGE_CACHE	.putAndMoveToFirst	(textureResourceLocation,	nativeImage);
+			nativeImage	.downloadTexture	(mipmapLevel,		false);
+			IMAGE_CACHE	.putAndMoveToFirst	(textureLocation,	nativeImage);
 
 			if (IMAGE_CACHE.size() > CoreFeature.getCachedImageSize()) {
 				IMAGE_CACHE

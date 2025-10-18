@@ -6,6 +6,7 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IAcceleratedRenderer;
 import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.CulledMeshCollector;
+import com.github.argon4w.acceleratedrendering.core.meshes.identity.IMeshData;
 import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
 import com.github.tartaricacid.simplebedrockmodel.client.bedrock.model.BedrockCube;
 import com.github.tartaricacid.simplebedrockmodel.client.bedrock.model.BedrockPart;
@@ -42,7 +43,8 @@ public class BedrockPartMixin implements IAcceleratedRenderer<Void> {
 
 	@Shadow(remap = false) @Final public			ObjectList<BedrockCube>		cubes;
 
-	@Unique private 		final					Map<IBufferGraph, IMesh>	meshes			= new Object2ObjectOpenHashMap<>();
+	@Unique private final							Map<IBufferGraph,	IMesh>	meshes = new Object2ObjectOpenHashMap<>();
+	@Unique private final							Map<IMeshData,		IMesh>	merges = new Object2ObjectOpenHashMap<>();
 
 	@Inject(
 			method		= "compile",
@@ -135,12 +137,21 @@ public class BedrockPartMixin implements IAcceleratedRenderer<Void> {
 
 		culledMeshCollector.flush();
 
-		mesh = AcceleratedEntityRenderingFeature
-				.getMeshType()
-				.getBuilder	()
-				.build		(culledMeshCollector);
+		var data	= culledMeshCollector	.getData	();
+		var buffer	= culledMeshCollector	.getBuffer	();
+		mesh		= merges				.get		(data);
+
+		if (mesh != null) {
+			buffer.close();
+		} else {
+			mesh = AcceleratedEntityRenderingFeature
+					.getMeshType()
+					.getBuilder	()
+					.build		(culledMeshCollector);
+		}
 
 		meshes	.put	(extension, mesh);
+		merges	.put	(data,		mesh);
 		mesh	.write	(
 				extension,
 				color,

@@ -1,6 +1,6 @@
 package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
-import com.github.argon4w.acceleratedrendering.features.items.GuiBatchingController;
+import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,7 +20,7 @@ public class GuiMixin {
 			GuiGraphics		guiGraphics,
 			CallbackInfo	ci
 	) {
-		GuiBatchingController.startBatching();
+		GuiBatchingController.INSTANCE.startBatching();
 	}
 
 	@Inject(
@@ -32,6 +32,6 @@ public class GuiMixin {
 			GuiGraphics		guiGraphics,
 			CallbackInfo	ci
 	) {
-		GuiBatchingController.flushBatching(guiGraphics);
+		GuiBatchingController.INSTANCE.flushBatching(guiGraphics);
 	}
 }

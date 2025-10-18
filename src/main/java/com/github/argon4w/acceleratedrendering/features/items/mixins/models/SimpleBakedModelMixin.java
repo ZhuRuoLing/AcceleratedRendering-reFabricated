@@ -6,8 +6,9 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IAcceleratedRenderer;
 import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.CulledMeshCollector;
+import com.github.argon4w.acceleratedrendering.core.meshes.identity.IMeshData;
 import com.github.argon4w.acceleratedrendering.core.utils.DirectionUtils;
-import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
+import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedBakedModel;
 import com.github.argon4w.acceleratedrendering.features.items.colors.FixedColors;
 import com.github.argon4w.acceleratedrendering.features.items.colors.ItemLayerColors;
@@ -44,7 +45,8 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 
 	@Shadow public abstract List<BakedQuad> getQuads(BlockState pState, Direction pDirection, RandomSource pRandom);
 
-	@Unique private final Map<IBufferGraph, Int2ObjectMap<IMesh>> meshes = new Object2ObjectOpenHashMap<>();
+	@Unique private final Map<IBufferGraph,	Int2ObjectMap<IMesh>>	meshes = new Object2ObjectOpenHashMap<>();
+	@Unique private final Map<IMeshData,	IMesh>					merges = new Object2ObjectOpenHashMap<>();
 
 	@Unique
 	@Override
@@ -180,12 +182,21 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 
 			culledMeshCollector.flush();
 
-			var mesh = AcceleratedItemRenderingFeature
-					.getMeshType()
-					.getBuilder	()
-					.build		(culledMeshCollector);
+			var data	= culledMeshCollector	.getData	();
+			var buffer	= culledMeshCollector	.getBuffer	();
+			var mesh	= merges				.get		(data);
+
+			if (mesh != null) {
+				buffer.close();
+			} else {
+				mesh = AcceleratedEntityRenderingFeature
+						.getMeshType()
+						.getBuilder	()
+						.build		(culledMeshCollector);
+			}
 
 			layers	.put	(layer, mesh);
+			merges	.put	(data,	mesh);
 			mesh	.write	(
 					extension,
 					getCustomColor(layer, layerColors.getColor(layer)),

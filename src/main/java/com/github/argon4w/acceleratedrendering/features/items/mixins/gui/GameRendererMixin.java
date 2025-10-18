@@ -1,6 +1,7 @@
 package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
-import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
+import com.github.argon4w.acceleratedrendering.core.CoreFeature;
+import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,10 +21,12 @@ public class GameRendererMixin {
 			int				height,
 			CallbackInfo	ci
 	) {
-		AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET.resize(
-				width,
-				height,
-				Minecraft.ON_OSX
-		);
+		if (CoreFeature.isLoaded()) {
+			GuiBatchingController.INSTANCE.resize(
+					width,
+					height,
+					Minecraft.ON_OSX
+			);
+		}
 	}
 }
