@@ -54,7 +54,7 @@ description='''${mod_description}'''
 config="${mod_id}.core.mixins.json"
 
 # Accelerated Rendering Compatibility Feature Mixins
-# Provides shaders and post processings that supports modified vertex formats by Iris Shadersn
+# Provides shaders and post processings that supports modified vertex formats by Iris Shaders
 [[mixins]]
 config="${mod_id}.compat.iris.mixins.json"
 

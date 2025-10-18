@@ -1,40 +1,54 @@
 package com.github.argon4w.acceleratedrendering.core.meshes.collectors;
 
+import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryInterface;
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryLayout;
+import com.github.argon4w.acceleratedrendering.core.meshes.identity.IMeshData;
+import com.github.argon4w.acceleratedrendering.core.utils.PackedVector2i;
+import com.github.argon4w.acceleratedrendering.core.utils.Vertex;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
+import lombok.Getter;
 import net.minecraft.util.FastColor;
 
 public class SimpleMeshCollector implements VertexConsumer, IMeshCollector {
 
-	private final	IMemoryLayout<VertexFormatElement>	layout;
-	private final	ByteBufferBuilder					buffer;
+	@Getter private	final	IMemoryLayout<VertexFormatElement>	layout;
+	@Getter private	final	ByteBufferBuilder					buffer;
+	@Getter private final	Vertex								vertex;
+	@Getter private	final	IMeshData							data;
 
-	private final	long								vertexSize;
-	private final	IMemoryInterface					posOffset;
-	private final	IMemoryInterface					colorOffset;
-	private final	IMemoryInterface					uv0Offset;
-	private final	IMemoryInterface					uv2Offset;
-	private final	IMemoryInterface					normalOffset;
+	private			final	long								vertexSize;
+	private			final	IMemoryInterface					posOffset;
+	private			final	IMemoryInterface					colorOffset;
+	private			final	IMemoryInterface					uv0Offset;
+	private			final	IMemoryInterface					uv2Offset;
+	private			final	IMemoryInterface					normalOffset;
 
-	private			long								vertexAddress;
-	private			int									vertexCount;
+	@Getter private			long								vertexAddress;
+	@Getter private			int									vertexCount;
 
 	public SimpleMeshCollector(IMemoryLayout<VertexFormatElement> layout) {
 		this.layout			= layout;
-		this.buffer			= new ByteBufferBuilder		(1024);
+		this.buffer			= new ByteBufferBuilder			(1024);
+		this.vertex			= new Vertex					();
+		this.data			= CoreFeature	.createMeshData	(layout);
 
-		this.vertexSize		= this.layout	.getSize	();
-		this.posOffset		= this.layout	.getElement	(VertexFormatElement.POSITION);
-		this.colorOffset	= this.layout	.getElement	(VertexFormatElement.COLOR);
-		this.uv0Offset		= this.layout	.getElement	(VertexFormatElement.UV);
-		this.uv2Offset		= this.layout	.getElement	(VertexFormatElement.UV2);
-		this.normalOffset	= this.layout	.getElement	(VertexFormatElement.NORMAL);
+		this.vertexSize		= this.layout	.getSize		();
+		this.posOffset		= this.layout	.getElement		(VertexFormatElement.POSITION);
+		this.colorOffset	= this.layout	.getElement		(VertexFormatElement.COLOR);
+		this.uv0Offset		= this.layout	.getElement		(VertexFormatElement.UV);
+		this.uv2Offset		= this.layout	.getElement		(VertexFormatElement.UV2);
+		this.normalOffset	= this.layout	.getElement		(VertexFormatElement.NORMAL);
 
 		this.vertexAddress	= -1L;
 		this.vertexCount	= 0;
+	}
+
+	@Override
+	public void flush() {
+		data.addVertex(vertex);
 	}
 
 	@Override
@@ -43,12 +57,22 @@ public class SimpleMeshCollector implements VertexConsumer, IMeshCollector {
 			float pY,
 			float pZ
 	) {
+		if (vertexCount != 0) {
+			data.addVertex(vertex);
+		}
+
 		vertexCount ++;
 		vertexAddress = buffer.reserve((int) vertexSize);
 
 		posOffset.putFloat(vertexAddress + 0L, pX);
 		posOffset.putFloat(vertexAddress + 4L, pY);
 		posOffset.putFloat(vertexAddress + 8L, pZ);
+
+		var vertexPosition	= vertex.getPosition();
+
+		vertexPosition.x	= pX;
+		vertexPosition.y	= pY;
+		vertexPosition.z	= pZ;
 
 		return this;
 	}
@@ -69,6 +93,13 @@ public class SimpleMeshCollector implements VertexConsumer, IMeshCollector {
 		colorOffset.putByte(vertexAddress + 2L, (byte) pBlue);
 		colorOffset.putByte(vertexAddress + 3L, (byte) pAlpha);
 
+		var vertexColor	= vertex.getColor();
+
+		vertexColor.x	= pRed;
+		vertexColor.y	= pGreen;
+		vertexColor.z	= pBlue;
+		vertexColor.w	= pAlpha;
+
 		return this;
 	}
 
@@ -80,6 +111,11 @@ public class SimpleMeshCollector implements VertexConsumer, IMeshCollector {
 
 		uv0Offset.putFloat(vertexAddress + 0L, pU);
 		uv0Offset.putFloat(vertexAddress + 4L, pV);
+
+		var vertexUv	= vertex.getUv();
+
+		vertexUv.x		= pU;
+		vertexUv.y		= pV;
 
 		return this;
 	}
@@ -98,6 +134,11 @@ public class SimpleMeshCollector implements VertexConsumer, IMeshCollector {
 		uv2Offset.putShort(vertexAddress + 0L, (short) pU);
 		uv2Offset.putShort(vertexAddress + 2L, (short) pV);
 
+		var vertexLight	= vertex.getLight();
+
+		vertexLight.x	= pU;
+		vertexLight.y	= pV;
+
 		return this;
 	}
 
@@ -114,6 +155,12 @@ public class SimpleMeshCollector implements VertexConsumer, IMeshCollector {
 		normalOffset.putNormal(vertexAddress + 0L, pNormalX);
 		normalOffset.putNormal(vertexAddress + 1L, pNormalY);
 		normalOffset.putNormal(vertexAddress + 2L, pNormalZ);
+
+		var vertexNormal	= vertex.getNormal();
+
+		vertexNormal.x		= pNormalX;
+		vertexNormal.y		= pNormalY;
+		vertexNormal.z		= pNormalZ;
 
 		return this;
 	}
@@ -145,20 +192,22 @@ public class SimpleMeshCollector implements VertexConsumer, IMeshCollector {
 		normalOffset.putNormal	(vertexAddress + 0L,	pNormalX);
 		normalOffset.putNormal	(vertexAddress + 1L,	pNormalY);
 		normalOffset.putNormal	(vertexAddress + 2L,	pNormalZ);
-	}
 
-	@Override
-	public ByteBufferBuilder getBuffer() {
-		return buffer;
-	}
-
-	@Override
-	public IMemoryLayout<VertexFormatElement> getLayout() {
-		return layout;
-	}
-
-	@Override
-	public int getVertexCount() {
-		return vertexCount;
+		data.addVertex(
+				pX,
+				pY,
+				pZ,
+				pU,
+				pV,
+				FastColor.ARGB32.red	(pColor),
+				FastColor.ARGB32.green	(pColor),
+				FastColor.ARGB32.blue	(pColor),
+				FastColor.ARGB32.alpha	(pColor),
+				PackedVector2i	.unpackU(pPackedLight),
+				PackedVector2i	.unpackV(pPackedLight),
+				pNormalX,
+				pNormalY,
+				pNormalZ
+		);
 	}
 }

@@ -5,6 +5,7 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IAcceleratedRenderer;
 import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.CulledMeshCollector;
+import com.github.argon4w.acceleratedrendering.core.meshes.identity.IMeshData;
 import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
 import com.github.tartaricacid.touhoulittlemaid.geckolib3.geo.render.built.GeoBone;
 import com.github.tartaricacid.touhoulittlemaid.geckolib3.geo.render.built.GeoMesh;
@@ -26,7 +27,8 @@ public class GeoBoneMixin implements IAcceleratedRenderer<Void> {
 
 	@Shadow @Final private GeoMesh						cubes;
 
-	@Unique private final	Map<IBufferGraph, IMesh>	meshes = new Object2ObjectOpenHashMap<>();
+	@Unique private final	Map<IBufferGraph,	IMesh>	meshes = new Object2ObjectOpenHashMap<>();
+	@Unique private final	Map<IMeshData,		IMesh>	merges = new Object2ObjectOpenHashMap<>();
 
 	@Unique
 	@Override
@@ -99,12 +101,12 @@ public class GeoBoneMixin implements IAcceleratedRenderer<Void> {
 			};
 
 			var texCoords		= new float[][] {
-					{cubes.downU0(i),	cubes.downU1(i),	cubes.downV0(i),	cubes.downV1(i)	},
-					{cubes.upU0(i),		cubes.upU1(i),		cubes.upV0(i),		cubes.upV1(i)	},
-					{cubes.northU0(i),	cubes.northU1(i),	cubes.northV0(i),	cubes.northV1(i)},
-					{cubes.southU0(i),	cubes.southU1(i),	cubes.southV0(i),	cubes.southV1(i)},
-					{cubes.eastU0(i),	cubes.eastU1(i),	cubes.eastV0(i),	cubes.eastV1(i)	},
-					{cubes.westU0(i),	cubes.westU1(i),	cubes.westV0(i),	cubes.westV1(i)	},
+					{cubes.downU0	(i), cubes.downU1	(i), cubes.downV0	(i), cubes.downV1	(i)},
+					{cubes.upU0		(i), cubes.upU1		(i), cubes.upV0		(i), cubes.upV1		(i)},
+					{cubes.northU0	(i), cubes.northU1	(i), cubes.northV0	(i), cubes.northV1	(i)},
+					{cubes.southU0	(i), cubes.southU1	(i), cubes.southV0	(i), cubes.southV1	(i)},
+					{cubes.eastU0	(i), cubes.eastU1	(i), cubes.eastV0	(i), cubes.eastV1	(i)},
+					{cubes.westU0	(i), cubes.westU1	(i), cubes.westV0	(i), cubes.westV1	(i)},
 			};
 
 			var texOrders		= new Vector2i[] {
@@ -151,12 +153,22 @@ public class GeoBoneMixin implements IAcceleratedRenderer<Void> {
 
 		culledMeshCollector.flush();
 
-		mesh = AcceleratedEntityRenderingFeature
-				.getMeshType()
-				.getBuilder	()
-				.build		(culledMeshCollector);
+		var data	= culledMeshCollector	.getData	();
+		var buffer	= culledMeshCollector	.getBuffer	();
+		mesh		= merges				.get		(data);
+
+		if (mesh != null) {
+			buffer.discard	();
+			buffer.close	();
+		} else {
+			mesh = AcceleratedEntityRenderingFeature
+					.getMeshType()
+					.getBuilder	()
+					.build		(culledMeshCollector);
+		}
 
 		meshes	.put	(extension, mesh);
+		merges	.put	(data,		mesh);
 		mesh	.write	(
 				extension,
 				color,

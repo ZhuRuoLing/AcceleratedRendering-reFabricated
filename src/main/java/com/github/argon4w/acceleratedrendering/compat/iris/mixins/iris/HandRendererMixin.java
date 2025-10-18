@@ -54,14 +54,14 @@ public class HandRendererMixin {
 	) {
 		CoreFeature									.resetRenderingHand	();
 
-		CoreStates									.record				();
+		CoreStates									.recordBuffers		();
 		IrisCompatBuffers.ENTITY_HAND				.prepareBuffers		();
 		IrisCompatBuffers.BLOCK_HAND				.prepareBuffers		();
 		IrisCompatBuffers.POS_HAND					.prepareBuffers		();
 		IrisCompatBuffers.POS_TEX_HAND				.prepareBuffers		();
 		IrisCompatBuffers.POS_TEX_COLOR_HAND		.prepareBuffers		();
 		IrisCompatBuffers.POS_COLOR_TEX_LIGHT_HAND	.prepareBuffers		();
-		CoreStates									.restore			();
+		CoreStates									.restoreBuffers		();
 
 		IrisCompatBuffers.ENTITY_HAND				.drawBuffers		(LayerDrawType.ALL);
 		IrisCompatBuffers.BLOCK_HAND				.drawBuffers		(LayerDrawType.ALL);
@@ -115,14 +115,14 @@ public class HandRendererMixin {
 	) {
 		CoreFeature									.resetRenderingHand	();
 
-		CoreStates									.record				();
+		CoreStates									.recordBuffers		();
 		IrisCompatBuffers.ENTITY_HAND				.prepareBuffers		();
 		IrisCompatBuffers.BLOCK_HAND				.prepareBuffers		();
 		IrisCompatBuffers.POS_HAND					.prepareBuffers		();
 		IrisCompatBuffers.POS_TEX_HAND				.prepareBuffers		();
 		IrisCompatBuffers.POS_TEX_COLOR_HAND		.prepareBuffers		();
 		IrisCompatBuffers.POS_COLOR_TEX_LIGHT_HAND	.prepareBuffers		();
-		CoreStates									.restore			();
+		CoreStates									.restoreBuffers		();
 
 		IrisCompatBuffers.ENTITY_HAND				.drawBuffers		(LayerDrawType.ALL);
 		IrisCompatBuffers.BLOCK_HAND				.drawBuffers		(LayerDrawType.ALL);

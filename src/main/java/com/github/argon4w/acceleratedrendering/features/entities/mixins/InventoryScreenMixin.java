@@ -36,14 +36,14 @@ public class InventoryScreenMixin {
 		CoreFeature.resetRenderingGui();
 
 		if (!CoreFeature.isGuiBatching()) {
-			CoreStates						.record			();
+			CoreStates						.recordBuffers	();
 			CoreBuffers.ENTITY				.prepareBuffers	();
 			CoreBuffers.BLOCK				.prepareBuffers	();
 			CoreBuffers.POS					.prepareBuffers	();
 			CoreBuffers.POS_TEX				.prepareBuffers	();
 			CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
 			CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
-			CoreStates						.restore		();
+			CoreStates						.restoreBuffers	();
 
 			CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.ALL);
 			CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.ALL);

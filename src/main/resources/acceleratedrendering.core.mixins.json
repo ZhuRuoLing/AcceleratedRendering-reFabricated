@@ -4,18 +4,19 @@
   "package": "com.github.argon4w.acceleratedrendering.core.mixins",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "BufferBuilderMixin",
-    "BufferSourceMixin",
-    "EntityOutlineGeneratorMixin",
+    "buffers.BufferBuilderMixin",
+    "buffers.BufferSourceMixin",
+    "buffers.EntityOutlineGeneratorMixin",
+    "buffers.SheetedDecalTextureGeneratorMixin",
+    "buffers.SpriteCoordinateExpanderMixin",
+    "buffers.VertexConsumerMixin",
+    "buffers.VertexDoubleConsumerMixin",
+    "buffers.VertexMultipleConsumerMixin",
+    "compatibility.MinecraftMixin",
+    "compatibility.ParticleEngineMixin",
+    "compatibility.RenderTypeMixin",
     "GameRendererMixin",
-    "LevelRendererMixin",
-    "MinecraftMixin",
-    "ParticleEngineMixin",
-    "SheetedDecalTextureGeneratorMixin",
-    "SpriteCoordinateExpanderMixin",
-    "VertexConsumerMixin",
-    "VertexDoubleConsumerMixin",
-    "VertexMultipleConsumerMixin"
+    "LevelRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

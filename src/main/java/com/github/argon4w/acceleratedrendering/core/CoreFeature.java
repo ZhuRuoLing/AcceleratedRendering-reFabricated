@@ -2,15 +2,22 @@ package com.github.argon4w.acceleratedrendering.core;
 
 import com.github.argon4w.acceleratedrendering.configs.FeatureConfig;
 import com.github.argon4w.acceleratedrendering.configs.FeatureStatus;
+import com.github.argon4w.acceleratedrendering.core.backends.states.IBindingState;
+import com.github.argon4w.acceleratedrendering.core.backends.states.buffers.BlockBufferBindingStateType;
+import com.github.argon4w.acceleratedrendering.core.backends.states.buffers.BufferBlockType;
+import com.github.argon4w.acceleratedrendering.core.backends.states.buffers.cache.BlockBufferBindingCacheType;
+import com.github.argon4w.acceleratedrendering.core.backends.states.viewports.ViewportBindingStateType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.ILayerStorage;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.LayerStorageType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.IMeshInfoCache;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.MeshInfoCacheType;
-import com.github.argon4w.acceleratedrendering.core.buffers.blocks.states.BlockBufferBindingStateType;
-import com.github.argon4w.acceleratedrendering.core.buffers.blocks.BufferBlockType;
-import com.github.argon4w.acceleratedrendering.core.buffers.blocks.states.IBlockBufferBindingState;
-import com.github.argon4w.acceleratedrendering.core.buffers.blocks.cache.BlockBufferBindingCacheType;
+import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryLayout;
+import com.github.argon4w.acceleratedrendering.core.meshes.identity.IMeshData;
+import com.github.argon4w.acceleratedrendering.core.meshes.identity.MeshMergeType;
+import com.github.argon4w.acceleratedrendering.core.programs.ComputeShaderProgramLoader;
+import com.github.argon4w.acceleratedrendering.core.utils.PackedVector2i;
 import com.google.common.util.concurrent.Runnables;
+import com.mojang.blaze3d.vertex.VertexFormatElement;
 
 import java.util.ArrayDeque;
 
@@ -26,6 +33,10 @@ public class CoreFeature {
 	private static			boolean						RENDERING_GUI									= false;
 	private static			boolean						GUI_BATCHING									= false;
 
+	public static boolean isLoaded() {
+		return ComputeShaderProgramLoader.isProgramsLoaded();
+	}
+
 	public static boolean isDebugContextEnabled() {
 		return FeatureConfig.CONFIG.coreDebugContextEnabled.get() == FeatureStatus.ENABLED;
 	}
@@ -40,6 +51,10 @@ public class CoreFeature {
 
 	public static int getCachedImageSize() {
 		return FeatureConfig.CONFIG.coreCachedImageSize.getAsInt();
+	}
+
+	public static float getDynamicUVResolution() {
+		return FeatureConfig.CONFIG.coreDynamicUVResolution.getAsInt();
 	}
 
 	public static boolean shouldForceAccelerateTranslucent() {
@@ -58,6 +73,18 @@ public class CoreFeature {
 		return FeatureConfig.CONFIG.coreLayerStorageType.get();
 	}
 
+	public static MeshMergeType getMeshMergeType() {
+		return FeatureConfig.CONFIG.coreMeshMergeType.get();
+	}
+
+	public static boolean shouldUploadMeshImmediately() {
+		return FeatureConfig.CONFIG.coreUploadMeshImmediately.get() == FeatureStatus.ENABLED;
+	}
+
+	public static boolean shouldCacheDynamicRenderType() {
+		return FeatureConfig.CONFIG.coreCacheDynamicRenderType.get() == FeatureStatus.ENABLED;
+	}
+
 	public static boolean shouldRestoreBlockBuffers() {
 		return FeatureConfig.CONFIG.restoringFeatureStatus.get() == FeatureStatus.ENABLED;
 	}
@@ -68,6 +95,10 @@ public class CoreFeature {
 
 	public static BlockBufferBindingStateType getShaderStorageStateType() {
 		return FeatureConfig.CONFIG.restoringShaderStorageType.get();
+	}
+
+	public static ViewportBindingStateType getViewportBindingStateType() {
+		return FeatureConfig.CONFIG.coreViewportBindingType.get();
 	}
 
 	public static BlockBufferBindingStateType getAtomicCounterStateType() {
@@ -82,10 +113,6 @@ public class CoreFeature {
 		return FeatureConfig.CONFIG.restoringAtomicCounterRange.getAsInt();
 	}
 
-	public static boolean shouldUploadMeshImmediately() {
-		return FeatureConfig.CONFIG.coreUploadMeshImmediately.get() == FeatureStatus.ENABLED;
-	}
-
 	public static IMeshInfoCache createMeshInfoCache() {
 		return getMeshInfoCacheType().create();
 	}
@@ -94,12 +121,32 @@ public class CoreFeature {
 		return getLayerStorageType().create(getPooledBatchingSize());
 	}
 
-	public static IBlockBufferBindingState createShaderStorageState() {
+	public static IMeshData createMeshData(IMemoryLayout<VertexFormatElement> layout) {
+		return getMeshMergeType().create(layout);
+	}
+
+	public static IBindingState createViewportState() {
+		return getViewportBindingStateType().create();
+	}
+
+	public static IBindingState createShaderStorageState() {
 		return getShaderStorageStateType().create(getBlockBufferBindingCacheType(), BufferBlockType.SHADER_STORAGE, getShaderStorageRestoringRange());
 	}
 
-	public static IBlockBufferBindingState createAtomicCounterState() {
+	public static IBindingState createAtomicCounterState() {
 		return getAtomicCounterStateType().create(getBlockBufferBindingCacheType(), BufferBlockType.ATOMIC_COUNTER, getAtomicCounterRestoringRange());
+	}
+
+	public static int packDynamicUV(float u, float v) {
+		return PackedVector2i.pack(u * getDynamicUVResolution(), v * getDynamicUVResolution());
+	}
+
+	public static float unpackDynamicU(int packedUV) {
+		return PackedVector2i.unpackU(packedUV) / getDynamicUVResolution();
+	}
+
+	public static float unpackDynamicV(int packedUV) {
+		return PackedVector2i.unpackV(packedUV) / getDynamicUVResolution();
 	}
 
 	public static void disableForceTranslucentAcceleration() {

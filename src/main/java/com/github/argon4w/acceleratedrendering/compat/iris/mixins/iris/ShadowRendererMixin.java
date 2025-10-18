@@ -26,13 +26,13 @@ public class ShadowRendererMixin {
 			Camera					playerCamera,
 			CallbackInfo			ci
 	) {
-		CoreStates								.record			();
+		CoreStates								.recordBuffers	();
 		IrisCompatBuffers.BLOCK_SHADOW			.prepareBuffers	();
 		IrisCompatBuffers.ENTITY_SHADOW			.prepareBuffers	();
 		IrisCompatBuffers.GLYPH_SHADOW			.prepareBuffers	();
 		IrisCompatBuffers.POS_TEX_SHADOW		.prepareBuffers	();
 		IrisCompatBuffers.POS_TEX_COLOR_SHADOW	.prepareBuffers	();
-		CoreStates								.restore		();
+		CoreStates								.restoreBuffers	();
 
 		IrisCompatBuffers.BLOCK_SHADOW			.drawBuffers	(LayerDrawType.ALL);
 		IrisCompatBuffers.ENTITY_SHADOW			.drawBuffers	(LayerDrawType.ALL);

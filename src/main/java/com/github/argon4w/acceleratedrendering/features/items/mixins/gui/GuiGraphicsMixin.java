@@ -4,13 +4,12 @@ import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.core.CoreStates;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerDrawType;
-import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedGuiGraphics;
+import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -46,7 +45,9 @@ public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
 			int				guiOffset,
 			CallbackInfo	ci
 	) {
-		CoreFeature.setRenderingGui();
+		if (CoreFeature.isLoaded()) {
+			CoreFeature.setRenderingGui();
+		}
 	}
 
 	@Inject(
@@ -69,7 +70,9 @@ public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
 	) {
 		CoreFeature.resetRenderingGui();
 
-		if (!CoreFeature.isGuiBatching()) {
+		if (	!	CoreFeature.isGuiBatching	()
+				&&	CoreFeature.isLoaded		()
+		) {
 			flushItemBatching();
 		}
 	}
@@ -104,9 +107,7 @@ public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
 			String			text,
 			CallbackInfo	ci
 	) {
-		if (CoreFeature.isGuiBatching()) {
-			AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET.bindWrite(false);
-		}
+		GuiBatchingController.INSTANCE.useOverlayTarget();
 	}
 
 	@Inject(
@@ -139,9 +140,7 @@ public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
 			String			text,
 			CallbackInfo	ci
 	) {
-		if (CoreFeature.isGuiBatching()) {
-			Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
-		}
+		GuiBatchingController.INSTANCE.resetOverlayTarget();
 	}
 
 	@WrapOperation(
@@ -194,14 +193,14 @@ public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
 	@Unique
 	@Override
 	public void flushItemBatching() {
-		CoreStates						.record			();
+		CoreStates						.recordBuffers	();
 		CoreBuffers.ENTITY				.prepareBuffers	();
 		CoreBuffers.BLOCK				.prepareBuffers	();
 		CoreBuffers.POS					.prepareBuffers	();
 		CoreBuffers.POS_TEX				.prepareBuffers	();
 		CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
-		CoreStates						.restore		();
+		CoreStates						.restoreBuffers	();
 
 		CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.ALL);

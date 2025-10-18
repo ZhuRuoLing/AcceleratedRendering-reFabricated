@@ -103,6 +103,7 @@ public record ServerMesh(
 					destAddress,
 					capacity
 			);
+			builder		.discard();
 			builder		.close	();
 
 			return new ServerMesh(

@@ -69,7 +69,8 @@ public class ClientMesh implements IMesh {
 		@Override
 		public void delete() {
 			for (var builder : builders) {
-				builder.close();
+				builder.discard	();
+				builder.close	();
 			}
 		}
 	}

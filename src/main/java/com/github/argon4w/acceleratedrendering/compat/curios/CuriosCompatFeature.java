@@ -2,10 +2,9 @@ package com.github.argon4w.acceleratedrendering.compat.curios;
 
 import com.github.argon4w.acceleratedrendering.configs.FeatureConfig;
 import com.github.argon4w.acceleratedrendering.configs.FeatureStatus;
+import com.github.argon4w.acceleratedrendering.core.utils.RegistryFilter;
 import com.github.argon4w.acceleratedrendering.features.filter.FilterType;
-import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -15,12 +14,12 @@ import java.util.Set;
 
 public class CuriosCompatFeature {
 
-	public	static final Deque	<FeatureStatus> LAYER_ACCELERATION_CONTROLLER_STACK		= new ArrayDeque<>			();
-	public	static final Deque	<FeatureStatus> CURIOS_ITEM_FILTER_CONTROLLER_STACK		= new ArrayDeque<>			();
-	private	static final Set	<Item>			CURIOS_ITEM_FILTER_VALUES				= new ReferenceOpenHashSet<>();
+	public	static final Deque	<FeatureStatus> LAYER_ACCELERATION_CONTROLLER_STACK	= new ArrayDeque<>();
+	public	static final Deque	<FeatureStatus> CURIOS_ITEM_FILTER_CONTROLLER_STACK	= new ArrayDeque<>();
+	private	static final Set	<Item>			CURIOS_ITEM_FILTER_VALUES;
 
 	static {
-		FeatureConfig.CONFIG.curiosItemFilterValues.get().forEach(string -> CURIOS_ITEM_FILTER_VALUES.add(BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(string))));
+		CURIOS_ITEM_FILTER_VALUES = RegistryFilter.filterValues(BuiltInRegistries.ITEM, FeatureConfig.CONFIG.curiosItemFilterValues.get());
 	}
 
 	public static boolean isEnabled() {

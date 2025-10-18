@@ -4,7 +4,8 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IBufferGraph;
 import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.CulledMeshCollector;
-import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
+import com.github.argon4w.acceleratedrendering.core.meshes.identity.IMeshData;
+import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedBakedQuad;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
@@ -22,7 +23,8 @@ import java.util.Map;
 @Mixin(BakedQuad.class)
 public abstract class BakedQuadMixin implements IAcceleratedBakedQuad {
 
-	@Unique private static final	Map<int[], Map<IBufferGraph, IMesh>>	MESHES = new Reference2ObjectOpenHashMap<>();
+	@Unique private static final	Map<int[], Map<IBufferGraph,	IMesh>>	MESHES = new Reference2ObjectOpenHashMap<>();
+	@Unique private static final	Map<int[], Map<IMeshData,		IMesh>>	MERGES = new Reference2ObjectOpenHashMap<>();
 
 	@Shadow @Final protected		int[]									vertices;
 
@@ -39,10 +41,13 @@ public abstract class BakedQuadMixin implements IAcceleratedBakedQuad {
 			int							color
 	) {
 		var meshes = MESHES.get(vertices);
+		var merges = MERGES.get(vertices);
 
 		if (meshes == null) {
 			meshes = new Object2ObjectOpenHashMap<>	();
+			merges = new Object2ObjectOpenHashMap<>	();
 			MESHES.put								(vertices, meshes);
+			MERGES.put								(vertices, merges);
 		}
 
 		var mesh = meshes.get(extension);
@@ -86,12 +91,22 @@ public abstract class BakedQuadMixin implements IAcceleratedBakedQuad {
 
 		culledMeshCollector.flush();
 
-		mesh = AcceleratedItemRenderingFeature
-				.getMeshType()
-				.getBuilder	()
-				.build		(culledMeshCollector);
+		var data	= culledMeshCollector	.getData	();
+		var buffer	= culledMeshCollector	.getBuffer	();
+		mesh		= merges				.get		(data);
+
+		if (mesh != null) {
+			buffer.discard	();
+			buffer.close	();
+		} else {
+			mesh = AcceleratedEntityRenderingFeature
+					.getMeshType()
+					.getBuilder	()
+					.build		(culledMeshCollector);
+		}
 
 		meshes	.put	(extension, mesh);
+		merges	.put	(data,		mesh);
 		mesh	.write	(
 				extension,
 				getCustomColor(color),

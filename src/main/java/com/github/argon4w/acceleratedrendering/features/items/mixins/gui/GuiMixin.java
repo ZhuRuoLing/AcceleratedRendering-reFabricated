@@ -1,6 +1,6 @@
 package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
-import com.github.argon4w.acceleratedrendering.features.items.GuiBatchingController;
+import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -21,7 +21,7 @@ public class GuiMixin {
 			DeltaTracker	deltaTracker,
 			CallbackInfo	ci
 	) {
-		GuiBatchingController.startBatching();
+		GuiBatchingController.INSTANCE.startBatching();
 	}
 
 	@Inject(
@@ -33,6 +33,6 @@ public class GuiMixin {
 			DeltaTracker	deltaTracker,
 			CallbackInfo	ci
 	) {
-		GuiBatchingController.flushBatching(guiGraphics);
+		GuiBatchingController.INSTANCE.flushBatching(guiGraphics);
 	}
 }

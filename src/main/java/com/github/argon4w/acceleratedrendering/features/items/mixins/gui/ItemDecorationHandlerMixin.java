@@ -1,8 +1,6 @@
 package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
-import com.github.argon4w.acceleratedrendering.core.CoreFeature;
-import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
-import net.minecraft.client.Minecraft;
+import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
@@ -31,9 +29,7 @@ public class ItemDecorationHandlerMixin {
 			int				yOffset,
 			CallbackInfo	ci
 	) {
-		if (CoreFeature.isGuiBatching()) {
-			AcceleratedItemRenderingFeature.GUI_OVERLAY_TARGET.bindWrite(false);
-		}
+		GuiBatchingController.INSTANCE.useOverlayTarget();
 	}
 
 	@Inject(
@@ -52,8 +48,6 @@ public class ItemDecorationHandlerMixin {
 			int				yOffset,
 			CallbackInfo	ci
 	) {
-		if (CoreFeature.isGuiBatching()) {
-			Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
-		}
+		GuiBatchingController.INSTANCE.resetOverlayTarget();
 	}
 }

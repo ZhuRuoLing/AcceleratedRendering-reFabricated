@@ -100,7 +100,9 @@ public abstract class MultipartBakedModelMixin implements IAcceleratedBakedModel
 						data
 				);
 
-				if (renderTypeSet.contains(renderType)) {
+				if (		renderType == null
+						||	renderTypeSet.contains(renderType)
+				) {
 					selected
 							.getAccelerated	()
 							.renderBlockFast(
