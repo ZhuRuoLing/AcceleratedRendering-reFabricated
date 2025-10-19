@@ -13,7 +13,6 @@
     "gui.ItemDecorationHandlerMixin",
     "models.BakedCompositeModelMixin",
     "models.BakedModelMixin",
-    "models.BakedModelWrapperMixin",
     "models.BakedQuadMixin",
     "models.BakedSeparateTransformsModelMixin",
     "models.MultipartBakedModelMixin",
