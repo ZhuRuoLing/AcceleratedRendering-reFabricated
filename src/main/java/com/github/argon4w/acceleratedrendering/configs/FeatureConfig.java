@@ -445,21 +445,21 @@ public class FeatureConfig {
 				.comment				("Entity filter will use this list and the filter type to determine if a entity can pass the filter.")
 				.translation			("acceleratedrendering.configuration.filter.entity_filter_values")
 				.worldRestart			()
-				.defineListAllowEmpty	("entity_filter_values",				new ObjectArrayList<>(),										object -> object instanceof String);
+				.defineListAllowEmpty	(List.of("entity_filter_values"),				ObjectArrayList::new,										object -> object instanceof String);
 
 		filterBlockEntityFilterValues					= builder
 				.comment				("You can configure the block entity filter by this list.")
 				.comment				("Block entity filter will use this list and the filter type to determine if a block entity can pass the filter.")
 				.translation			("acceleratedrendering.configuration.filter.block_entity_filter_values")
 				.worldRestart			()
-				.defineListAllowEmpty	("block_entity_filter_values",			new ObjectArrayList<>(),										object -> object instanceof String);
+				.defineListAllowEmpty	(List.of("block_entity_filter_values"),			ObjectArrayList::new,										object -> object instanceof String);
 
 		filterItemFilterValues							= builder
 				.comment				("You can configure the item filter by this list.")
 				.comment				("Item filter will use this list and the filter type to determine if an item can pass the filter.")
 				.translation			("acceleratedrendering.configuration.filter.item_filter_values")
 				.worldRestart			()
-				.defineListAllowEmpty	("item_filter_values",					new ObjectArrayList<>(),										object -> object instanceof String);
+				.defineListAllowEmpty	(List.of("item_filter_values"),					ObjectArrayList::new,										object -> object instanceof String);
 
 		filterStageFilterValues							= builder
 				.comment				("You can configure the custom rendering stage filter by this list.")
@@ -467,7 +467,7 @@ public class FeatureConfig {
 				.comment				("It's not recommend to modify this list unless other mods adds their own custom rendering stages.")
 				.translation			("acceleratedrendering.configuration.filter.stage_filter_values")
 				.worldRestart			()
-				.defineListAllowEmpty	("stage_filter_values",					ObjectArrayList.of("after_entities", "after_block_entities"),	object -> object instanceof String);
+				.defineListAllowEmpty	(List.of("stage_filter_values"),					() -> ObjectArrayList.of("after_entities", "after_block_entities"),	object -> object instanceof String);
 
 		builder.pop();
 

@@ -83,10 +83,10 @@ public class TrinketsCompatFeature {
 	}
 
 	public static FeatureStatus getDefaultLayerAccelerationSettings() {
-		return FeatureConfig.CONFIG.curiosCompatLayerAcceleration.get();
+		return FeatureConfig.CONFIG.trinketsCompatLayerAcceleration.get();
 	}
 
-	public static FeatureStatus getDefaultCuriosItemFilterSetting() {
-		return FeatureConfig.CONFIG.curiosItemFilter.get();
+	public static FeatureStatus getDefaultTrinketsItemFilterSetting() {
+		return FeatureConfig.CONFIG.trinketsItemFilter.get();
 	}
 }
