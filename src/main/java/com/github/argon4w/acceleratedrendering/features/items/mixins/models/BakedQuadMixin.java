@@ -5,8 +5,10 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders
 import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.CulledMeshCollector;
 import com.github.argon4w.acceleratedrendering.core.meshes.identity.IMeshData;
+import com.github.argon4w.acceleratedrendering.core.utils.IntArrayHashStrategy;
 import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedBakedQuad;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -24,8 +26,8 @@ import java.util.Map;
 @Mixin(BakedQuad.class)
 public abstract class BakedQuadMixin implements IAcceleratedBakedQuad {
 
-	@Unique private static final	Map<int[], Map<IBufferGraph,	IMesh>>	MESHES = new Reference2ObjectOpenHashMap<>();
-	@Unique private static final	Map<int[], Map<IMeshData,		IMesh>>	MERGES = new Reference2ObjectOpenHashMap<>();
+	@Unique private static final	Map<int[], Map<IBufferGraph,	IMesh>>	MESHES = new Object2ObjectOpenCustomHashMap<>(IntArrayHashStrategy.INSTANCE);
+	@Unique private static final	Map<int[], Map<IMeshData,		IMesh>>	MERGES = new Object2ObjectOpenCustomHashMap<>(IntArrayHashStrategy.INSTANCE);
 
 	@Shadow @Final protected		int[]									vertices;
 
