@@ -98,7 +98,7 @@ public abstract class MultipartBakedModelMixin implements IAcceleratedBakedModel
 		var seed	= random.nextLong	();
 
 		for (var j = 0; j < bitSet.length(); j ++) {
-			if (bitSet.get(j) && renderType == null) {
+			if (bitSet.get(j)) {
 				selectors
 					.get			(j)
 					.getRight		()
