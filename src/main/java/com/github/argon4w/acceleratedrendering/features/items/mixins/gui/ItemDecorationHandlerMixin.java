@@ -18,7 +18,8 @@ public class ItemDecorationHandlerMixin {
 			at		= @At(
 					value	= "INVOKE",
 					target	= "Lnet/minecraftforge/client/ItemDecoratorHandler;resetRenderState()V",
-					shift	= At.Shift.AFTER
+					shift	= At.Shift.AFTER,
+					ordinal	= 0
 			),
 			remap	= false
 	)
