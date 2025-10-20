@@ -20,8 +20,8 @@ import software.bernie.geckolib.renderer.GeoRenderer;
 @Mixin			(GeoRenderer			.class)
 public interface GeoRendererMixin {
 
-	@SuppressWarnings("unchecked")
-	@Inject(
+	@SuppressWarnings	("unchecked")
+	@Inject				(
 			method		= "renderCubesOfBone",
 			cancellable	= true,
 			at			= @At(
