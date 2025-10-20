@@ -1,4 +1,4 @@
-## 加速渲染 1.0.6-1.21.1 ALPHA
+## 加速渲染 1.0.6-1.20.1 ALPHA
 - 添加了``核心配置 > 启用缓存动态RenderType``选项以支持对动态渲染类型的加速.
 - 添加了``核心配置 > 模型合并类型``选项以支持对完全一致模型的合并以改善显存占用.
 - 改善了过滤器的灵活性, 现在可以在过滤器列表中使用正则表达式.
@@ -12,7 +12,7 @@
 - 1.20.1移植的GeckoLib加速需要安装MixinBooster以启用.
 - 1.20.1移植的车万女仆加速需要安装MixinBooster以启用.
 
-## Accelerated Rendering 1.0.6-1.21.1 ALPHA
+## Accelerated Rendering 1.0.6-1.20.1 ALPHA
 - Adds ``Core Settings > Enable Cache Dynamic Render Type`` to support the acceleration of dynamic render types.
 - Adds ``Core Settings > Mesh Merge Type`` to support reducing VRAM usage by merging duplicated meshes together.
 - Improves filter flexibility. Regular Expression can now be used in filter values.
