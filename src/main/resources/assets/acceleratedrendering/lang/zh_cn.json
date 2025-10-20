@@ -13,7 +13,7 @@
   "acceleratedrendering.configuration.core_settings.dynamic_uv_resolution": "动态RenderType缓存UV分辨率",
   "acceleratedrendering.configuration.core_settings.dynamic_uv_resolution.tooltip": "修改此项数值可能会影响和显存占用. 越小的值代表越低的UV滚动分辨率和越少的被缓存的RenderType, 反之亦然. 分辨率越高, 闪电苦力怕和旋风人的动画越流畅, 但是占用的显存越多.",
   "acceleratedrendering.configuration.core_settings.debug_context": "启用调试上下文",
-  "acceleratedrendering.configuration.core_settings.debug_context.tooltip": "- DISABLED: 调试上下文将会被禁用, 可能会在部分启用\"theaded optimization\"的NVIDIA显卡上有严重渲染错误.\n- ENABLED: 调试上下文将会被启用, 以阻止会NVIDIA显卡驱动应用会导致严重渲染错误的\"threaded optimization\".",
+  "acceleratedrendering.configuration.core_settings.debug_context.tooltip": "- DISABLED: 调试上下文将会被禁用, 可能会在部分启用\"theaded optimization\"的NVIDIA显卡上有严重视觉错误.\n- ENABLED: 调试上下文将会被启用, 以阻止会NVIDIA显卡驱动应用会导致严重视觉错误的\"threaded optimization\".",
   "acceleratedrendering.configuration.core_settings.force_translucent_acceleration": "启用强制加速半透明",
   "acceleratedrendering.configuration.core_settings.force_translucent_acceleration.tooltip": "- DISABLED: 除非其他MOD在渲染其模型时显示声明加速半透明, 否则被标记为半透明的RenderType将会在加速管线不支持半透明排序时使用原版渲染管线.\n- ENABLED: 除非其他MOD在渲染其模型时显式声明关闭强制半透明加速, 否则即使加速管线不支持半透明排序, 被标记为半透明的RenderType依然会使用加速管线进行渲染.",
   "acceleratedrendering.configuration.core_settings.cache_identical_pose": "启用相同变换缓存",

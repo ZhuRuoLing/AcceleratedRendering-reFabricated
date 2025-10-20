@@ -87,7 +87,6 @@ public class LevelRendererMixin {
 
 		CoreBuffers.POS_TEX_COLOR_OUTLINE	.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS_TEX_COLOR_OUTLINE	.clearBuffers	();
-
 	}
 
 	@WrapOperation(

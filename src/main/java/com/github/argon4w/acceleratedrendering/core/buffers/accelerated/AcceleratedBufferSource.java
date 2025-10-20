@@ -135,9 +135,9 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 				continue;
 			}
 
-			environment.getImmediateMeshBuffer					().bindBase(GL_SHADER_STORAGE_BUFFER,	MeshUploadingProgramDispatcher.SPARSE_MESH_BUFFER_INDEX);
-			environment.selectMeshUploadingProgramDispatcher	().dispatch(builders.values(),			buffer);
-			environment.selectTransformProgramDispatcher		().dispatch(builders.values());
+			environment.getImmediateMeshBuffer				().bindBase(GL_SHADER_STORAGE_BUFFER,	MeshUploadingProgramDispatcher.SPARSE_MESH_BUFFER_INDEX);
+			environment.selectMeshUploadingProgramDispatcher().dispatch(builders.values(),			buffer);
+			environment.selectTransformProgramDispatcher	().dispatch(builders.values());
 
 			for (var layerKey : builders.keySet()) {
 				var builder = builders.get(layerKey);
