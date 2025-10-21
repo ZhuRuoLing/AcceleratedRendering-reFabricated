@@ -8,9 +8,7 @@
 - 修复了可能的部分特殊物品渲染导致的内存泄漏问题.
 
 ## 注意事项
-- 1.20.1移植的游戏内配置节目需要安装Configured以启用.
-- 1.20.1移植的GeckoLib加速需要安装MixinBooster以启用.
-- 1.20.1移植的车万女仆加速需要安装MixinBooster以启用.
+- 1.20.1移植的游戏内配置节目需要安装Forge Config Screens以启用.
 
 ## Accelerated Rendering 1.0.6-1.20.1 ALPHA
 - Adds ``Core Settings > Enable Cache Dynamic Render Type`` to support the acceleration of dynamic render types.
@@ -22,6 +20,4 @@
 - Fixes memory leaks due to acceleration on certain special items.
 
 ## Important Notes
-- 1.20.1 port requires Configured to modify configurations in game.
-- 1.20.1 port of GeckoLib acceleration requires MixinBooster to enable.
-- 1.20.1 port of TouhouLittleMaid acceleration requires MixinBooster to enable.
+- 1.20.1 port requires Forge Config Screens to modify configurations in game.
