@@ -59,7 +59,7 @@ jobs:
           loaders: |
             fabric
 
-          java: 17
+          java: 21
 
           dependencies: |
             forge-config-api-port@v21.1.4-1.21.1-Fabric(required){modrinth:ohNO6lps}{curseforge:547434}#(ignore:github)
