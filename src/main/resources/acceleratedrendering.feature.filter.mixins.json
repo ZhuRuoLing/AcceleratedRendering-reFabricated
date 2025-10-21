@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "BlockEntityRenderDispatcherMixin",
-    "ClientHooksMixin",
     "ItemRendererMixin",
     "LevelRendererMixin"
   ],
