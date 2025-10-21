@@ -6,7 +6,6 @@
   "client": [
     "AbstractContainerScreenMixin",
     "BlockEntityRenderDispatcherMixin",
-    "ClientHooksMixin",
     "ItemRendererMixin",
     "LevelRendererMixin"
   ],

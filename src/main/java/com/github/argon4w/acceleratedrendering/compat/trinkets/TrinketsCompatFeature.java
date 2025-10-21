@@ -19,7 +19,7 @@ public class TrinketsCompatFeature {
 	private	static final Set	<Item>			CURIOS_ITEM_FILTER_VALUES;
 
 	static {
-		CURIOS_ITEM_FILTER_VALUES = RegistryFilter.filterValues(BuiltInRegistries.ITEM, FeatureConfig.CONFIG.curiosItemFilterValues.get());
+		CURIOS_ITEM_FILTER_VALUES = RegistryFilter.filterValues(BuiltInRegistries.ITEM, FeatureConfig.CONFIG.trinketsItemFilterValues.get());
 	}
 
 	public static boolean isEnabled() {
