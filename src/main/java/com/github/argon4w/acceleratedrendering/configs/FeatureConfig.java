@@ -6,9 +6,8 @@ import com.github.argon4w.acceleratedrendering.core.backends.states.viewports.Vi
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.LayerStorageType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.MeshInfoCacheType;
 import com.github.argon4w.acceleratedrendering.core.meshes.MeshType;
-import com.github.argon4w.acceleratedrendering.core.meshes.identity.MeshMergeType;
+import com.github.argon4w.acceleratedrendering.core.meshes.data.MeshMergeType;
 import com.github.argon4w.acceleratedrendering.features.filter.FilterType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.apache.commons.lang3.tuple.Pair;
@@ -63,14 +62,17 @@ public class FeatureConfig {
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					orientationCullingIgnoreCullState;
 
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					filterFeatureStatus;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					filterMenuFilter;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					filterEntityFilter;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					filterBlockEntityFilter;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					filterItemFilter;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					filterStageFilter;
+	public			final	ForgeConfigSpec.ConfigValue<FilterType>						filterMenuFilterType;
 	public			final	ForgeConfigSpec.ConfigValue<FilterType>						filterEntityFilterType;
 	public			final	ForgeConfigSpec.ConfigValue<FilterType>						filterBlockEntityFilterType;
 	public			final	ForgeConfigSpec.ConfigValue<FilterType>						filterItemFilterType;
 	public			final	ForgeConfigSpec.ConfigValue<FilterType>						filterStageFilterType;
+	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>			filterMenuFilterValues;
 	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>			filterEntityFilterValues;
 	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>			filterBlockEntityFilterValues;
 	public			final	ForgeConfigSpec.ConfigValue<List<? extends String>>			filterItemFilterValues;
@@ -392,6 +394,12 @@ public class FeatureConfig {
 				.translation			("acceleratedrendering.configuration.filter.feature_status")
 				.defineEnum				("feature_status",						FeatureStatus.ENABLED);
 
+		filterMenuFilter								= builder
+				.comment				("- DISABLED: Menu filter will be disabled and geometries in all container GUI will be accelerated.")
+				.comment				("- ENABLED: Menu filter will test if geometries in specific container GUI should be accelerated when rendering based on the filter values and the filter type.")
+				.translation			("acceleratedrendering.configuration.filter.menu_filter")
+				.defineEnum				("menu_filter",							FeatureStatus.ENABLED);
+
 		filterEntityFilter								= builder
 				.comment				("- DISABLED: Entity filter will be disabled and all entities will be accelerated.")
 				.comment				("- ENABLED: Entity filter will test if the entities should be accelerated when rendering based on the filter values and the filter type.")
@@ -415,6 +423,12 @@ public class FeatureConfig {
 				.comment				("- ENABLED: Custom rendering stage filter will test if geometries in specific custom rendering stage should be accelerated when rendering based on the filter values and the filter type.")
 				.translation			("acceleratedrendering.configuration.filter.stage_filter")
 				.defineEnum				("stage_filter",						FeatureStatus.ENABLED);
+
+		filterMenuFilterType							= builder
+				.comment				("- BLACKLIST: Container GUIs that are not in the filter values can pass the filter and be accelerated when rendering.")
+				.comment				("- WHITELIST: Container GUIs that are in the filter values can pass the filter and be accelerated when rendering.")
+				.translation			("acceleratedrendering.configuration.filter.menu_filter_type")
+				.defineEnum				("menu_filter_type",					FilterType.WHITELIST);
 
 		filterEntityFilterType							= builder
 				.comment				("- BLACKLIST: Entities that are not in the filter values can pass the filter and be accelerated when rendering.")
@@ -440,9 +454,16 @@ public class FeatureConfig {
 				.translation			("acceleratedrendering.configuration.filter.stage_filter_type")
 				.defineEnum				("stage_filter_type",					FilterType.WHITELIST);
 
+		filterMenuFilterValues							= builder
+				.comment				("You can configure the menu filter by this list.")
+				.comment				("Menu filter will use this list and the filter type to determine if a container GUI can pass the filter.")
+				.translation			("acceleratedrendering.configuration.filter.menu_filter_values")
+				.worldRestart			()
+				.defineListAllowEmpty	("menu_filter_values",					ObjectArrayList.of("minecraft:.*"),								object -> object instanceof String);
+
 		filterEntityFilterValues						= builder
 				.comment				("You can configure the entity filter by this list.")
-				.comment				("Entity filter will use this list and the filter type to determine if a entity can pass the filter.")
+				.comment				("Entity filter will use this list and the filter type to determine if an entity can pass the filter.")
 				.translation			("acceleratedrendering.configuration.filter.entity_filter_values")
 				.worldRestart			()
 				.defineListAllowEmpty	("entity_filter_values",				new ObjectArrayList<>(),										object -> object instanceof String);

@@ -7,6 +7,8 @@ import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -19,17 +21,20 @@ import java.util.Set;
 
 public class FilterFeature {
 
+	private static final Deque	<FeatureStatus>			MENU_FILTER_CONTROLLER_STACK			= new ArrayDeque<>();
 	private	static final Deque	<FeatureStatus>			ENTITIES_FILTER_CONTROLLER_STACK		= new ArrayDeque<>();
 	private	static final Deque	<FeatureStatus>			BLOCK_ENTITIES_FILTER_CONTROLLER_STACK	= new ArrayDeque<>();
 	private	static final Deque	<FeatureStatus>			ITEM_FILTER_CONTROLLER_STACK			= new ArrayDeque<>();
 	private static final Deque	<FeatureStatus>			STAGE_FILTER_CONTROLLER_STACK			= new ArrayDeque<>();
 
+	private static final Set	<MenuType<?>>			MENU_FILTER_VALUES;
 	private	static final Set	<EntityType<?>>			ENTITY_FILTER_VALUES;
 	private	static final Set	<BlockEntityType<?>>	BLOCK_ENTITY_FILTER_VALUES;
 	private static final Set	<Item>					ITEM_FILTER_VALUES;
 	private static final Set	<String>				STAGE_FILTER_VALUES;
 
 	static {
+		MENU_FILTER_VALUES			= RegistryFilter.filterValues	(BuiltInRegistries.MENU,				FeatureConfig.CONFIG.filterMenuFilterValues			.get());
 		ENTITY_FILTER_VALUES		= RegistryFilter.filterValues	(BuiltInRegistries.ENTITY_TYPE,			FeatureConfig.CONFIG.filterEntityFilterValues		.get());
 		BLOCK_ENTITY_FILTER_VALUES	= RegistryFilter.filterValues	(BuiltInRegistries.BLOCK_ENTITY_TYPE,	FeatureConfig.CONFIG.filterBlockEntityFilterValues	.get());
 		ITEM_FILTER_VALUES			= RegistryFilter.filterValues	(BuiltInRegistries.ITEM,				FeatureConfig.CONFIG.filterItemFilterValues			.get());
@@ -38,6 +43,10 @@ public class FilterFeature {
 
 	public static boolean isEnabled() {
 		return FeatureConfig.CONFIG.filterFeatureStatus.get() == FeatureStatus.ENABLED;
+	}
+
+	public static boolean testMenu(AbstractContainerMenu menu) {
+		return getMenuFilterType().test(MENU_FILTER_VALUES, menu.getType());
 	}
 
 	public static boolean testEntity(Entity entity) {
@@ -56,6 +65,10 @@ public class FilterFeature {
 		return getStageFilterType().test(STAGE_FILTER_VALUES, stage.toString());
 	}
 
+	public static boolean shouldFilterMenus() {
+		return getMenuFilterSetting() == FeatureStatus.ENABLED;
+	}
+
 	public static boolean shouldFilterEntities() {
 		return getEntityFilterSetting() == FeatureStatus.ENABLED;
 	}
@@ -70,6 +83,10 @@ public class FilterFeature {
 
 	public static boolean shouldFilterStage() {
 		return getStageFilterSetting() == FeatureStatus.ENABLED;
+	}
+
+	public static FilterType getMenuFilterType() {
+		return FeatureConfig.CONFIG.filterMenuFilterType.get();
 	}
 
 	public static FilterType getEntityFilterType() {
@@ -88,6 +105,10 @@ public class FilterFeature {
 		return FeatureConfig.CONFIG.filterStageFilterType.get();
 	}
 
+	public static void disableMenuFilter() {
+		MENU_FILTER_CONTROLLER_STACK.push(FeatureStatus.DISABLED);
+	}
+
 	public static void disableEntityFilter() {
 		ENTITIES_FILTER_CONTROLLER_STACK.push(FeatureStatus.DISABLED);
 	}
@@ -102,6 +123,10 @@ public class FilterFeature {
 
 	public static void disableStageFilter() {
 		STAGE_FILTER_CONTROLLER_STACK.push(FeatureStatus.DISABLED);
+	}
+
+	public static void forceEnableMenuFilter() {
+		MENU_FILTER_CONTROLLER_STACK.push(FeatureStatus.ENABLED);
 	}
 
 	public static void forceEnableEntityFilter() {
@@ -120,6 +145,10 @@ public class FilterFeature {
 		STAGE_FILTER_CONTROLLER_STACK.push(FeatureStatus.ENABLED);
 	}
 
+	public static void forceSetMenuFilter(FeatureStatus status) {
+		MENU_FILTER_CONTROLLER_STACK.push(status);
+	}
+
 	public static void forceSetEntityFilter(FeatureStatus status) {
 		ENTITIES_FILTER_CONTROLLER_STACK.push(status);
 	}
@@ -134,6 +163,10 @@ public class FilterFeature {
 
 	public static void forceSetStageFilter(FeatureStatus status) {
 		STAGE_FILTER_CONTROLLER_STACK.push(status);
+	}
+
+	public static void resetMenuFilter() {
+		MENU_FILTER_CONTROLLER_STACK.pop();
 	}
 
 	public static void resetEntityFilter() {
@@ -152,6 +185,10 @@ public class FilterFeature {
 		STAGE_FILTER_CONTROLLER_STACK.pop();
 	}
 
+	public static FeatureStatus getMenuFilterSetting() {
+		return MENU_FILTER_CONTROLLER_STACK.isEmpty() ? getDefaultMenuFilterSetting() : MENU_FILTER_CONTROLLER_STACK.peek();
+	}
+
 	public static FeatureStatus getEntityFilterSetting() {
 		return ENTITIES_FILTER_CONTROLLER_STACK.isEmpty() ? getDefaultEntityFilterSetting() : ENTITIES_FILTER_CONTROLLER_STACK.peek();
 	}
@@ -166,6 +203,10 @@ public class FilterFeature {
 
 	public static FeatureStatus getStageFilterSetting() {
 		return STAGE_FILTER_CONTROLLER_STACK.isEmpty() ? getDefaultStageFilterSetting() : STAGE_FILTER_CONTROLLER_STACK.peek();
+	}
+
+	public static FeatureStatus getDefaultMenuFilterSetting() {
+		return FeatureConfig.CONFIG.filterMenuFilter.get();
 	}
 
 	public static FeatureStatus getDefaultEntityFilterSetting() {

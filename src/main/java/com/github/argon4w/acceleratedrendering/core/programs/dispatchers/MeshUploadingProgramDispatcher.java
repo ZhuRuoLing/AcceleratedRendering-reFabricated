@@ -103,7 +103,7 @@ public class MeshUploadingProgramDispatcher {
 					var meshSize	= mesh		.size			();
 
 					for (var i = 0; i < meshCount; i ++) {
-						builder.getColorOffset		().at(offset)	.putInt			(vertexAddress, FastColorUtils	.abgr32			(meshInfos.getColor(i)));
+						builder.getColorOffset		().at(offset)	.putInt			(vertexAddress, FastColorUtils	.convert		(meshInfos.getColor(i)));
 						builder.getUv1Offset		().at(offset)	.putInt			(vertexAddress, meshInfos		.getOverlay		(i));
 						builder.getUv2Offset		().at(offset)	.putInt			(vertexAddress, meshInfos		.getLight		(i));
 

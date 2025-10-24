@@ -373,7 +373,7 @@ public class AcceleratedBufferBuilder extends DefaultedVertexConsumer implements
 				bufferSize
 		);
 
-		colorOffset			.putInt			(vertexAddress,		FastColorUtils.abgr32(color));
+		colorOffset			.putInt			(vertexAddress,		FastColorUtils.convert(color));
 		uv1Offset			.putInt			(vertexAddress,		overlay);
 		uv2Offset			.putInt			(vertexAddress,		light);
 
@@ -411,7 +411,7 @@ public class AcceleratedBufferBuilder extends DefaultedVertexConsumer implements
 			var vertexAddress	= vertexBuffer	.reserve(getVertexSize	() * meshSize);
 			var varyingAddress	= varyingBuffer	.reserve(getVaryingSize	() * meshSize);
 
-			colorOffset			.putInt			(vertexAddress,		FastColorUtils.abgr32(color));
+			colorOffset			.putInt			(vertexAddress,		FastColorUtils.convert(color));
 			uv1Offset			.putInt			(vertexAddress,		overlay);
 			uv2Offset			.putInt			(vertexAddress,		light);
 

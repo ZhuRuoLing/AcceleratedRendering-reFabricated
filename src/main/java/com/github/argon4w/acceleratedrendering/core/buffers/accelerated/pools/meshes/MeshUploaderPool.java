@@ -95,7 +95,7 @@ public class MeshUploaderPool extends SimpleResetPool<MeshUploaderPool.MeshUploa
 			for (var i = 0; i < meshCount; i ++) {
 				meshInfoSharing		.at(i)	.putInt			(meshInfoAddress, meshInfos			.getSharing		(i));
 				meshInfoNoCull		.at(i)	.putInt			(meshInfoAddress, meshInfos			.getShouldCull	(i));
-				meshInfoColor		.at(i)	.putInt			(meshInfoAddress, FastColorUtils	.abgr32			(meshInfos.getColor(i)));
+				meshInfoColor		.at(i)	.putInt			(meshInfoAddress, FastColorUtils	.convert		(meshInfos.getColor(i)));
 				meshInfoOverlay		.at(i)	.putInt			(meshInfoAddress, meshInfos			.getOverlay		(i));
 				meshInfoLight		.at(i)	.putInt			(meshInfoAddress, meshInfos			.getLight		(i));
 				uploadingOverride			.uploadMeshInfo	(meshInfoAddress, i);

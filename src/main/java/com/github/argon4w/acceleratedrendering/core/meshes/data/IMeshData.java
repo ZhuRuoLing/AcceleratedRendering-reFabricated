@@ -1,4 +1,4 @@
-package com.github.argon4w.acceleratedrendering.core.meshes.identity;
+package com.github.argon4w.acceleratedrendering.core.meshes.data;
 
 import com.github.argon4w.acceleratedrendering.core.utils.Vertex;
 
