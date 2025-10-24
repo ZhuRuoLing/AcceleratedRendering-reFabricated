@@ -46,7 +46,7 @@ public class FilterFeature {
 	}
 
 	public static boolean testMenu(AbstractContainerMenu menu) {
-		return getMenuFilterType().test(MENU_FILTER_VALUES, menu.getType());
+		return menu.menuType == null || getMenuFilterType().test(MENU_FILTER_VALUES, menu.menuType);
 	}
 
 	public static boolean testEntity(Entity entity) {
