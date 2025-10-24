@@ -4,13 +4,13 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IBufferGraph;
 import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.CulledMeshCollector;
-import com.github.argon4w.acceleratedrendering.core.meshes.identity.IMeshData;
+import com.github.argon4w.acceleratedrendering.core.meshes.data.IMeshData;
+import com.github.argon4w.acceleratedrendering.core.utils.FastColorUtils;
 import com.github.argon4w.acceleratedrendering.core.utils.IntArrayHashStrategy;
 import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedBakedQuad;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.neoforged.neoforge.client.model.IQuadTransformer;
 import org.joml.Matrix3f;
@@ -77,12 +77,12 @@ public abstract class BakedQuadMixin implements IAcceleratedBakedQuad {
 			var packedNormal	= vertices[normalOffset];
 
 			meshBuilder.addVertex(
-					Float.intBitsToFloat(vertices[posOffset + 0]),
-					Float.intBitsToFloat(vertices[posOffset + 1]),
-					Float.intBitsToFloat(vertices[posOffset + 2]),
-					vertices[colorOffset],
-					Float.intBitsToFloat(vertices[uv0Offset + 0]),
-					Float.intBitsToFloat(vertices[uv0Offset + 1]),
+					Float			.intBitsToFloat	(vertices[posOffset + 0]),
+					Float			.intBitsToFloat	(vertices[posOffset + 1]),
+					Float			.intBitsToFloat	(vertices[posOffset + 2]),
+					FastColorUtils	.convert		(vertices[colorOffset]),
+					Float			.intBitsToFloat	(vertices[uv0Offset + 0]),
+					Float			.intBitsToFloat	(vertices[uv0Offset + 1]),
 					combinedOverlay,
 					vertices[uv2Offset],
 					((byte) (	packedNormal		& 0xFF)) / 127.0f,

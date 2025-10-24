@@ -1,7 +1,7 @@
 package com.github.argon4w.acceleratedrendering.core.meshes.collectors;
 
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryLayout;
-import com.github.argon4w.acceleratedrendering.core.meshes.identity.IMeshData;
+import com.github.argon4w.acceleratedrendering.core.meshes.data.IMeshData;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
 

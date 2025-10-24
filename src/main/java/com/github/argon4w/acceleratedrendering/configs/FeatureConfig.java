@@ -6,7 +6,7 @@ import com.github.argon4w.acceleratedrendering.core.backends.states.viewports.Vi
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.LayerStorageType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.MeshInfoCacheType;
 import com.github.argon4w.acceleratedrendering.core.meshes.MeshType;
-import com.github.argon4w.acceleratedrendering.core.meshes.identity.MeshMergeType;
+import com.github.argon4w.acceleratedrendering.core.meshes.data.MeshMergeType;
 import com.github.argon4w.acceleratedrendering.features.filter.FilterType;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.neoforged.neoforge.common.ModConfigSpec;
@@ -16,75 +16,78 @@ import java.util.List;
 
 public class FeatureConfig {
 
-	public static	final	FeatureConfig												CONFIG;
-	public static	final	ModConfigSpec												SPEC;
+	public static	final	FeatureConfig											CONFIG;
+	public static	final	ModConfigSpec											SPEC;
 
-	public			final	ModConfigSpec.IntValue										corePooledRingBufferSize;
-	public			final	ModConfigSpec.IntValue										corePooledBatchingSize;
-	public			final	ModConfigSpec.IntValue										coreCachedImageSize;
-	public			final	ModConfigSpec.IntValue										coreDynamicUVResolution;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					coreDebugContextEnabled;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					coreForceTranslucentAcceleration;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					coreCacheIdenticalPose;
-	public			final	ModConfigSpec.ConfigValue<MeshInfoCacheType>				coreMeshInfoCacheType;
-	public			final	ModConfigSpec.ConfigValue<LayerStorageType>					coreLayerStorageType;
-	public			final	ModConfigSpec.ConfigValue<MeshMergeType>					coreMeshMergeType;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					coreUploadMeshImmediately;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					coreCacheDynamicRenderType;
-	public			final	ModConfigSpec.ConfigValue<ViewportBindingStateType>			coreViewportBindingType;
+	public			final	ModConfigSpec.IntValue									corePooledRingBufferSize;
+	public			final	ModConfigSpec.IntValue									corePooledBatchingSize;
+	public			final	ModConfigSpec.IntValue									coreCachedImageSize;
+	public			final	ModConfigSpec.IntValue									coreDynamicUVResolution;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				coreDebugContextEnabled;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				coreForceTranslucentAcceleration;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				coreCacheIdenticalPose;
+	public			final	ModConfigSpec.ConfigValue<MeshInfoCacheType>			coreMeshInfoCacheType;
+	public			final	ModConfigSpec.ConfigValue<LayerStorageType>				coreLayerStorageType;
+	public			final	ModConfigSpec.ConfigValue<MeshMergeType>				coreMeshMergeType;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				coreUploadMeshImmediately;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				coreCacheDynamicRenderType;
+	public			final	ModConfigSpec.ConfigValue<ViewportBindingStateType>		coreViewportBindingType;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					restoringFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<BlockBufferBindingCacheType>		restoringBindingCacheType;
-	public			final	ModConfigSpec.ConfigValue<BlockBufferBindingStateType>		restoringShaderStorageType;
-	public			final	ModConfigSpec.ConfigValue<BlockBufferBindingStateType>		restoringAtomicCounterType;
-	public			final	ModConfigSpec.IntValue										restoringShaderStorageRange;
-	public			final	ModConfigSpec.IntValue										restoringAtomicCounterRange;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				restoringFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<BlockBufferBindingCacheType>	restoringBindingCacheType;
+	public			final	ModConfigSpec.ConfigValue<BlockBufferBindingStateType>	restoringShaderStorageType;
+	public			final	ModConfigSpec.ConfigValue<BlockBufferBindingStateType>	restoringAtomicCounterType;
+	public			final	ModConfigSpec.IntValue									restoringShaderStorageRange;
+	public			final	ModConfigSpec.IntValue									restoringAtomicCounterRange;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedEntityRenderingFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<PipelineSetting>					acceleratedEntityRenderingDefaultPipeline;
-	public			final	ModConfigSpec.ConfigValue<MeshType>							acceleratedEntityRenderingMeshType;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedEntityRenderingGuiAcceleration;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				acceleratedEntityRenderingFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<PipelineSetting>				acceleratedEntityRenderingDefaultPipeline;
+	public			final	ModConfigSpec.ConfigValue<MeshType>						acceleratedEntityRenderingMeshType;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				acceleratedEntityRenderingGuiAcceleration;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedTextRenderingFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<PipelineSetting>					acceleratedTextRenderingDefaultPipeline;
-	public			final	ModConfigSpec.ConfigValue<MeshType>							acceleratedTextRenderingMeshType;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				acceleratedTextRenderingFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<PipelineSetting>				acceleratedTextRenderingDefaultPipeline;
+	public			final	ModConfigSpec.ConfigValue<MeshType>						acceleratedTextRenderingMeshType;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingBakeMeshForQuads;
-	public			final	ModConfigSpec.ConfigValue<PipelineSetting>					acceleratedItemRenderingDefaultPipeline;
-	public			final	ModConfigSpec.ConfigValue<MeshType>							acceleratedItemRenderingMeshType;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingHandAcceleration;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingGuiAcceleration;
-	public 			final	ModConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingGuiItemBatching;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				acceleratedItemRenderingFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				acceleratedItemRenderingBakeMeshForQuads;
+	public			final	ModConfigSpec.ConfigValue<PipelineSetting>				acceleratedItemRenderingDefaultPipeline;
+	public			final	ModConfigSpec.ConfigValue<MeshType>						acceleratedItemRenderingMeshType;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				acceleratedItemRenderingHandAcceleration;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				acceleratedItemRenderingGuiAcceleration;
+	public 			final	ModConfigSpec.ConfigValue<FeatureStatus>				acceleratedItemRenderingGuiItemBatching;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					orientationCullingFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					orientationCullingDefaultCulling;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					orientationCullingIgnoreCullState;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				orientationCullingFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				orientationCullingDefaultCulling;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				orientationCullingIgnoreCullState;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					filterFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					filterEntityFilter;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					filterBlockEntityFilter;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					filterItemFilter;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					filterStageFilter;
-	public			final	ModConfigSpec.ConfigValue<FilterType>						filterEntityFilterType;
-	public			final	ModConfigSpec.ConfigValue<FilterType>						filterBlockEntityFilterType;
-	public			final	ModConfigSpec.ConfigValue<FilterType>						filterItemFilterType;
-	public			final	ModConfigSpec.ConfigValue<FilterType>						filterStageFilterType;
-	public			final	ModConfigSpec.ConfigValue<List<? extends String>>			filterEntityFilterValues;
-	public			final	ModConfigSpec.ConfigValue<List<? extends String>>			filterBlockEntityFilterValues;
-	public			final	ModConfigSpec.ConfigValue<List<? extends String>>			filterItemFilterValues;
-	public			final	ModConfigSpec.ConfigValue<List<? extends String>>			filterStageFilterValues;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				filterFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				filterMenuFilter;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				filterEntityFilter;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				filterBlockEntityFilter;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				filterItemFilter;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				filterStageFilter;
+	public			final	ModConfigSpec.ConfigValue<FilterType>					filterMenuFilterType;
+	public			final	ModConfigSpec.ConfigValue<FilterType>					filterEntityFilterType;
+	public			final	ModConfigSpec.ConfigValue<FilterType>					filterBlockEntityFilterType;
+	public			final	ModConfigSpec.ConfigValue<FilterType>					filterItemFilterType;
+	public			final	ModConfigSpec.ConfigValue<FilterType>					filterStageFilterType;
+	public			final	ModConfigSpec.ConfigValue<List<? extends String>>		filterMenuFilterValues;
+	public			final	ModConfigSpec.ConfigValue<List<? extends String>>		filterEntityFilterValues;
+	public			final	ModConfigSpec.ConfigValue<List<? extends String>>		filterBlockEntityFilterValues;
+	public			final	ModConfigSpec.ConfigValue<List<? extends String>>		filterItemFilterValues;
+	public			final	ModConfigSpec.ConfigValue<List<? extends String>>		filterStageFilterValues;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					irisCompatFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					irisCompatOrientationCullingCompat;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					irisCompatShadowCulling;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					irisCompatPolygonProcessing;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				irisCompatFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				irisCompatOrientationCullingCompat;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				irisCompatShadowCulling;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				irisCompatPolygonProcessing;
 
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					curiosCompatFeatureStatus;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					curiosCompatLayerAcceleration;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>					curiosItemFilter;
-	public			final	ModConfigSpec.ConfigValue<FilterType>						curiosItemFilterType;
-	public			final	ModConfigSpec.ConfigValue<List<? extends String>>			curiosItemFilterValues;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				curiosCompatFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				curiosCompatLayerAcceleration;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				curiosItemFilter;
+	public			final	ModConfigSpec.ConfigValue<FilterType>					curiosItemFilterType;
+	public			final	ModConfigSpec.ConfigValue<List<? extends String>>		curiosItemFilterValues;
 
 	static {
 		Pair<FeatureConfig, ModConfigSpec> pair	= new ModConfigSpec.Builder()	.configure	(FeatureConfig::new);
@@ -388,6 +391,12 @@ public class FeatureConfig {
 				.translation			("acceleratedrendering.configuration.filter.feature_status")
 				.defineEnum				("feature_status",						FeatureStatus.ENABLED);
 
+		filterMenuFilter								= builder
+				.comment				("- DISABLED: Menu filter will be disabled and geometries in all container GUI will be accelerated.")
+				.comment				("- ENABLED: Menu filter will test if geometries in specific container GUI should be accelerated when rendering based on the filter values and the filter type.")
+				.translation			("acceleratedrendering.configuration.filter.menu_filter")
+				.defineEnum				("menu_filter",							FeatureStatus.ENABLED);
+
 		filterEntityFilter								= builder
 				.comment				("- DISABLED: Entity filter will be disabled and all entities will be accelerated.")
 				.comment				("- ENABLED: Entity filter will test if the entities should be accelerated when rendering based on the filter values and the filter type.")
@@ -411,6 +420,12 @@ public class FeatureConfig {
 				.comment				("- ENABLED: Custom rendering stage filter will test if geometries in specific custom rendering stage should be accelerated when rendering based on the filter values and the filter type.")
 				.translation			("acceleratedrendering.configuration.filter.stage_filter")
 				.defineEnum				("stage_filter",						FeatureStatus.ENABLED);
+
+		filterMenuFilterType							= builder
+				.comment				("- BLACKLIST: Container GUIs that are not in the filter values can pass the filter and be accelerated when rendering.")
+				.comment				("- WHITELIST: Container GUIs that are in the filter values can pass the filter and be accelerated when rendering.")
+				.translation			("acceleratedrendering.configuration.filter.menu_filter_type")
+				.defineEnum				("menu_filter_type",					FilterType.WHITELIST);
 
 		filterEntityFilterType							= builder
 				.comment				("- BLACKLIST: Entities that are not in the filter values can pass the filter and be accelerated when rendering.")
@@ -436,9 +451,16 @@ public class FeatureConfig {
 				.translation			("acceleratedrendering.configuration.filter.stage_filter_type")
 				.defineEnum				("stage_filter_type",					FilterType.WHITELIST);
 
+		filterMenuFilterValues							= builder
+				.comment				("You can configure the menu filter by this list.")
+				.comment				("Menu filter will use this list and the filter type to determine if a container GUI can pass the filter.")
+				.translation			("acceleratedrendering.configuration.filter.menu_filter_values")
+				.gameRestart			()
+				.defineListAllowEmpty	("menu_filter_values",					ObjectArrayList.of("minecraft:.*"),								() -> "minecraft:empty", object -> object instanceof String);
+
 		filterEntityFilterValues						= builder
 				.comment				("You can configure the entity filter by this list.")
-				.comment				("Entity filter will use this list and the filter type to determine if a entity can pass the filter.")
+				.comment				("Entity filter will use this list and the filter type to determine if an entity can pass the filter.")
 				.translation			("acceleratedrendering.configuration.filter.entity_filter_values")
 				.gameRestart			()
 				.defineListAllowEmpty	("entity_filter_values",				new ObjectArrayList<>(),										() -> "minecraft:empty", object -> object instanceof String);

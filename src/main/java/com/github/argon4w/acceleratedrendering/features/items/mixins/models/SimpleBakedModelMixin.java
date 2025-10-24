@@ -6,8 +6,9 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IAcceleratedRenderer;
 import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.CulledMeshCollector;
-import com.github.argon4w.acceleratedrendering.core.meshes.identity.IMeshData;
+import com.github.argon4w.acceleratedrendering.core.meshes.data.IMeshData;
 import com.github.argon4w.acceleratedrendering.core.utils.DirectionUtils;
+import com.github.argon4w.acceleratedrendering.core.utils.FastColorUtils;
 import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedBakedModel;
 import com.github.argon4w.acceleratedrendering.features.items.colors.FixedColors;
@@ -156,12 +157,12 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 					var packedNormal	= data[normalOffset];
 
 					meshBuilder.addVertex(
-							Float.intBitsToFloat(data[posOffset + 0]),
-							Float.intBitsToFloat(data[posOffset + 1]),
-							Float.intBitsToFloat(data[posOffset + 2]),
-							data[colorOffset],
-							Float.intBitsToFloat(data[uv0Offset + 0]),
-							Float.intBitsToFloat(data[uv0Offset + 1]),
+							Float			.intBitsToFloat	(data[posOffset + 0]),
+							Float			.intBitsToFloat	(data[posOffset + 1]),
+							Float			.intBitsToFloat	(data[posOffset + 2]),
+							FastColorUtils	.convert		(data[colorOffset]),
+							Float			.intBitsToFloat	(data[uv0Offset + 0]),
+							Float			.intBitsToFloat	(data[uv0Offset + 1]),
 							-1,
 							data[uv2Offset],
 							((byte) (	packedNormal		& 0xFF)) / 127.0f,

@@ -4,6 +4,7 @@
   "package": "com.github.argon4w.acceleratedrendering.features.filter.mixins",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "AbstractContainerScreenMixin",
     "BlockEntityRenderDispatcherMixin",
     "ClientHooksMixin",
     "ItemRendererMixin",

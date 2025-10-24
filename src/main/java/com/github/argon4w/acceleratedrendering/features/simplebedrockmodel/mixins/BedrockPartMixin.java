@@ -6,7 +6,7 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IAcceleratedRenderer;
 import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.CulledMeshCollector;
-import com.github.argon4w.acceleratedrendering.core.meshes.identity.IMeshData;
+import com.github.argon4w.acceleratedrendering.core.meshes.data.IMeshData;
 import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
 import com.github.tartaricacid.simplebedrockmodel.client.bedrock.model.BedrockCube;
 import com.github.tartaricacid.simplebedrockmodel.client.bedrock.model.BedrockPart;
