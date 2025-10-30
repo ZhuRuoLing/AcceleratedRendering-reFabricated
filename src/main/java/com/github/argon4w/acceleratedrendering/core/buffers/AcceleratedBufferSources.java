@@ -4,8 +4,8 @@ import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.AcceleratedBufferSource;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.IAcceleratedBufferSource;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.AcceleratedBufferBuilder;
+import com.github.argon4w.acceleratedrendering.core.utils.RenderTypeUtils;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.client.renderer.RenderType;
@@ -17,22 +17,19 @@ public class AcceleratedBufferSources implements IAcceleratedBufferSource {
 
 	private final Map<VertexFormat, AcceleratedBufferSource>	sources;
 	private final Set<VertexFormat.Mode>						validModes;
-	private final Set<String>									dynamicNames;
-	private final boolean										canSort;
-	private final boolean										canScroll;
+	private final boolean										supportTranslucent;
+	private final boolean										supportDynamic;
 
 	private AcceleratedBufferSources(
 			Map<VertexFormat, AcceleratedBufferSource>	sources,
 			Set<VertexFormat.Mode>						validModes,
-			Set<String>									dynamicNames,
-			boolean										canSort,
-			boolean										canScroll
+			boolean										supportTranslucent,
+			boolean										supportDynamic
 	) {
-		this.sources		= sources;
-		this.validModes		= validModes;
-		this.dynamicNames	= dynamicNames;
-		this.canSort		= canSort;
-		this.canScroll		= canScroll;
+		this.sources			= sources;
+		this.validModes			= validModes;
+		this.supportTranslucent	= supportTranslucent;
+		this.supportDynamic		= supportDynamic;
 	}
 
 	@Override
@@ -43,8 +40,8 @@ public class AcceleratedBufferSources implements IAcceleratedBufferSource {
 			int			layer
 	) {
 		if (			renderType		!= null
-				&& 	(	CoreFeature		.shouldForceAccelerateTranslucent	()	|| canSort		|| !						renderType.sortOnUpload)
-				&& 	(	CoreFeature		.shouldCacheDynamicRenderType		()	|| canScroll	|| !dynamicNames.contains(	renderType.name))
+				&& 	(	CoreFeature		.shouldForceAccelerateTranslucent	()	|| supportTranslucent	|| !RenderTypeUtils.isTranslucent	(renderType))
+				&& 	(	CoreFeature		.shouldCacheDynamicRenderType		()	|| supportDynamic		|| !RenderTypeUtils.isDynamic		(renderType))
 				&&		validModes		.contains							(renderType.mode)
 				&&		sources			.containsKey						(renderType.format)
 		) {
@@ -69,18 +66,16 @@ public class AcceleratedBufferSources implements IAcceleratedBufferSource {
 
 		private final	Map<VertexFormat, AcceleratedBufferSource>	sources;
 		private final	Set<VertexFormat.Mode>						validModes;
-		private final	Set<String>									dynamicNames;
 
-		private			boolean										canSort;
-		private			boolean										canScroll;
+		private			boolean										supportTranslucent;
+		private			boolean										supportDynamic;
 
 		private Builder() {
-			this.sources		= new Reference2ObjectOpenHashMap	<>();
-			this.validModes		= new ReferenceOpenHashSet			<>();
-			this.dynamicNames	= new ObjectOpenHashSet				<>();
+			this.sources			= new Reference2ObjectOpenHashMap	<>();
+			this.validModes			= new ReferenceOpenHashSet			<>();
 
-			this.canSort		= false;
-			this.canScroll		= false;
+			this.supportTranslucent	= false;
+			this.supportDynamic		= false;
 		}
 
 		public Builder source(AcceleratedBufferSource bufferSource) {
@@ -99,18 +94,13 @@ public class AcceleratedBufferSources implements IAcceleratedBufferSource {
 			return this;
 		}
 
-		public Builder dynamic(String name) {
-			dynamicNames.add(name);
+		public Builder supportTranslucent() {
+			supportTranslucent = true;
 			return this;
 		}
 
-		public Builder canSort() {
-			canSort = true;
-			return this;
-		}
-
-		public Builder canScroll() {
-			canScroll = true;
+		public Builder supportDynamic() {
+			supportDynamic = true;
 			return this;
 		}
 
@@ -118,9 +108,8 @@ public class AcceleratedBufferSources implements IAcceleratedBufferSource {
 			return new AcceleratedBufferSources(
 					sources,
 					validModes,
-					dynamicNames,
-					canSort,
-					canScroll
+					supportTranslucent,
+					supportDynamic
 			);
 		}
 	}

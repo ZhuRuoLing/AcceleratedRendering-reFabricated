@@ -38,11 +38,11 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 
 	public AcceleratedBufferSource(IBufferEnvironment bufferEnvironment) {
 		this.environment	= bufferEnvironment;
+		this.activeBuilders	= new Object2ObjectOpenHashMap<>	();
+		this.activeLayers	= new IntAVLTreeSet					();
 		this.ringBuffers	= new AcceleratedRingBuffers		(this.environment);
 		this.currentBuffer	= this.ringBuffers			.get	(false);
 		this.buffers		= ObjectLinkedOpenHashSet	.of		(this.currentBuffer);
-		this.activeBuilders	= new Object2ObjectOpenHashMap<>	();
-		this.activeLayers	= new IntAVLTreeSet					();
 
 		this.used			= false;
 	}

@@ -30,8 +30,6 @@ public class IrisCompatBuffers {
 			.source	(IrisCompatBuffers	.POS_COLOR_TEX_LIGHT_HAND)
 			.mode	(VertexFormat.Mode	.QUADS)
 			.mode	(VertexFormat.Mode	.TRIANGLES)
-			.dynamic("breeze_wind")
-			.dynamic("energy_swirl")
 			.build	();
 
 	public static final AcceleratedBufferSources SHADOW = AcceleratedBufferSources
@@ -43,7 +41,5 @@ public class IrisCompatBuffers {
 			.source	(IrisCompatBuffers.POS_TEX_COLOR_SHADOW)
 			.mode	(VertexFormat.Mode.QUADS)
 			.mode	(VertexFormat.Mode.TRIANGLES)
-			.dynamic("breeze_wind")
-			.dynamic("energy_swirl")
 			.build	();
 }
