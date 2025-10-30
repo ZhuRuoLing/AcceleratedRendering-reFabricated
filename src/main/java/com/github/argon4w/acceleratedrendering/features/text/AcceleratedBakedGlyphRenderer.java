@@ -69,14 +69,16 @@ public class AcceleratedBakedGlyphRenderer implements IAcceleratedRenderer<Vecto
 		var meshCollector		= new SimpleMeshCollector	(extension.getLayout());
 		var meshBuilder			= extension.decorate		(meshCollector);
 
-		var italicOffsetUp		= italic ? 1.0f - 0.25f * bakedGlyph.up		: 0.0f;
-		var italicOffsetDown	= italic ? 1.0f - 0.25f * bakedGlyph.down	: 0.0f;
+		var offsetUp			= bakedGlyph.up		- 3.0f;
+		var offsetDown			= bakedGlyph.down	- 3.0f;
+		var italicOffsetUp		= italic ? 1.0f - 0.25f * offsetUp		: 0.0f;
+		var italicOffsetDown	= italic ? 1.0f - 0.25f * offsetDown	: 0.0f;
 
 		var positions = new Vector2f[] {
-				new Vector2f(bakedGlyph.left	+ italicOffsetUp,	bakedGlyph.up),
-				new Vector2f(bakedGlyph.left	+ italicOffsetDown,	bakedGlyph.down),
-				new Vector2f(bakedGlyph.right	+ italicOffsetDown,	bakedGlyph.down),
-				new Vector2f(bakedGlyph.right	+ italicOffsetUp,	bakedGlyph.up)
+				new Vector2f(bakedGlyph.left	+ italicOffsetUp,	offsetUp),
+				new Vector2f(bakedGlyph.left	+ italicOffsetDown,	offsetDown),
+				new Vector2f(bakedGlyph.right	+ italicOffsetDown,	offsetDown),
+				new Vector2f(bakedGlyph.right	+ italicOffsetUp,	offsetUp)
 		};
 
 		var texCoords = new Vector2f[] {
