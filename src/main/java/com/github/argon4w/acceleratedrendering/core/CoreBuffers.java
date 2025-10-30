@@ -25,8 +25,6 @@ public class CoreBuffers {
 			.source	(CoreBuffers		.POS_COLOR_TEX_LIGHT)
 			.mode	(VertexFormat.Mode	.QUADS)
 			.mode	(VertexFormat.Mode	.TRIANGLES)
-			.dynamic("breeze_wind")
-			.dynamic("energy_swirl")
 			.build	();
 
 	public static final AcceleratedBufferSources OUTLINE = AcceleratedBufferSources
@@ -34,8 +32,6 @@ public class CoreBuffers {
 			.source	(CoreBuffers		.POS_TEX_COLOR_OUTLINE)
 			.mode	(VertexFormat.Mode	.QUADS)
 			.mode	(VertexFormat.Mode	.TRIANGLES)
-			.dynamic("breeze_wind")
-			.dynamic("energy_swirl")
 			.build	();
 
 	public static AcceleratedBufferSources getCoreBufferSources() {

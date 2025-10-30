@@ -37,6 +37,17 @@ public class RenderTypeUtilsMixin {
 		return renderType instanceof WrappableRenderType wrapped ? wrapped.unwrap() : renderType;
 	}
 
+	@ModifyVariable(
+			method		= "isDynamic",
+			at			= @At("HEAD"),
+			ordinal		= 0,
+			argsOnly	= true,
+			remap		= false
+	)
+	private static RenderType unwrapIrisRenderType3(RenderType renderType) {
+		return renderType instanceof WrappableRenderType wrapped ? wrapped.unwrap() : renderType;
+	}
+
 	@Inject(
 			method		= "getDrawType",
 			at			= @At("HEAD"),
@@ -50,6 +61,20 @@ public class RenderTypeUtilsMixin {
 				||			holder.getTransparencyType() == TransparencyType.DECAL
 				? LayerDrawType.TRANSLUCENT
 				: LayerDrawType.OPAQUE
+		);
+	}
+
+	@Inject(
+			method		= "isTranslucent",
+			at			= @At("HEAD"),
+			cancellable	= true,
+			remap		= false
+	)
+	private static void checkIrisTransparency(RenderType renderType, CallbackInfoReturnable<Boolean> cir) {
+		var holder = (BlendingStateHolder) renderType;
+
+		cir.setReturnValue(	holder.getTransparencyType() == TransparencyType.GENERAL_TRANSPARENT
+				||			holder.getTransparencyType() == TransparencyType.DECAL
 		);
 	}
 }
