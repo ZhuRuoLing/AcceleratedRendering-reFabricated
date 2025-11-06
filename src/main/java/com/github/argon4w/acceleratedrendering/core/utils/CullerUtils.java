@@ -36,9 +36,6 @@ public class CullerUtils {
 			var u	= uv	.x;
 			var v	= uv	.y;
 
-			u = u < 0 ? 1.0f + u : u;
-			v = v < 0 ? 1.0f + v : v;
-
 			minU = Math.min(minU, u);
 			minV = Math.min(minV, v);
 			maxU = Math.max(maxU, u);
@@ -48,23 +45,20 @@ public class CullerUtils {
 		var width	= texture.getWidth	();
 		var height	= texture.getHeight	();
 
-		var minX	= Math.max(0, 		Mth.floor	(minU * texture.getWidth	()));
-		var minY	= Math.max(0, 		Mth.floor	(minV * texture.getHeight	()));
-		var maxX	= Math.min(width,	Mth.ceil	(maxU * texture.getWidth	()));
-		var maxY	= Math.min(height,	Mth.ceil	(maxV * texture.getHeight	()));
+		var minX	= Mth.floor	(minU * texture.getWidth	());
+		var minY	= Mth.floor	(minV * texture.getHeight	());
+		var maxX	= Mth.ceil	(maxU * texture.getWidth	());
+		var maxY	= Mth.ceil	(maxV * texture.getHeight	());
 
-		if (		minX == maxX
-				||	minY == maxY
-		) {
-			var x = Math.min(minX, width	- 1);
-			var y = Math.min(minY, height	- 1);
+		for (		var x = minX; x <= maxX; x ++) {
+			for (	var y = minY; y <= maxY; y ++) {
+				var clampedX = x % width;
+				var clampedY = y % height;
 
-			return FastColor.ABGR32.alpha(texture.getPixelRGBA(x, y)) == 0;
-		}
+				clampedX = clampedX < 0 ? width		+ clampedX : clampedX;
+				clampedY = clampedY < 0 ? height	+ clampedY : clampedY;
 
-		for (var x = minX; x < maxX; x++) {
-			for (var y = minY; y < maxY; y++) {
-				if (FastColor.ABGR32.alpha(texture.getPixelRGBA(x, y)) != 0) {
+				if (FastColor.ABGR32.alpha(texture.getPixelRGBA(clampedX, clampedY)) != 0) {
 					return false;
 				}
 			}
