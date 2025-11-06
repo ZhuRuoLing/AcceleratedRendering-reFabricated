@@ -92,7 +92,7 @@
   "acceleratedrendering.configuration.orientation_culling.ignore_cull_state": "强制剔除",
   "acceleratedrendering.configuration.orientation_culling.ignore_cull_state.tooltip": "- DISABLED: 简单朝向面剔除将不会剔除被声明为不可剔除的实体\n- ENABLED: 简单朝向面剔除将会对所有实体进行强制剔除, 即使其被声明为不可剔除, 可能会造成轻微渲染差异.",
   "acceleratedrendering.configuration.orientation_culling.button": "配置",
-  "acceleratedrendering.configuration.filter": "过滤器设置",
+  "acceleratedrendering.configuration.filter": "过滤器配置",
   "acceleratedrendering.configuration.filter.tooltip": "过滤器允许为了兼容性手动配置阻止部分实体/方块/物品在渲染时被加速",
   "acceleratedrendering.configuration.filter.feature_status": "启用过滤器",
   "acceleratedrendering.configuration.filter.feature_status.tooltip": "- DISABLED: 过滤器将被禁用, 所有的实体/方块实体/物品都将在渲染时被加速.\n- ENABLED: 过滤器将在渲染实体/方块实体/物品时根据过滤器所配置的列表和过滤器类型判断是否为该实体/方块实体进行加速.",
