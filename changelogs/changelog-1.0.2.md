@@ -19,6 +19,7 @@
 - Adds ``Accelerated Item Rendering Settings > Enable GUI Acceleration`` to support the acceleration of items rendering in GUI.
 - Adds ``Accelerated Item Rendering Settings > Enable GUI Item Batching`` to support batching draw calls of items in GUI to ensure better acceleration of item rendering in GUI.
 - Adds ``Core Settings > Batching Layer Storage Type`` to control if the pipeline should combine the rendering of opaque and translucent geometries together.
+- Adds ``Filter Settings > Enable Item Filter`` to filter items that will cause glitches when accelerated.
 - Fixes visual glitches on translucent geometries with specific shader pack due to combined rendering of opaque and translucent geometries when Iris is installed.
 - Fixes visual glitches on HUD rendering when ImmediatelyFast is installed.
 - Fixes visual glitches when entities and flywheel accelerated geometries rendering on screen at the same time when Create is installed.
