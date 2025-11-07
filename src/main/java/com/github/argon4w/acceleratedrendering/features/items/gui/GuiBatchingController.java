@@ -15,12 +15,12 @@ import net.minecraft.client.gui.GuiGraphics;
 
 public class GuiBatchingController {
 
-	public static	final GuiBatchingController		INSTANCE = new GuiBatchingController();
+	public static	final GuiBatchingController	INSTANCE = new GuiBatchingController();
 
-	private			final Window					window;
-	private			final IBindingState				viewport;
-	private			final FramebufferBindingState	binding;
-	private			final RenderTarget				overlay;
+	private			final Window				window;
+	private			final IBindingState			viewport;
+	private			final IBindingState			binding;
+	private			final RenderTarget			overlay;
 
 	private GuiBatchingController() {
 		this.window		= Minecraft.getInstance()	.getWindow				();
