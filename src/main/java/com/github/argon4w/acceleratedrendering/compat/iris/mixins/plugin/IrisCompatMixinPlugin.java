@@ -3,6 +3,7 @@ package com.github.argon4w.acceleratedrendering.compat.iris.mixins.plugin;
 import com.github.argon4w.acceleratedrendering.compat.AbstractCompatMixinPlugin;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
+import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.IntInsnNode;
@@ -18,7 +19,11 @@ public class IrisCompatMixinPlugin extends AbstractCompatMixinPlugin {
 	public static final ILogger	LOGGER	= MixinService.getService().getLogger("Accelerated Rendering");
 
 	public static final String	MIXIN_CLASS				= "com.github.argon4w.acceleratedrendering.compat.iris.mixins.vanilla.BufferBuilderMixin";
-	public static final String	TARGET_CLASS			= "com.mojang.blaze3d.vertex.BufferBuilder";
+	public static final String	TARGET_CLASS_MOJ			= "com.mojang.blaze3d.vertex.BufferBuilder";
+	public static final String	TARGET_CLASS_INT			= "net.minecraft.class_287";
+	public static final boolean IS_OBF_ENV = FabricLoader.getInstance().getMappingResolver().getCurrentRuntimeNamespace().equals("intermediary");
+	public static final String	TARGET_CLASS			= IS_OBF_ENV ? TARGET_CLASS_INT : TARGET_CLASS_MOJ;
+
 	public static final String	TARGET_METHOD			= "fillExtendedData";
 	public static final int		TARGET_OPCODE			= Opcodes.BIPUSH;
 

@@ -8,7 +8,7 @@
 - 修复了可能的部分特殊物品渲染导致的内存泄漏问题.
 
 ## 注意事项
-- 1.20.1移植的游戏内配置节目需要安装Forge Config Screens以启用.
+- 1.20.1移植的游戏内配置界面需要安装Forge Config Screens以启用.
 
 ## Accelerated Rendering 1.0.6-1.20.1 ALPHA
 - Adds ``Core Settings > Enable Cache Dynamic Render Type`` to support the acceleration of dynamic render types.
