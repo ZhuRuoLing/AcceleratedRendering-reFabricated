@@ -15,15 +15,18 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
+import org.spongepowered.asm.logging.ILogger;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.service.MixinService;
 
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
 public class TextFeatureMixinPlugin implements IMixinConfigPlugin {
+    public static final ILogger LOGGER	= MixinService.getService().getLogger("Accelerated Rendering");
     public static final String RENDER_INT = "method_2025";
     public static final String RENDER_MOJ = "render";
     public static final String RENDER_SIG_INT = "(ZFFLorg/joml/Matrix4f;Lnet/minecraft/class_4588;FFFFI)V";
@@ -71,7 +74,6 @@ public class TextFeatureMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-        System.out.println("targetClassName = " + targetClassName);
         if (!targetClassName.replace(".", "/").equals(BAKED_GLYPH)) return;
         for (MethodNode method : targetClass.methods) {
             boolean nameEquals = method.name.equals(RENDER_MOJ) || method.name.equals(RENDER_INT);

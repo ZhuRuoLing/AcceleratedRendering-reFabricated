@@ -9,6 +9,7 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.me
 import com.github.argon4w.acceleratedrendering.core.meshes.MeshType;
 import com.github.argon4w.acceleratedrendering.core.meshes.data.MeshMergeType;
 import com.github.argon4w.acceleratedrendering.features.filter.FilterType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.apache.commons.lang3.tuple.Pair;
@@ -476,7 +477,7 @@ public class FeatureConfig {
 				.comment				("Menu filter will use this list and the filter type to determine if a container GUI can pass the filter.")
 				.translation			("acceleratedrendering.configuration.filter.menu_filter_values")
 				.worldRestart			()
-				.defineListAllowEmpty	("menu_filter_values",					ObjectArrayList.of("minecraft:.*"),								object -> object instanceof String);
+				.defineListAllowEmpty	(List.of("menu_filter_values"),					() -> ObjectArrayList.of("minecraft:.*"),								object -> object instanceof String);
 
 		filterEntityFilterValues						= builder
 				.comment				("You can configure the entity filter by this list.")
