@@ -52,3 +52,6 @@ accessible field net/minecraft/client/gui/font/glyphs/BakedGlyph$Effect a F
 accessible class net/minecraft/client/OptionInstance$ValueSet
 accessible field net/minecraft/client/OptionInstance toString Ljava/util/function/Function;
 accessible field net/minecraft/client/OptionInstance caption Lnet/minecraft/network/chat/Component;
+
+accessible field net/minecraft/client/renderer/RenderType$CompositeState texturingState Lnet/minecraft/client/renderer/RenderStateShard$TexturingStateShard;
+accessible field net/minecraft/world/inventory/AbstractContainerMenu menuType Lnet/minecraft/world/inventory/MenuType;
