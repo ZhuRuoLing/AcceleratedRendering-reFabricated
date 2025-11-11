@@ -25,6 +25,7 @@ public interface IGeoRendererMixin {
 	@WrapOperation		(
 			method		= "renderRecursively",
 			at			= @At(
+					remap = true,
 					value	= "INVOKE",
 					target	= "Lcom/github/tartaricacid/touhoulittlemaid/compat/sodium/SodiumCompat;sodiumRenderCubesOfBone(Lcom/github/tartaricacid/touhoulittlemaid/geckolib3/geo/animated/AnimatedGeoBone;Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)Z"
 			),
