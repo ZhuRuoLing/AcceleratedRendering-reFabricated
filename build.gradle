@@ -51,6 +51,9 @@ repositories {
 			includeGroup "maven.modrinth"
 		}
 	}
+	maven {
+		url = "https://raw.github.com/Sh1roCu/Sh1roCu_MCRepo/master/repository"
+	}
 }
 
 dependencies {
@@ -79,7 +82,9 @@ dependencies {
 	modImplementation "dev.emi:trinkets:3.10.0"
 	modCompileOnly "maven.modrinth:malilib:xTezyq2N"
 	modCompileOnly "maven.modrinth:tweakermore:vQdcjuSM" // v3.27.0-mc1.21.1
-	//implementation "com.github.tartaricacid:touhoulittlemaid-1.21.1:release-1.2.2"
+	modCompileOnly("cn.sh1rocu:touhoulittlemaid-fabric-1.21.1:0.4.0-neo1.4.5") {
+		transitive = false
+	}
 }
 
 processResources {
