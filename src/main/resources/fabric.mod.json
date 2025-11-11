@@ -34,7 +34,8 @@
 		"acceleratedrendering.feature.geckolib.mixins.json",
 		"acceleratedrendering.feature.items.mixins.json",
 		"acceleratedrendering.feature.modelparts.mixins.json",
-		"acceleratedrendering.feature.text.mixins.json"
+		"acceleratedrendering.feature.text.mixins.json",
+		"acceleratedrendering.feature.touhoulittlemaid.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.16.10",
