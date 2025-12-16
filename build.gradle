@@ -148,10 +148,6 @@ dependencies {
     implementation "maven.modrinth:sodium:mc1.21.1-0.6.13-neoforge"
     implementation "maven.modrinth:iris:1.8.8+1.21.1-neoforge"
 
-    compileOnly "maven.modrinth:jei:OwlaxQID"
-    compileOnly "maven.modrinth:emi:1.1.22+1.21.1+neoforge"
-    compileOnly "maven.modrinth:jade:15.10.3+neoforge"
-
     compileOnly "maven.modrinth:entity-model-features:3.0.7-neoforge-1.21"
     compileOnly "maven.modrinth:touhou-little-maid:3XPwCAVd"
     compileOnly "maven.modrinth:geckolib:QEqpUJ1G"
