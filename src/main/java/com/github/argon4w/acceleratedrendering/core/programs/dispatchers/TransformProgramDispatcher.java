@@ -20,13 +20,15 @@ public class TransformProgramDispatcher {
 	private static	final	int								DISPATCH_COUNT_Y_Z			= 1;
 
 	private					ITransformShaderProgramOverride	lastOverride;
+	private					int								lastBarriers;
 
 	public TransformProgramDispatcher() {
 		this.lastOverride = null;
+		this.lastBarriers = GL_SHADER_STORAGE_BUFFER;
 	}
 
 	public void dispatch(Collection<AcceleratedBufferBuilder> builders) {
-		var barriers = 0;
+		glMemoryBarrier(lastBarriers);
 
 		for (var builder : builders) {
 			var currentOverride	= builder			.getTransformOverride	();
@@ -41,9 +43,9 @@ public class TransformProgramDispatcher {
 			}
 
 			if (vertexCount != 0) {
-				vertexBuffer				.bindBase			(GL_SHADER_STORAGE_BUFFER, VERTEX_BUFFER_IN_INDEX);
-				varyingBuffer				.bindBase			(GL_SHADER_STORAGE_BUFFER, VARYING_BUFFER_IN_INDEX);
-				barriers |= currentOverride	.dispatchTransform	(
+				vertexBuffer					.bindBase			(GL_SHADER_STORAGE_BUFFER, VERTEX_BUFFER_IN_INDEX);
+				varyingBuffer					.bindBase			(GL_SHADER_STORAGE_BUFFER, VARYING_BUFFER_IN_INDEX);
+				lastBarriers |= currentOverride	.dispatchTransform	(
 						vertexCount,
 						(int) (vertexBuffer	.getOffset() / builder.getVertexSize	()),
 						(int) (varyingBuffer.getOffset() / builder.getVaryingSize	())
@@ -53,7 +55,6 @@ public class TransformProgramDispatcher {
 
 		resetOverride	();
 		glUseProgram	(0);
-		glMemoryBarrier	(barriers);
 	}
 
 	public int dispatch(

@@ -14,7 +14,8 @@ public class MappedBuffer extends MutableBuffer implements IClientBuffer {
 	public MappedBuffer(long initialSize) {
 		super(initialSize,	GL_MAP_PERSISTENT_BIT
 				| 			GL_MAP_WRITE_BIT
-				|			GL_MAP_COHERENT_BIT);
+				|			GL_MAP_COHERENT_BIT
+		);
 
 		this.address	= map();
 		this.position	= 0L;
@@ -74,6 +75,7 @@ public class MappedBuffer extends MutableBuffer implements IClientBuffer {
 	public long map() {
 		return map(	GL_MAP_WRITE_BIT
 				|	GL_MAP_PERSISTENT_BIT
-				|	GL_MAP_COHERENT_BIT);
+				|	GL_MAP_COHERENT_BIT
+		);
 	}
 }

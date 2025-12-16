@@ -17,8 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static org.lwjgl.opengl.GL46.GL_SHADER_STORAGE_BUFFER;
-import static org.lwjgl.opengl.GL46.glMemoryBarrier;
+import static org.lwjgl.opengl.GL46.*;
 
 public class MeshUploadingProgramDispatcher {
 
@@ -31,16 +30,19 @@ public class MeshUploadingProgramDispatcher {
 	private			final	Map<IServerBuffer, List<MeshUploaderPool.MeshUploader>>	sparseUploaders;
 
 	private					IUploadingShaderProgramOverride							lastOverride;
+	private					int														lastBarriers;
 
 	public MeshUploadingProgramDispatcher() {
 		this.denseUploaders		= new Reference2ObjectLinkedOpenHashMap<>();
 		this.sparseUploaders	= new Reference2ObjectLinkedOpenHashMap<>();
 		this.lastOverride		= null;
+		this.lastBarriers		= GL_SHADER_STORAGE_BARRIER_BIT;
 	}
 
 	public void dispatch(Collection<AcceleratedBufferBuilder> builders, AcceleratedRingBuffers.Buffers buffer) {
+		glMemoryBarrier(lastBarriers);
+
 		lastOverride	= null;
-		var barriers	= 0;
 		var transform	= buffer
 				.getBufferEnvironment				()
 				.selectTransformProgramDispatcher	();
@@ -127,10 +129,10 @@ public class MeshUploadingProgramDispatcher {
 				var count = offset - sparseStart;
 
 				if (count != 0) {
-					lastOverride = null;
+					meshBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, SPARSE_MESH_BUFFER_INDEX);
 
-					meshBuffer				.bindBase(GL_SHADER_STORAGE_BUFFER, SPARSE_MESH_BUFFER_INDEX);
-					barriers |= transform	.dispatch(
+					lastOverride =	null;
+					lastBarriers |=	transform	.dispatch(
 							builder,
 							vertexBuffer,
 							varyingBuffer,
@@ -159,10 +161,10 @@ public class MeshUploadingProgramDispatcher {
 						lastOverride.setupProgram	();
 					}
 
-					transform					.resetOverride		();
-					uploader					.upload				();
-					uploader					.bindBuffers		();
-					barriers |= currentOverride	.dispatchUploading	(
+					transform						.resetOverride		();
+					uploader						.upload				();
+					uploader						.bindBuffers		();
+					lastBarriers |= currentOverride	.dispatchUploading	(
 							uploadSize,
 							meshCount,
 							meshSize,
@@ -180,8 +182,6 @@ public class MeshUploadingProgramDispatcher {
 				sparseUploaders	.get(meshBuffer).clear();
 			}
 		}
-
-		glMemoryBarrier(barriers);
 	}
 
 	public void resetOverride() {

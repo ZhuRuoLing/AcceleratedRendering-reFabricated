@@ -39,6 +39,10 @@ public class AcceleratedItemRenderingFeature {
 		return FeatureConfig.CONFIG.acceleratedItemRenderingGuiItemBatching.get() == FeatureStatus.ENABLED;
 	}
 
+	public static boolean shouldMergeGuiItemBatches() {
+		return FeatureConfig.CONFIG.acceleratedItemRenderingMergeGuiItemBatches.get() == FeatureStatus.ENABLED;
+	}
+
 	public static MeshType getMeshType() {
 		return FeatureConfig.CONFIG.acceleratedItemRenderingMeshType.get();
 	}

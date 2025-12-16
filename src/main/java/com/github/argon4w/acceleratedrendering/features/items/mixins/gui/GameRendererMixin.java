@@ -21,7 +21,9 @@ public class GameRendererMixin {
 			int				height,
 			CallbackInfo	ci
 	) {
-		if (CoreFeature.isLoaded()) {
+		if (		CoreFeature.isConfigLoaded	()
+				&&	CoreFeature.isLoaded		()
+		) {
 			GuiBatchingController.INSTANCE.resize(
 					width,
 					height,

@@ -182,6 +182,7 @@ dependencies {
     modCompileOnly "maven.modrinth:curios:5.14.1+1.20.1"
     modCompileOnly 'com.github.TartaricAcid:SimpleBedrockModel:forge-1.20.1-1.3.0-beta'
     modCompileOnly "io.github.llamalad7:mixinextras-common:0.4.1"
+    modCompileOnly "curse.maven:ftb-library-forge-404465:7296748"
 
     modRuntimeOnly "curse.maven:configured-457570:5180900"
 
@@ -212,6 +213,7 @@ mixin {
     config "${mod_id}.feature.entities.mixins.json"
     config "${mod_id}.feature.entitymodelfeature.mixins.json"
     config "${mod_id}.feature.filter.mixins.json"
+    config "${mod_id}.feature.ftb.mixins.json"
     config "${mod_id}.feature.geckolib.mixins.json"
     config "${mod_id}.feature.items.mixins.json"
     config "${mod_id}.feature.modelparts.mixins.json"
@@ -234,6 +236,7 @@ jar {
                     "${mod_id}.feature.entities.mixins.json," +
                     "${mod_id}.feature.entitymodelfeature.mixins.json," +
                     "${mod_id}.feature.filter.mixins.json," +
+                    "${mod_id}.feature.ftb.mixins.json," +
                     "${mod_id}.feature.geckolib.mixins.json," +
                     "${mod_id}.feature.items.mixins.json," +
                     "${mod_id}.feature.modelparts.mixins.json," +

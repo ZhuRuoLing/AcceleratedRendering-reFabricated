@@ -15,6 +15,7 @@
     "compatibility.MinecraftMixin",
     "compatibility.ParticleEngineMixin",
     "compatibility.RenderTypeMixin",
+    "compatibility.WindowMixin",
     "GameRendererMixin",
     "LevelRendererMixin"
   ],

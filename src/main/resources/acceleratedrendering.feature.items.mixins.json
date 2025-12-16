@@ -6,6 +6,7 @@
   "client": [
     "accessors.BlockColorsAccessor",
     "accessors.ItemColorsAccessor",
+    "compatibility.ClientHooksMixin",
     "gui.AbstractContainerScreenMixin",
     "gui.GameRendererMixin",
     "gui.GuiGraphicsMixin",
