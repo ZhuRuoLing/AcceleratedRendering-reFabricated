@@ -29,7 +29,7 @@ public class ItemDecorationHandlerMixin {
 			int				yOffset,
 			CallbackInfo	ci
 	) {
-		GuiBatchingController.INSTANCE.useOverlayTarget();
+		GuiBatchingController.INSTANCE.useOverlayTarget(guiGraphics);
 	}
 
 	@Inject(

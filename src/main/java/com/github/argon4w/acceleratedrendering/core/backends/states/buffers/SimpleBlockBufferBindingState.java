@@ -3,6 +3,7 @@ package com.github.argon4w.acceleratedrendering.core.backends.states.buffers;
 import com.github.argon4w.acceleratedrendering.core.backends.states.IBindingState;
 import com.github.argon4w.acceleratedrendering.core.backends.states.buffers.cache.BlockBufferBindingCacheType;
 import com.github.argon4w.acceleratedrendering.core.backends.states.buffers.cache.IBlockBufferBindingCache;
+import net.minecraft.client.gui.GuiGraphics;
 
 import static org.lwjgl.opengl.GL46.*;
 
@@ -33,13 +34,8 @@ public class SimpleBlockBufferBindingState implements IBindingState {
 	}
 
 	@Override
-	public void delete() {
-		bindingCache.delete();
-	}
-
-	@Override
-	public void record() {
-		for (int bindingPoint = 0; bindingPoint < bindingRange; bindingPoint++) {
+	public void record(GuiGraphics graphics) {
+		for (var bindingPoint = 0; bindingPoint < bindingRange; bindingPoint++) {
 			bindingCache.setup(
 					bindingPoint,
 					glGetIntegeri(bufferParam,	bindingPoint),
@@ -51,7 +47,7 @@ public class SimpleBlockBufferBindingState implements IBindingState {
 
 	@Override
 	public void restore() {
-		for (int bindingPoint = 0; bindingPoint < bindingRange; bindingPoint ++) {
+		for (var bindingPoint = 0; bindingPoint < bindingRange; bindingPoint ++) {
 			var buffer	= bindingCache.getBuffer(bindingPoint);
 			var offset	= bindingCache.getOffset(bindingPoint);
 			var size	= bindingCache.getSize	(bindingPoint);
@@ -74,5 +70,10 @@ public class SimpleBlockBufferBindingState implements IBindingState {
 				);
 			}
 		}
+	}
+
+	@Override
+	public void delete() {
+		bindingCache.delete();
 	}
 }

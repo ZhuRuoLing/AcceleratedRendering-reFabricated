@@ -4,7 +4,8 @@
   "package": "com.github.argon4w.acceleratedrendering.features.entitymodelfeature.mixins",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "EMFModelPartMixin"
+    "EMFModelPartMixin",
+    "EMFModelPartWithStateMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,5 +1,6 @@
 package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
+import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -16,14 +17,54 @@ public abstract class AbstractContainerScreenMixin {
 			method	= "render",
 			at		= @At("HEAD")
 	)
-	public void startBatching(
+	public void startBackgroundBatching(
 			GuiGraphics		guiGraphics,
 			int				mouseX,
 			int				mouseY,
 			float			partialTick,
 			CallbackInfo	ci
 	) {
-		GuiBatchingController.INSTANCE.startBatching();
+		GuiBatchingController.INSTANCE.startBatching(guiGraphics);
+	}
+
+	@Inject(
+			method	= "render",
+			at		= @At(
+					value	= "INVOKE",
+					target	= "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V",
+					shift	= At.Shift.BEFORE
+			)
+	)
+	public void flushBackgroundBatching(
+			GuiGraphics		guiGraphics,
+			int				mouseX,
+			int				mouseY,
+			float			partialTick,
+			CallbackInfo	ci
+	) {
+		if (!AcceleratedItemRenderingFeature.shouldMergeGuiItemBatches()) {
+			GuiBatchingController.INSTANCE.flushBatching(guiGraphics);
+		}
+	}
+
+	@Inject(
+			method	= "render",
+			at		= @At(
+					value	= "INVOKE",
+					target	= "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V",
+					shift	= At.Shift.AFTER
+			)
+	)
+	public void startItemBatching(
+			GuiGraphics		guiGraphics,
+			int				mouseX,
+			int				mouseY,
+			float			partialTick,
+			CallbackInfo	ci
+	) {
+		if (!AcceleratedItemRenderingFeature.shouldMergeGuiItemBatches()) {
+			GuiBatchingController.INSTANCE.startBatching(guiGraphics);
+		}
 	}
 
 	@Inject(
@@ -34,7 +75,7 @@ public abstract class AbstractContainerScreenMixin {
 					shift	= At.Shift.BEFORE
 			)
 	)
-	public void flushBatching(
+	public void flushItemBatching(
 			GuiGraphics		guiGraphics,
 			int				mouseX,
 			int				mouseY,
@@ -56,7 +97,7 @@ public abstract class AbstractContainerScreenMixin {
 			float			partialTick,
 			CallbackInfo	ci
 	) {
-		GuiBatchingController.INSTANCE.useOverlayTarget();
+		GuiBatchingController.INSTANCE.useOverlayTarget(guiGraphics);
 	}
 
 	@Inject(

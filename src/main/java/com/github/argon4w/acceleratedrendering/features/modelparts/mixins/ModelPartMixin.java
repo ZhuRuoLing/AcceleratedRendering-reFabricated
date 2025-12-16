@@ -8,6 +8,7 @@ import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.CulledMeshCollector;
 import com.github.argon4w.acceleratedrendering.core.meshes.data.IMeshData;
 import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
+import com.github.argon4w.acceleratedrendering.features.modelparts.IAcceleratedModelPart;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -28,7 +29,7 @@ import java.util.Map;
 
 @ExtensionMethod(VertexConsumerExtension.class)
 @Mixin			(ModelPart				.class)
-public class ModelPartMixin implements IAcceleratedRenderer<Void> {
+public class ModelPartMixin implements IAcceleratedRenderer<Void>, IAcceleratedModelPart {
 
 	@Shadow @Final private	List<ModelPart.Cube>		cubes;
 
@@ -151,5 +152,12 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
 		);
 
 		extension.endTransform();
+	}
+
+	@Unique
+	@Override
+	public void clearMeshCacheUnsafe() {
+		merges.clear();
+		meshes.clear();
 	}
 }

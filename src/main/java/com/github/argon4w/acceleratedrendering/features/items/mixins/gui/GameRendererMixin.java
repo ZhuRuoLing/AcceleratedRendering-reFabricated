@@ -1,5 +1,6 @@
 package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
+import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -20,10 +21,14 @@ public class GameRendererMixin {
 			int				height,
 			CallbackInfo	ci
 	) {
-		GuiBatchingController.INSTANCE.resize(
-				width,
-				height,
-				Minecraft.ON_OSX
-		);
+		if (		CoreFeature.isConfigLoaded	()
+				&&	CoreFeature.isLoaded		()
+		) {
+			GuiBatchingController.INSTANCE.resize(
+					width,
+					height,
+					Minecraft.ON_OSX
+			);
+		}
 	}
 }

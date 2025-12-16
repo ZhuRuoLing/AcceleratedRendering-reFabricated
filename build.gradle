@@ -148,7 +148,17 @@ dependencies {
     implementation "maven.modrinth:sodium:mc1.21.1-0.6.13-neoforge"
     implementation "maven.modrinth:iris:1.8.8+1.21.1-neoforge"
 
-    compileOnly "maven.modrinth:entity-model-features:Z0UKemxw"
+    implementation "curse.maven:smooth-scrolling-reforged-1364975:7106845"
+    implementation "curse.maven:architectury-api-419699:5786327"
+    implementation "curse.maven:ftb-library-forge-404465:7182154"
+    implementation "curse.maven:ftb-teams-forge-404468:7209616"
+    implementation "curse.maven:ftb-quests-forge-289412:7213963"
+
+    compileOnly "maven.modrinth:jei:OwlaxQID"
+    compileOnly "maven.modrinth:emi:1.1.22+1.21.1+neoforge"
+    compileOnly "maven.modrinth:jade:15.10.3+neoforge"
+
+    compileOnly "maven.modrinth:entity-model-features:3.0.7-neoforge-1.21"
     compileOnly "maven.modrinth:touhou-little-maid:3XPwCAVd"
     compileOnly "maven.modrinth:geckolib:QEqpUJ1G"
     compileOnly "maven.modrinth:immediatelyfast:1.6.6+1.21.1-neoforge"

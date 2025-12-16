@@ -1,6 +1,7 @@
 package com.github.argon4w.acceleratedrendering.core.backends.states.viewports;
 
 import com.github.argon4w.acceleratedrendering.core.backends.states.IBindingState;
+import net.minecraft.client.gui.GuiGraphics;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.IntBuffer;
@@ -16,12 +17,7 @@ public class OpenGLViewportBindingState implements IBindingState {
 	}
 
 	@Override
-	public void delete() {
-		MemoryUtil.memFree(bindingViewport);
-	}
-
-	@Override
-	public void record() {
+	public void record(GuiGraphics graphics) {
 		glGetIntegerv(GL_VIEWPORT, bindingViewport);
 	}
 
@@ -33,5 +29,10 @@ public class OpenGLViewportBindingState implements IBindingState {
 				bindingViewport.get(2),
 				bindingViewport.get(3)
 		);
+	}
+
+	@Override
+	public void delete() {
+		MemoryUtil.memFree(bindingViewport);
 	}
 }

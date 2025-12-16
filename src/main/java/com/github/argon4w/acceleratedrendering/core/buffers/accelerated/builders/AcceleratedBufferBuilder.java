@@ -13,6 +13,7 @@ import com.github.argon4w.acceleratedrendering.core.buffers.memory.SimpleDynamic
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.SimpleMemoryInterface;
 import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
 import com.github.argon4w.acceleratedrendering.core.programs.culling.ICullingProgramDispatcher;
+import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.IPolygonProgramDispatcher;
 import com.github.argon4w.acceleratedrendering.core.programs.overrides.ITransformShaderProgramOverride;
 import com.github.argon4w.acceleratedrendering.core.programs.overrides.IUploadingShaderProgramOverride;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -54,13 +55,14 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 
 	@EqualsAndHashCode.Include private			final	RenderType										renderType;
 	@Getter @EqualsAndHashCode.Include private	final	IMemoryLayout<VertexFormatElement>				layout;
+	@Getter private								final	IPolygonProgramDispatcher						polygonProgramDispatcher;
 	@Getter private								final	ICullingProgramDispatcher						cullingProgramDispatcher;
 	@Getter private								final	ITransformShaderProgramOverride					transformOverride;
 	@Getter private								final	IUploadingShaderProgramOverride					uploadingOverride;
 	@Getter private								final	VertexFormat.Mode								mode;
-	@Getter private								final	long											vertexSize;
 	@Getter private								final	int												polygonSize;
-	private										final	int												polygonElementCount;
+	@Getter private								final	int												polygonElementCount;
+	@Getter private								final	long											vertexSize;
 
 	private										final	IMemoryInterface								posOffset;
 	@Getter private								final	IMemoryInterface								colorOffset;
@@ -94,12 +96,12 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 	) {
 		var environment					= buffer.getBufferEnvironment();
 
-		this.varyingOffset				= new SimpleDynamicMemoryInterface					(0L * 4L, this);
-		this.varyingSharing				= new SimpleDynamicMemoryInterface					(1L * 4L, this);
-		this.varyingMesh				= new SimpleDynamicMemoryInterface					(2L * 4L, this);
-		this.varyingShouldCull			= new SimpleDynamicMemoryInterface					(3L * 4L, this);
+		this.varyingOffset				= new SimpleDynamicMemoryInterface						(0L * 4L, this);
+		this.varyingSharing				= new SimpleDynamicMemoryInterface						(1L * 4L, this);
+		this.varyingMesh				= new SimpleDynamicMemoryInterface						(2L * 4L, this);
+		this.varyingShouldCull			= new SimpleDynamicMemoryInterface						(3L * 4L, this);
 
-		this.meshUploaders				= new Reference2ObjectLinkedOpenHashMap<>			();
+		this.meshUploaders				= new Reference2ObjectLinkedOpenHashMap<>				();
 		this.vertexBuffer				= vertexBuffer;
 		this.varyingBuffer				= varyingBuffer;
 		this.elementSegment				= elementSegment;
@@ -107,22 +109,23 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 		this.function					= layerFunction;
 
 		this.renderType					= renderType;
-		this.layout						= environment		.getLayout						();
-		this.cullingProgramDispatcher	= environment		.selectCullingProgramDispatcher	(this.renderType);
-		this.transformOverride			= environment		.getTransformProgramOverride	(this.renderType);
-		this.uploadingOverride			= environment		.getUploadingProgramOverride	(this.renderType);
+		this.layout						= environment		.getLayout							();
+		this.polygonProgramDispatcher	= environment		.selectProcessingProgramDispatcher	(this.renderType.mode);
+		this.cullingProgramDispatcher	= environment		.selectCullingProgramDispatcher		(this.renderType);
+		this.transformOverride			= environment		.getTransformProgramOverride		(this.renderType);
+		this.uploadingOverride			= environment		.getUploadingProgramOverride		(this.renderType);
 
 		this.mode						= this.renderType	.mode;
 		this.polygonSize				= this.mode			.primitiveLength;
-		this.vertexSize					= this.buffer		.getVertexSize					();
-		this.polygonElementCount		= this.mode			.indexCount						(this.polygonSize);
+		this.polygonElementCount		= this.mode			.indexCount							(this.polygonSize);
+		this.vertexSize					= this.buffer		.getVertexSize						();
 
-		this.posOffset					= this.layout		.getElement						(VertexFormatElement.POSITION);
-		this.colorOffset				= this.layout		.getElement						(VertexFormatElement.COLOR);
-		this.uv0Offset					= this.layout		.getElement						(VertexFormatElement.UV0);
-		this.uv1Offset					= this.layout		.getElement						(VertexFormatElement.UV1);
-		this.uv2Offset					= this.layout		.getElement						(VertexFormatElement.UV2);
-		this.normalOffset				= this.layout		.getElement						(VertexFormatElement.NORMAL);
+		this.posOffset					= this.layout		.getElement							(VertexFormatElement.POSITION);
+		this.colorOffset				= this.layout		.getElement							(VertexFormatElement.COLOR);
+		this.uv0Offset					= this.layout		.getElement							(VertexFormatElement.UV0);
+		this.uv1Offset					= this.layout		.getElement							(VertexFormatElement.UV1);
+		this.uv2Offset					= this.layout		.getElement							(VertexFormatElement.UV2);
+		this.normalOffset				= this.layout		.getElement							(VertexFormatElement.NORMAL);
 
 		this.cachedTransformValue		= new Matrix4f();
 		this.cachedNormalValue			= new Matrix3f();
