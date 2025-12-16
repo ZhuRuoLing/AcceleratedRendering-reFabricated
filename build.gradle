@@ -185,7 +185,6 @@ dependencies {
     modCompileOnly "curse.maven:ftb-library-forge-404465:7296748"
 
     modRuntimeOnly "curse.maven:configured-457570:5180900"
-
     compileOnly "org.projectlombok:lombok:1.18.38"
 
     annotationProcessor "org.projectlombok:lombok:1.18.38"

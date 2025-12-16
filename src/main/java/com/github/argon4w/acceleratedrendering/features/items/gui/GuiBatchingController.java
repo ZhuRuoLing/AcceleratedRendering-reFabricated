@@ -62,13 +62,11 @@ public class GuiBatchingController {
 					GlStateManager.DestFactor	.ONE
 			);
 
-			GL46.glPushDebugGroup(GL46.GL_DEBUG_SOURCE_APPLICATION, 419, "blitToScreen");
 			overlay.blitToScreen(
 					window.getWidth	(),
 					window.getHeight(),
 					false
 			);
-			GL46.glPopDebugGroup();
 
 			RenderSystem.restoreProjectionMatrix();
 			RenderSystem.disableBlend			();

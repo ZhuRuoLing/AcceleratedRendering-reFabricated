@@ -132,7 +132,7 @@ public class MeshUploadingProgramDispatcher {
 					meshBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, SPARSE_MESH_BUFFER_INDEX);
 
 					lastOverride =	null;
-					lastBarriers |=	transform	.dispatch(
+					lastBarriers |=	transform.dispatch(
 							builder,
 							vertexBuffer,
 							varyingBuffer,
