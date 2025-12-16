@@ -16,11 +16,18 @@ public class BaseScreenMixin {
 
 	@Inject(
 			method	= "draw",
-			at		= @At(
-					value	= "INVOKE",
-					target	= "Ldev/ftb/mods/ftblibrary/ui/Panel;draw(Lnet/minecraft/client/gui/GuiGraphics;Ldev/ftb/mods/ftblibrary/ui/Theme;IIII)V",
-					shift	= At.Shift.BEFORE
-			)
+			at		= {
+					@At(
+							value	= "INVOKE",
+							target	= "Ldev/ftb/mods/ftblibrary/ui/Panel;draw(Lnet/minecraft/client/gui/GuiGraphics;Ldev/ftb/mods/ftblibrary/ui/Theme;IIII)V",
+							shift	= At.Shift.BEFORE
+					),
+					@At(
+							value	= "INVOKE",
+							target	= "Ldev/ftb/mods/ftblibrary/ui/ModalPanel;draw(Lnet/minecraft/client/gui/GuiGraphics;Ldev/ftb/mods/ftblibrary/ui/Theme;IIII)V",
+							shift	= At.Shift.BEFORE
+					)
+			}
 	)
 	public void startBatching(
 			GuiGraphics		graphics,
@@ -36,11 +43,18 @@ public class BaseScreenMixin {
 
 	@Inject(
 			method	= "draw",
-			at		= @At(
-					value	= "INVOKE",
-					target	= "Ldev/ftb/mods/ftblibrary/ui/Panel;draw(Lnet/minecraft/client/gui/GuiGraphics;Ldev/ftb/mods/ftblibrary/ui/Theme;IIII)V",
-					shift	= At.Shift.AFTER
-			)
+			at		= {
+					@At(
+							value	= "INVOKE",
+							target	= "Ldev/ftb/mods/ftblibrary/ui/Panel;draw(Lnet/minecraft/client/gui/GuiGraphics;Ldev/ftb/mods/ftblibrary/ui/Theme;IIII)V",
+							shift	= At.Shift.AFTER
+					),
+					@At(
+							value	= "INVOKE",
+							target	= "Ldev/ftb/mods/ftblibrary/ui/ModalPanel;draw(Lnet/minecraft/client/gui/GuiGraphics;Ldev/ftb/mods/ftblibrary/ui/Theme;IIII)V",
+							shift	= At.Shift.AFTER
+					)
+			}
 	)
 	public void stopBatching(
 			GuiGraphics		graphics,
