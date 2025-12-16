@@ -180,7 +180,7 @@ dependencies {
     modCompileOnly "maven.modrinth:geckolib:aVW7Z5da"
     modCompileOnly "maven.modrinth:immediatelyfast:1.5.2+1.20.4-forge"
     modCompileOnly "maven.modrinth:curios:5.14.1+1.20.1"
-    modCompileOnly 'com.github.TartaricAcid:SimpleBedrockModel:forge-1.20.1-1.3.0-beta'
+    modCompileOnly "com.github.TartaricAcid:SimpleBedrockModel:forge-1.20.1-1.3.0-beta"
     modCompileOnly "io.github.llamalad7:mixinextras-common:0.4.1"
     modCompileOnly "curse.maven:ftb-library-forge-404465:7296748"
 
@@ -189,7 +189,7 @@ dependencies {
     compileOnly "org.projectlombok:lombok:1.18.38"
 
     annotationProcessor "org.projectlombok:lombok:1.18.38"
-    annotationProcessor 'net.fabricmc:sponge-mixin:0.15.2+mixin.0.8.7'
+    annotationProcessor "net.fabricmc:sponge-mixin:0.15.2+mixin.0.8.7"
     annotationProcessor "io.github.llamalad7:mixinextras-common:0.5.0"
 
     jarJar("io.github.llamalad7:mixinextras-forge:0.4.1")  {
