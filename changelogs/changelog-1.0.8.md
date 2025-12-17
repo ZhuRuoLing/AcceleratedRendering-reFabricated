@@ -1,4 +1,4 @@
-## 加速渲染 1.0.8-1.21.1 ALPHA
+## 加速渲染 1.0.8-1.20.1 ALPHA
 - 添加了``核心配置 > 裁切区域还原类型``选项以提供对修改了容器GUI渲染的MOD更好的兼容性.
 - 添加了``加速物品渲染配置 > 启用合并GUI物品批次``选项以以提供对修改了容器GUI渲染的MOD更好的兼容性.
 - 添加了对FTB Library的GUI物品合批加速支持.
@@ -9,7 +9,7 @@
 - 修复了Oculus中错误硬编码导致的渲染异常.
 - 阻止MOD添加的自定义HUD进行加速, 防止过度调用着色器导致性能下降.
 
-## Accelerated Rendering 1.0.8-1.21.1 ALPHA
+## Accelerated Rendering 1.0.8-1.20.1 ALPHA
 - Adds ``Filter Settings > Enable Menu Filter`` to filter menus that will cause glitches when accelerated.
 - Fixes visual glitches on players rendered with wrong light direction in inventory GUI.
 - Fixes visual glitches on static culler exceptionally culled geometries with UV outside regular range.
