@@ -9,6 +9,11 @@
 - 修复了Oculus中错误硬编码导致的渲染异常.
 - 阻止MOD添加的自定义HUD进行加速, 防止过度调用着色器导致性能下降.
 
+## 注意事项
+- 1.20.1移植的游戏内配置节目需要安装Configured以启用.
+- 1.20.1移植的GeckoLib加速需要安装MixinBooster以启用.
+- 1.20.1移植的车万女仆加速需要安装MixinBooster以启用.
+
 ## Accelerated Rendering 1.0.8-1.20.1 ALPHA
 - Adds ``Filter Settings > Enable Menu Filter`` to filter menus that will cause glitches when accelerated.
 - Fixes visual glitches on players rendered with wrong light direction in inventory GUI.
@@ -22,3 +27,8 @@
 - Fixes potential visual glitches due to incorrect OpenGL memory barrier usages.
 - Fixes visual glitches on wronly hardcoded offset in Oculus.
 - Prevent custom HUDs by MODs from being accelerated to reduce shader overhead.
+
+## Important Notes
+- 1.20.1 port requires Configured to modify configurations in game.
+- 1.20.1 port of GeckoLib acceleration requires MixinBooster to enable.
+- 1.20.1 port of TouhouLittleMaid acceleration requires MixinBooster to enable.
