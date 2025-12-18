@@ -9,9 +9,6 @@
 - 阻止MOD添加的自定义HUD进行加速, 防止过度调用着色器导致性能下降.
 
 ## Accelerated Rendering 1.0.8-1.21.1 ALPHA
-- Adds ``Filter Settings > Enable Menu Filter`` to filter menus that will cause glitches when accelerated.
-- Fixes visual glitches on players rendered with wrong light direction in inventory GUI.
-- Fixes visual glitches on static culler exceptionally culled geometries with UV outside regular range.
 - Adds ``Core Settings > Scissor Restoring Type`` to provide better compatibility with modified container GUI.
 - Adds ``Accelerated Item Rendering Settings > Enable Merge GUI Item Batches`` to provide better compatibility with modified container GUI.
 - Adds GUI item batching acceleration support to FTB Library.
