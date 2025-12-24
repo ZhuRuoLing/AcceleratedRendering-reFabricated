@@ -10,7 +10,7 @@
 - 阻止MOD添加的自定义HUD进行加速, 防止过度调用着色器导致性能下降.
 
 ## 注意事项
-- 1.20.1移植的游戏内配置节目需要安装Configured以启用.
+- 1.20.1移植的游戏内配置界面需要安装ForgeConfigScreens以启用.
 
 ## Accelerated Rendering 1.0.8-1.20.1 ALPHA
 - Adds ``Core Settings > Scissor Restoring Type`` to provide better compatibility with modified container GUI.
@@ -24,4 +24,4 @@
 - Prevent custom HUDs by MODs from being accelerated to reduce shader overhead.
 
 ## Important Notes
-- 1.20.1 port requires Configured to modify configurations in game.
+- 1.20.1 port requires ForgeConfigScreens to modify configurations in game.
