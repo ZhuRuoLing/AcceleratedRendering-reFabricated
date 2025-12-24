@@ -2,7 +2,10 @@ package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
+import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.client.gui.GuiGraphics;
@@ -26,7 +29,7 @@ public abstract class AbstractContainerScreenMixin {
 			float			partialTick,
 			CallbackInfo	ci
 	) {
-		GuiBatchingController.INSTANCE.startBatching();
+		GuiBatchingController.INSTANCE.startBatching(guiGraphics);
 	}
 
 	@Inject(
@@ -47,27 +50,26 @@ public abstract class AbstractContainerScreenMixin {
 		GuiBatchingController.INSTANCE.flushBatching(guiGraphics);
 	}
 
-	@WrapMethod(method = "renderSlotHighlight")
-	private static void startRenderHighlight(
+    @WrapMethod(method = "renderSlotHighlight")
+    private static void startRenderHighlight(
         GuiGraphics guiGraphics, int x, int y, int blitOffset, Operation<Void> original
-	) {
-		if (!CoreFeature.isGuiBatching()) {
-			original.call(
-					guiGraphics,
-                	x,
-					y,
-					blitOffset,
-					color
-			);
-			return;
-		}
+    ) {
+        if (!CoreFeature.isGuiBatching()) {
+            original.call(
+                guiGraphics,
+                x,
+                y,
+                blitOffset
+            );
+            return;
+        }
 
-		GuiBatchingController.INSTANCE.recordHighlight(
-				guiGraphics,
-				x,
-				y,
-				blitOffset,
-				color
-		);
-	}
+        GuiBatchingController.INSTANCE.recordHighlight(
+            guiGraphics,
+            x,
+            y,
+            blitOffset,
+            color
+        );
+    }
 }

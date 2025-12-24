@@ -51,6 +51,12 @@ repositories {
 			includeGroup "maven.modrinth"
 		}
 	}
+	maven {
+		url "https://cursemaven.com"
+		content {
+			includeGroup "curse.maven"
+		}
+	}
 }
 
 dependencies {
@@ -79,6 +85,8 @@ dependencies {
 	modImplementation "dev.emi:trinkets:3.10.0"
 	modCompileOnly "maven.modrinth:malilib:xTezyq2N"
 	modCompileOnly "maven.modrinth:tweakermore:vQdcjuSM" // v3.27.0-mc1.21.1
+
+	modCompileOnly "curse.maven:ftb-library-fabric-438495:7312255"
 	//implementation "com.github.tartaricacid:touhoulittlemaid-1.21.1:release-1.2.2"
 }
 

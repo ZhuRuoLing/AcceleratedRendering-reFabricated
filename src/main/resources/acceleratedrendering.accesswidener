@@ -55,3 +55,6 @@ accessible field net/minecraft/client/OptionInstance caption Lnet/minecraft/netw
 
 accessible field net/minecraft/client/renderer/RenderType$CompositeState texturingState Lnet/minecraft/client/renderer/RenderStateShard$TexturingStateShard;
 accessible field net/minecraft/world/inventory/AbstractContainerMenu menuType Lnet/minecraft/world/inventory/MenuType;
+
+accessible field net/minecraft/client/gui/GuiGraphics scissorStack Lnet/minecraft/client/gui/GuiGraphics$ScissorStack;
+accessible field net/minecraft/client/gui/GuiGraphics$ScissorStack stack Ljava/util/Deque;
