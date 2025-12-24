@@ -9,8 +9,6 @@
     "ModelBlockRendererMixin",
     "accessors.BlockColorsAccessor",
     "accessors.ItemColorsAccessor",
-    "compatibility.ClientHooksMixin",
-    "compatibility.GuiLayerManagerMixin",
     "gui.AbstractContainerScreenMixin",
     "gui.GameRendererMixin",
     "gui.GuiGraphicsMixin",
