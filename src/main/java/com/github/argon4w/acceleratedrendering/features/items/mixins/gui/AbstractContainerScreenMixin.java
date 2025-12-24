@@ -2,7 +2,10 @@ package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
+import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -68,8 +71,8 @@ public abstract class AbstractContainerScreenMixin {
 		GuiBatchingController.INSTANCE.flushBatching(guiGraphics);
 	}
 
-	@WrapMethod(method = "renderSlotHighlight")
-	private static void startRenderHighlight(
+    @WrapMethod(method = "renderSlotHighlight")
+    private static void startRenderHighlight(
         GuiGraphics guiGraphics, int x, int y, int blitOffset, Operation<Void> original
 	) {
 		if (		!	CoreFeature.isLoaded				()
