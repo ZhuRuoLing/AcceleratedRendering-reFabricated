@@ -46,6 +46,7 @@ public class LevelRendererMixin {
 		CoreBuffers.ENTITY				.prepareBuffers	();
 		CoreBuffers.BLOCK				.prepareBuffers	();
 		CoreBuffers.POS					.prepareBuffers	();
+		CoreBuffers.POS_COLOR			.prepareBuffers	();
 		CoreBuffers.POS_TEX				.prepareBuffers	();
 		CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
@@ -54,6 +55,7 @@ public class LevelRendererMixin {
 		CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS					.drawBuffers	(LayerDrawType.ALL);
+		CoreBuffers.POS_COLOR			.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS_TEX				.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS_TEX_COLOR		.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.drawBuffers	(LayerDrawType.ALL);
@@ -61,6 +63,7 @@ public class LevelRendererMixin {
 		CoreBuffers.ENTITY				.clearBuffers	();
 		CoreBuffers.BLOCK				.clearBuffers	();
 		CoreBuffers.POS					.clearBuffers	();
+		CoreBuffers.POS_COLOR			.clearBuffers	();
 		CoreBuffers.POS_TEX				.clearBuffers	();
 		CoreBuffers.POS_TEX_COLOR		.clearBuffers	();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.clearBuffers	();
@@ -88,6 +91,7 @@ public class LevelRendererMixin {
 		CoreBuffers.ENTITY				.prepareBuffers	();
 		CoreBuffers.BLOCK				.prepareBuffers	();
 		CoreBuffers.POS					.prepareBuffers	();
+		CoreBuffers.POS_COLOR			.prepareBuffers	();
 		CoreBuffers.POS_TEX				.prepareBuffers	();
 		CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
@@ -96,6 +100,7 @@ public class LevelRendererMixin {
 		CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.OPAQUE);
 		CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.OPAQUE);
 		CoreBuffers.POS					.drawBuffers	(LayerDrawType.OPAQUE);
+		CoreBuffers.POS_COLOR			.drawBuffers	(LayerDrawType.OPAQUE);
 		CoreBuffers.POS_TEX				.drawBuffers	(LayerDrawType.OPAQUE);
 		CoreBuffers.POS_TEX_COLOR		.drawBuffers	(LayerDrawType.OPAQUE);
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.drawBuffers	(LayerDrawType.OPAQUE);
@@ -123,6 +128,7 @@ public class LevelRendererMixin {
 		CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.TRANSLUCENT);
 		CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.TRANSLUCENT);
 		CoreBuffers.POS					.drawBuffers	(LayerDrawType.TRANSLUCENT);
+		CoreBuffers.POS_COLOR			.drawBuffers	(LayerDrawType.TRANSLUCENT);
 		CoreBuffers.POS_TEX				.drawBuffers	(LayerDrawType.TRANSLUCENT);
 		CoreBuffers.POS_TEX_COLOR		.drawBuffers	(LayerDrawType.TRANSLUCENT);
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.drawBuffers	(LayerDrawType.TRANSLUCENT);
@@ -130,6 +136,7 @@ public class LevelRendererMixin {
 		CoreBuffers.ENTITY				.clearBuffers	();
 		CoreBuffers.BLOCK				.clearBuffers	();
 		CoreBuffers.POS					.clearBuffers	();
+		CoreBuffers.POS_COLOR			.clearBuffers	();
 		CoreBuffers.POS_TEX				.clearBuffers	();
 		CoreBuffers.POS_TEX_COLOR		.clearBuffers	();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.clearBuffers	();
@@ -160,6 +167,7 @@ public class LevelRendererMixin {
 		IrisCompatBuffers.ENTITY_HAND				.delete();
 		IrisCompatBuffers.BLOCK_HAND				.delete();
 		IrisCompatBuffers.POS_HAND					.delete();
+		IrisCompatBuffers.POS_COLOR_HAND			.delete();
 		IrisCompatBuffers.POS_TEX_HAND				.delete();
 		IrisCompatBuffers.POS_TEX_COLOR_HAND		.delete();
 		IrisCompatBuffers.POS_COLOR_TEX_LIGHT_HAND	.delete();

@@ -99,6 +99,7 @@ public class LevelRendererMixin {
 		CoreBuffers.ENTITY				.prepareBuffers	();
 		CoreBuffers.BLOCK				.prepareBuffers	();
 		CoreBuffers.POS					.prepareBuffers	();
+		CoreBuffers.POS_COLOR			.prepareBuffers	();
 		CoreBuffers.POS_TEX				.prepareBuffers	();
 		CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
@@ -107,6 +108,7 @@ public class LevelRendererMixin {
 		CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS					.drawBuffers	(LayerDrawType.ALL);
+		CoreBuffers.POS_COLOR			.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS_TEX				.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS_TEX_COLOR		.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.drawBuffers	(LayerDrawType.ALL);
@@ -114,6 +116,7 @@ public class LevelRendererMixin {
 		CoreBuffers.ENTITY				.clearBuffers	();
 		CoreBuffers.BLOCK				.clearBuffers	();
 		CoreBuffers.POS					.clearBuffers	();
+		CoreBuffers.POS_COLOR			.clearBuffers	();
 		CoreBuffers.POS_TEX				.clearBuffers	();
 		CoreBuffers.POS_TEX_COLOR		.clearBuffers	();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.clearBuffers	();
@@ -129,6 +132,7 @@ public class LevelRendererMixin {
 		CoreBuffers.ENTITY				.delete();
 		CoreBuffers.BLOCK				.delete();
 		CoreBuffers.POS					.delete();
+		CoreBuffers.POS_COLOR			.delete();
 		CoreBuffers.POS_TEX				.delete();
 		CoreBuffers.POS_TEX_COLOR		.delete();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.delete();

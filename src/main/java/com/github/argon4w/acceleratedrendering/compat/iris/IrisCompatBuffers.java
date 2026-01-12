@@ -16,6 +16,7 @@ public class IrisCompatBuffers {
 	public static final AcceleratedBufferSource BLOCK_HAND					= new AcceleratedBufferSource(IBufferEnvironment.Presets.BLOCK);
 	public static final AcceleratedBufferSource ENTITY_HAND					= new AcceleratedBufferSource(IBufferEnvironment.Presets.ENTITY);
 	public static final AcceleratedBufferSource	POS_HAND					= new AcceleratedBufferSource(IBufferEnvironment.Presets.POS);
+	public static final AcceleratedBufferSource	POS_COLOR_HAND				= new AcceleratedBufferSource(IBufferEnvironment.Presets.POS_COLOR);
 	public static final AcceleratedBufferSource POS_TEX_HAND				= new AcceleratedBufferSource(IBufferEnvironment.Presets.POS_TEX);
 	public static final AcceleratedBufferSource POS_TEX_COLOR_HAND			= new AcceleratedBufferSource(IBufferEnvironment.Presets.POS_TEX_COLOR);
 	public static final AcceleratedBufferSource POS_COLOR_TEX_LIGHT_HAND	= new AcceleratedBufferSource(IBufferEnvironment.Presets.POS_COLOR_TEX_LIGHT);
@@ -25,6 +26,7 @@ public class IrisCompatBuffers {
 			.source	(IrisCompatBuffers	.BLOCK_HAND)
 			.source	(IrisCompatBuffers	.ENTITY_HAND)
 			.source	(IrisCompatBuffers	.POS_HAND)
+			.source	(IrisCompatBuffers	.POS_COLOR_HAND)
 			.source	(IrisCompatBuffers	.POS_TEX_HAND)
 			.source	(IrisCompatBuffers	.POS_TEX_COLOR_HAND)
 			.source	(IrisCompatBuffers	.POS_COLOR_TEX_LIGHT_HAND)

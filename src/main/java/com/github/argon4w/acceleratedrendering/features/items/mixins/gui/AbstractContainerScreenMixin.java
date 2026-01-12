@@ -1,7 +1,10 @@
 package com.github.argon4w.acceleratedrendering.features.items.mixins.gui;
 
+import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.inventory.Slot;
@@ -85,33 +88,32 @@ public abstract class AbstractContainerScreenMixin {
 		GuiBatchingController.INSTANCE.flushBatching(guiGraphics);
 	}
 
-	@Inject(
-			method	= "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;IIF)V",
-			at		= @At("HEAD")
-	)
-	public void startRenderHighlight(
+	@WrapMethod(method = "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;IIII)V")
+	private static void startRenderHighlight(
 			GuiGraphics		guiGraphics,
-			Slot			slot,
-			int				mouseX,
-			int				mouseY,
-			float			partialTick,
-			CallbackInfo	ci
+			int				highlightX,
+			int				highLightY,
+			int				blitOffset,
+			int				color,
+			Operation<Void>	original
 	) {
-		GuiBatchingController.INSTANCE.useOverlayTarget(guiGraphics);
-	}
+		if (!CoreFeature.isGuiBatching()) {
+			original.call(
+					guiGraphics,
+					highlightX,
+					highLightY,
+					blitOffset,
+					color
+			);
+			return;
+		}
 
-	@Inject(
-			method	= "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;IIF)V",
-			at		= @At("TAIL")
-	)
-	public void stopRenderHighlight(
-			GuiGraphics		guiGraphics,
-			Slot			slot,
-			int				mouseX,
-			int				mouseY,
-			float			partialTick,
-			CallbackInfo	ci
-	) {
-		GuiBatchingController.INSTANCE.resetOverlayTarget();
+		GuiBatchingController.INSTANCE.recordHighlight(
+				guiGraphics,
+				highlightX,
+				highLightY,
+				blitOffset,
+				color
+		);
 	}
 }

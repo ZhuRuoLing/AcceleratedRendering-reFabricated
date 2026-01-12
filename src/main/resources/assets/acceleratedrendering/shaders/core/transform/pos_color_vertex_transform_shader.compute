@@ -1,0 +1,114 @@
+#version 460 core
+
+struct Vertex {
+    float   x;
+    float   y;
+    float   z;
+    uint    color;
+};
+
+struct VaryingData {
+    int     offset;
+    int     sharing;
+    int     mesh;
+    int     noCull;
+};
+
+struct SharingData {
+    mat4    transform;
+    mat3    normal;
+};
+
+layout(local_size_x = 128) in;
+
+layout(binding=0, std430) restrict readonly buffer VerticesIn {
+    Vertex verticesIn[];
+};
+
+layout(binding=1, std430) restrict writeonly buffer VerticesOut {
+    Vertex verticesOut[];
+};
+
+layout(binding=2, std430) restrict readonly buffer Sharings {
+    SharingData sharings[];
+};
+
+layout(binding=3, std430) restrict readonly buffer VaryingsIn {
+    VaryingData varyingsIn[];
+};
+
+layout(binding=4, std430) restrict writeonly buffer VaryingsOut {
+    VaryingData varyingsOut[];
+};
+
+layout(binding=5, std430) restrict readonly buffer Meshes {
+    Vertex meshVertices[];
+};
+
+layout(location=0) uniform uint vertexCount;
+layout(location=1) uniform uint vertexOffset;
+layout(location=2) uniform uint varyingOffset;
+
+void main() {
+    uint    indexIn     = gl_GlobalInvocationID.x;
+    uint    vertexOut   = indexIn + vertexOffset;
+    uint    varyingOut  = indexIn + varyingOffset;
+
+    if (indexIn >= vertexCount) {
+        return;
+    }
+
+    int     offset      = varyingsIn[indexIn]   .offset;
+    uint    reference   = indexIn - offset;
+    int     sharing     = varyingsIn[reference] .sharing;
+    int     mesh        = varyingsIn[reference] .mesh;
+
+    mat4    transformMatrix;
+    // mat3    normalMatrix;
+
+    if (sharing != -1) {
+        transformMatrix = sharings[sharing].transform;
+        // normalMatrix    = sharings[sharing].normal;
+    } else {
+        transformMatrix = mat4(1.0);
+        // normalMatrix    = mat3(1.0);
+    }
+
+    Vertex  vertexIn;
+    vec4    colorMesh;
+    // uvec2   uv2Mesh;
+
+    if (mesh != -1) {
+        vertexIn    = meshVertices[mesh + offset];
+        colorMesh   = unpackUnorm4x8    (                   vertexIn.color);
+        // uv2Mesh     = floatBitsToUint   (unpackSnorm2x16(   vertexIn.uv2));
+
+    } else {
+        vertexIn    = verticesIn[indexIn];
+        colorMesh   = vec4  (1.0);
+        // uv2Mesh     = uvec2 (0u);
+    }
+
+    vec4    colorIn = unpackUnorm4x8    (                   verticesIn[reference].color);
+    // uvec2   uv2In   = floatBitsToUint   (unpackSnorm2x16(   verticesIn[reference].uv2));
+
+    vec4    posOut      = transformMatrix   * vec4          (vertexIn.x, vertexIn.y, vertexIn.z, 1.0);
+   //  vec3    normalOut   = normalMatrix      * unpackSnorm4x8(vertexIn.normal).xyz;
+    vec4    colorOut    = colorMesh         * colorIn;
+    // uvec2   uv2Out      = max                               (uv2In, uv2Mesh);
+
+    verticesOut[vertexOut].x        = posOut.x;
+    verticesOut[vertexOut].y        = posOut.y;
+    verticesOut[vertexOut].z        = posOut.z;
+
+    // verticesOut[vertexOut].u0       = vertexIn.u0;
+    // verticesOut[vertexOut].v0       = vertexIn.v0;
+
+    verticesOut[vertexOut].color    = packUnorm4x8  (colorOut);
+    // verticesOut[vertexOut].uv1      = verticesIn[reference].uv1;
+    // verticesOut[vertexOut].uv2      = packSnorm2x16 (uintBitsToFloat(uv2Out));
+    // verticesOut[vertexOut].normal   = packSnorm4x8  (vec4           (normalize(normalOut), 0.0));
+
+    varyingsOut[varyingOut].offset  = offset;
+    varyingsOut[varyingOut].noCull  = varyingsIn[reference].noCull;
+}
