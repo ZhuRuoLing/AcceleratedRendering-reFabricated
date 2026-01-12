@@ -39,7 +39,7 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
 	@Unique private final	Map<IMeshData,		IMesh>	merges = new Object2ObjectOpenHashMap<>();
 
 	@Inject(
-			method		= "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V",
+			method		= "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V",
 			at			= @At("HEAD"),
 			cancellable	= true
 	)
@@ -48,7 +48,10 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
 			VertexConsumer	buffer,
 			int				packedLight,
 			int				packedOverlay,
-			int				color,
+			float			red,
+			float			green,
+			float			blue,
+			float			alpha,
 			CallbackInfo	ci
 	) {
 		var extension = buffer.getAccelerated();
@@ -68,7 +71,12 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
 					extension,
 					packedLight,
 					packedOverlay,
-					color
+					FastColor.ARGB32.color(
+							(int) (alpha	* 255.0f),
+							(int) (red		* 255.0f),
+							(int) (green	* 255.0f),
+							(int) (blue		* 255.0f)
+					)
 			);
 		}
 	}
