@@ -14,85 +14,139 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraftforge.client.ItemDecoratorHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(GuiGraphics.class)
+@SuppressWarnings	("UnstableApiUsage")
+@Mixin				(GuiGraphics.class)
 public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
 
-	@Inject(
+	@WrapOperation(
 			method	= "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
-			at		= {
-					@At(
-							value	= "INVOKE",
-							target	= "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I",
-							shift	= At.Shift.BEFORE
-					),
-					@At(
-							value	= "INVOKE",
-							target	= "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V",
-							shift	= At.Shift.BEFORE,
-							ordinal	= 0
-					),
-					@At(
-							value	= "INVOKE",
-							target	= "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V",
-							shift	= At.Shift.BEFORE,
-							ordinal	= 2
-					)
-			}
+			at		= @At(
+					value	= "INVOKE",
+					target	= "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I"
+			)
 	)
-	public void startRenderDecorationPart(
-			Font			font,
-			ItemStack		stack,
-			int				x,
-			int				y,
-			String			text,
-			CallbackInfo	ci
+	public int renderDecorationStringsFast(
+			GuiGraphics			instance,
+			Font				font,
+			String				text,
+			int					textX,
+			int					textY,
+			int					textColor,
+			boolean				dropShadow,
+			Operation<Integer>	original
 	) {
-		GuiBatchingController.INSTANCE.useOverlayTarget((GuiGraphics) (Object) this);
+		if (!CoreFeature.isGuiBatching()) {
+			return original.call(
+					instance,
+					font,
+					text,
+					textX,
+					textY,
+					textColor,
+					dropShadow
+			);
+		}
+
+		GuiBatchingController.INSTANCE.recordString(
+				instance,
+				font,
+				text,
+				textX,
+				textY,
+				textColor,
+				dropShadow
+		);
+		return 0;
 	}
 
-		@Inject(
-				method	= "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
-				at		= {
-						@At(
-								value	= "INVOKE",
-								target	= "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I",
-								shift	= At.Shift.AFTER
-						),
-						@At(
-								value	= "INVOKE",
-								target	= "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V",
-								shift	= At.Shift.AFTER,
-								ordinal	= 1
-						),
-					@At(
-							value	= "INVOKE",
-							target	= "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V",
-							shift	= At.Shift.AFTER,
-							ordinal	= 2
-					)
-			}
+	@WrapOperation(
+			method	= "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
+			at		= @At(
+					value	= "INVOKE",
+					target	= "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V"
+			)
 	)
-	public void stopRenderDecorationPart(
-			Font			font,
-			ItemStack		stack,
-			int				x,
-			int				y,
-			String			text,
-			CallbackInfo	ci
+	public void renderDecorationRectanglesFast(
+			GuiGraphics		instance,
+			RenderType		renderType,
+			int				minX,
+			int				minY,
+			int				maxX,
+			int				maxY,
+			int				color,
+			Operation<Void>	original
 	) {
-		GuiBatchingController.INSTANCE.resetOverlayTarget();
+		if (!CoreFeature.isGuiBatching()) {
+			original.call(
+					instance,
+					renderType,
+					minX,
+					minY,
+					maxX,
+					maxY,
+					color
+			);
+			return;
+		}
+
+		GuiBatchingController.INSTANCE.recordRectangle(
+				instance,
+				renderType,
+				minX,
+				minY,
+				maxX,
+				maxY,
+				color
+		);
+	}
+
+	@WrapOperation(
+			method	= "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
+			at		= @At(
+					value	= "INVOKE",
+					target	= "Lnet/minecraftforge/client/ItemDecoratorHandler;render(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V"
+			),
+			remap	= false
+	)
+	public void renderDecorationCustomFast(
+			ItemDecoratorHandler	instance,
+			GuiGraphics				guiGraphics,
+			Font					font,
+			ItemStack				stack,
+			int						xOffset,
+			int						yOffset,
+			Operation<Void>			original
+	) {
+		if (!CoreFeature.isGuiBatching()) {
+			original.call(
+					instance,
+					guiGraphics,
+					font,
+					stack,
+					xOffset,
+					yOffset
+			);
+			return;
+		}
+
+		GuiBatchingController.INSTANCE.recordDecorator(
+				guiGraphics,
+				instance,
+				font,
+				stack,
+				xOffset,
+				yOffset
+		);
 	}
 
 	@WrapOperation(
@@ -176,6 +230,7 @@ public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
 		CoreBuffers.ENTITY				.prepareBuffers	();
 		CoreBuffers.BLOCK				.prepareBuffers	();
 		CoreBuffers.POS					.prepareBuffers	();
+		CoreBuffers.POS_COLOR			.prepareBuffers	();
 		CoreBuffers.POS_TEX				.prepareBuffers	();
 		CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
@@ -184,6 +239,7 @@ public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
 		CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS					.drawBuffers	(LayerDrawType.ALL);
+		CoreBuffers.POS_COLOR			.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS_TEX				.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS_TEX_COLOR		.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.drawBuffers	(LayerDrawType.ALL);
@@ -191,6 +247,7 @@ public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
 		CoreBuffers.ENTITY				.clearBuffers	();
 		CoreBuffers.BLOCK				.clearBuffers	();
 		CoreBuffers.POS					.clearBuffers	();
+		CoreBuffers.POS_COLOR			.clearBuffers	();
 		CoreBuffers.POS_TEX				.clearBuffers	();
 		CoreBuffers.POS_TEX_COLOR		.clearBuffers	();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.clearBuffers	();

@@ -19,6 +19,7 @@ public class ComputeShaderPrograms {
 	public static final ResourceLocation CORE_BLOCK_VERTEX_TRANSFORM_KEY				= ResourceLocationUtils.create("core_block_vertex_transform");
 	public static final ResourceLocation CORE_ENTITY_VERTEX_TRANSFORM_KEY				= ResourceLocationUtils.create("core_entity_vertex_transform");
 	public static final ResourceLocation CORE_POS_VERTEX_TRANSFORM_KEY					= ResourceLocationUtils.create("core_pos_vertex_transform");
+	public static final ResourceLocation CORE_POS_COLOR_VERTEX_TRANSFORM_KEY			= ResourceLocationUtils.create("core_pos_color_vertex_transform");
 	public static final ResourceLocation CORE_POS_TEX_VERTEX_TRANSFORM_KEY				= ResourceLocationUtils.create("core_pos_tex_vertex_transform");
 	public static final ResourceLocation CORE_POS_TEX_COLOR_VERTEX_TRANSFORM_KEY		= ResourceLocationUtils.create("core_pos_tex_color_vertex_transform");
 	public static final ResourceLocation CORE_POS_COLOR_TEX_LIGHT_VERTEX_TRANSFORM_KEY	= ResourceLocationUtils.create("core_pos_color_tex_light_vertex_transform");
@@ -27,6 +28,7 @@ public class ComputeShaderPrograms {
 	public static final ResourceLocation CORE_BLOCK_MESH_UPLOADING_KEY					= ResourceLocationUtils.create("core_block_mesh_uploading_key");
 	public static final ResourceLocation CORE_ENTITY_MESH_UPLOADING_KEY					= ResourceLocationUtils.create("core_entity_mesh_uploading");
 	public static final ResourceLocation CORE_POS_MESH_UPLOADING_KEY					= ResourceLocationUtils.create("core_pos_mesh_uploading");
+	public static final ResourceLocation CORE_POS_COLOR_MESH_UPLOADING_KEY				= ResourceLocationUtils.create("core_pos_color_mesh_uploading");
 	public static final ResourceLocation CORE_POS_TEX_MESH_UPLOADING_KEY				= ResourceLocationUtils.create("core_pos_tex_mesh_uploading");
 	public static final ResourceLocation CORE_POS_TEX_COLOR_MESH_UPLOADING_KEY			= ResourceLocationUtils.create("core_pos_tex_color_mesh_uploading");
 	public static final ResourceLocation CORE_POS_COLOR_TEX_LIGHT_MESH_UPLOADING_KEY	= ResourceLocationUtils.create("core_pos_color_tex_light_mesh_uploading");
@@ -48,6 +50,12 @@ public class ComputeShaderPrograms {
 		event.loadComputeShader(
 				CORE_POS_VERTEX_TRANSFORM_KEY,
 				ResourceLocationUtils	.create("shaders/core/transform/pos_vertex_transform_shader.compute"),
+				BarrierFlags			.SHADER_STORAGE
+		);
+
+		event.loadComputeShader(
+				CORE_POS_COLOR_VERTEX_TRANSFORM_KEY,
+				ResourceLocationUtils	.create("shaders/core/transform/pos_color_vertex_transform_shader.compute"),
 				BarrierFlags			.SHADER_STORAGE
 		);
 
@@ -98,6 +106,12 @@ public class ComputeShaderPrograms {
 		event.loadComputeShader(
 				CORE_POS_MESH_UPLOADING_KEY,
 				ResourceLocationUtils	.create("shaders/core/uploading/pos_mesh_uploading_shader.compute"),
+				BarrierFlags			.SHADER_STORAGE
+		);
+
+		event.loadComputeShader(
+				CORE_POS_COLOR_MESH_UPLOADING_KEY,
+				ResourceLocationUtils	.create("shaders/core/uploading/pos_color_mesh_uploading_shader.compute"),
 				BarrierFlags			.SHADER_STORAGE
 		);
 

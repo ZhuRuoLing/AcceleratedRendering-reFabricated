@@ -6,6 +6,7 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IAcceleratedRenderer;
 import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.SimpleMeshCollector;
+import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.text.AcceleratedBakedGlyphRenderer;
 import com.github.argon4w.acceleratedrendering.features.text.AcceleratedTextRenderingFeature;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -63,10 +64,11 @@ public class BakedGlyphMixin implements IAcceleratedRenderer<BakedGlyph.Effect> 
 	) {
 		var extension = pBuffer.getAccelerated();
 
-		if (		CoreFeature						.isRenderingLevel				()
-				&&	AcceleratedTextRenderingFeature	.isEnabled						()
-				&&	AcceleratedTextRenderingFeature	.shouldUseAcceleratedPipeline	()
-				&&	extension						.isAccelerated					()
+		if (			AcceleratedTextRenderingFeature	.isEnabled						()
+				&&		AcceleratedTextRenderingFeature	.shouldUseAcceleratedPipeline	()
+				&&	(	CoreFeature						.isRenderingLevel				()
+				||		CoreFeature						.isRenderingGui					())
+				&&		extension						.isAccelerated					()
 		) {
 			ci			.cancel		();
 			extension	.doRender	(
@@ -102,10 +104,11 @@ public class BakedGlyphMixin implements IAcceleratedRenderer<BakedGlyph.Effect> 
 	) {
 		var extension = buffer.getAccelerated();
 
-		if (		CoreFeature						.isRenderingLevel				()
-				&&	AcceleratedTextRenderingFeature	.isEnabled						()
-				&&	AcceleratedTextRenderingFeature	.shouldUseAcceleratedPipeline	()
-				&&	extension						.isAccelerated					()
+		if (			AcceleratedTextRenderingFeature	.isEnabled						()
+				&&		AcceleratedTextRenderingFeature	.shouldUseAcceleratedPipeline	()
+				&&	(	CoreFeature						.isRenderingLevel				()
+				||		CoreFeature						.isRenderingGui					())
+				&&		extension						.isAccelerated					()
 		) {
 			ci			.cancel		();
 			extension	.doRender	(
