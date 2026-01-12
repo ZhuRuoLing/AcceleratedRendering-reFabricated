@@ -12,7 +12,9 @@ public record RectangleDrawContext(
 		int			minY,
 		int			maxX,
 		int			maxY,
-		int			color
+		int			color,
+		int			light,
+		int			overlay
 ) {
 
 }

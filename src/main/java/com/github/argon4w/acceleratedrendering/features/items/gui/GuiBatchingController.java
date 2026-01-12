@@ -14,9 +14,7 @@ import lombok.experimental.ExtensionMethod;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.ItemDecoratorHandler;
 import org.joml.Matrix3f;
@@ -88,11 +86,11 @@ public class GuiBatchingController {
 					extension.doRender(
 							AcceleratedRectangleRenderer.INSTANCE,
 							context,
-							context			.transform	(),
-							context			.normal		(),
-							LightTexture	.FULL_BRIGHT,
-							OverlayTexture	.NO_OVERLAY,
-							context			.color()
+							context.transform	(),
+							context.normal		(),
+							context.light		(),
+							context.overlay		(),
+							context.color		()
 					);
 				} else {
 					poseStack.pushPose	();
@@ -204,7 +202,9 @@ public class GuiBatchingController {
 				minY,
 				maxX,
 				maxY,
-				color
+				color,
+				0,
+				0
 		));
 	}
 
