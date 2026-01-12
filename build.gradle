@@ -234,7 +234,7 @@ jar {
                     "${mod_id}.compat.sodium.mixins.json," +
                     "${mod_id}.core.mixins.json," +
                     "${mod_id}.feature.entities.mixins.json," +
-                    "${mod_id}.feature.entitymodelfeature.mixins.json" +
+                    "${mod_id}.feature.entitymodelfeature.mixins.json," +
                     "${mod_id}.feature.filter.mixins.json," +
                     "${mod_id}.feature.ftb.mixins.json," +
                     "${mod_id}.feature.geckolib.mixins.json," +
