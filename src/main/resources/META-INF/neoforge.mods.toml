@@ -113,11 +113,6 @@ config="${mod_id}.feature.ftb.mixins.json"
 [[mixins]]
 config="${mod_id}.feature.geckolib.mixins.json"
 
-# Entity Model Feature Acceleration Feature Mixins
-# Entity Model Feature modifies and uses its own compile method same as vanilla ModelPart so it has to be injected manully to be accelerated.
-[[mixins]]
-config="${mod_id}.feature.entitymodelfeature.mixins.json"
-
 # The [[accessTransformers]] block allows you to declare where your AT file is.
 # If this block is omitted, a fallback attempt will be made to load an AT from META-INF/accesstransformer.cfg
 #[[accessTransformers]]

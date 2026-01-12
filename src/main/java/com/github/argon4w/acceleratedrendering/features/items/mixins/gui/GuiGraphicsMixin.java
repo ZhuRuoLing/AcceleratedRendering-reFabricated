@@ -4,6 +4,7 @@ import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.core.CoreStates;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerDrawType;
+import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.items.IAcceleratedGuiGraphics;
 import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -27,55 +28,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GuiGraphics.class)
 public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
-
-	@Inject(
-			method	= "renderItem(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;IIII)V",
-			at		= @At(
-					value	= "INVOKE",
-					target	= "Lnet/minecraft/client/renderer/entity/ItemRenderer;getModel(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/LivingEntity;I)Lnet/minecraft/client/resources/model/BakedModel;"
-			)
-	)
-	public void startRenderingGui(
-			LivingEntity	entity,
-			Level			level,
-			ItemStack		stack,
-			int				x,
-			int				y,
-			int				seed,
-			int				guiOffset,
-			CallbackInfo	ci
-	) {
-		if (CoreFeature.isLoaded()) {
-			CoreFeature.setRenderingGui();
-		}
-	}
-
-	@Inject(
-			method	= "renderItem(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;IIII)V",
-			at		= @At(
-					value	= "INVOKE",
-					target	= "Lnet/minecraft/client/renderer/entity/ItemRenderer;render(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V",
-					shift	= At.Shift.AFTER
-			)
-	)
-	public void stopRenderingGui(
-			LivingEntity	entity,
-			Level			level,
-			ItemStack		stack,
-			int				x,
-			int				y,
-			int				seed,
-			int				guiOffset,
-			CallbackInfo	ci
-	) {
-		CoreFeature.resetRenderingGui();
-
-		if (	!	CoreFeature.isGuiBatching	()
-				&&	CoreFeature.isLoaded		()
-		) {
-			flushItemBatching();
-		}
-	}
 
 	@Inject(
 			method	= "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
@@ -162,14 +114,35 @@ public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
 			BakedModel			bakedModel,
 			Operation<Void>		original
 	) {
-		var useFlatLight =	CoreFeature	.isGuiBatching	()
-				&&		!	bakedModel	.usesBlockLight	();
+		if (		!AcceleratedItemRenderingFeature.isEnabled						()
+				||	!AcceleratedItemRenderingFeature.shouldUseAcceleratedPipeline	()
+				||	!AcceleratedItemRenderingFeature.shouldAccelerateInGui			()
+				||	!CoreFeature					.isLoaded						()
+		) {
+			original.call(
+					instance,
+					itemStack,
+					displayContext,
+					leftHand,
+					poseStack,
+					bufferSource,
+					combinedLight,
+					combinedOverlay,
+					bakedModel
+			);
+			return;
+		}
+
+		var useGuiBatching	= CoreFeature.isGuiBatching();
+		var useFlatLight	= useGuiBatching && !bakedModel.usesBlockLight();
 
 		if (useFlatLight) {
 			CoreFeature.forceSetDefaultLayer				(1);
 			CoreFeature.forceSetDefaultLayerBeforeFunction	(Lighting::setupForFlatItems);
 			CoreFeature.forceSetDefaultLayerAfterFunction	(Lighting::setupFor3DItems);
 		}
+
+		CoreFeature.setRenderingGui();
 
 		original.call(
 				instance,
@@ -183,10 +156,16 @@ public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
 				bakedModel
 		);
 
+		CoreFeature.resetRenderingGui();
+
 		if (useFlatLight) {
 			CoreFeature.resetDefaultLayer				();
 			CoreFeature.resetDefaultLayerBeforeFunction	();
 			CoreFeature.resetDefaultLayerAfterFunction	();
+		}
+
+		if (!useGuiBatching) {
+			flushItemBatching();
 		}
 	}
 

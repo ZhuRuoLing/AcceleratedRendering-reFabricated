@@ -12,7 +12,6 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import org.lwjgl.opengl.GL46;
 
 public class GuiBatchingController {
 
@@ -35,10 +34,11 @@ public class GuiBatchingController {
 	}
 
 	public void startBatching(GuiGraphics graphics) {
-		if (		AcceleratedItemRenderingFeature	.isEnabled					()
-				&&	AcceleratedItemRenderingFeature	.shouldAccelerateInGui		()
-				&&	AcceleratedItemRenderingFeature	.shouldUseGuiItemBatching	()
-				&&	CoreFeature						.isLoaded					()
+		if (		AcceleratedItemRenderingFeature	.isEnabled						()
+				&&	AcceleratedItemRenderingFeature	.shouldUseAcceleratedPipeline	()
+				&&	AcceleratedItemRenderingFeature	.shouldAccelerateInGui			()
+				&&	AcceleratedItemRenderingFeature	.shouldUseGuiItemBatching		()
+				&&	CoreFeature						.isLoaded						()
 		) {
 			CoreFeature.setGuiBatching	();
 			scissorDraw.record			(graphics);
@@ -97,9 +97,8 @@ public class GuiBatchingController {
 
 	public void resetOverlayTarget() {
 		if (CoreFeature.isGuiBatching()) {
-			overlay	.unbindWrite();
-			binding	.restore	();
-			viewport.restore	();
+			binding	.restore();
+			viewport.restore();
 		}
 	}
 

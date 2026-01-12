@@ -4,6 +4,7 @@ import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.core.CoreStates;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerDrawType;
+import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.blaze3d.platform.Lighting;
@@ -18,12 +19,23 @@ public class InventoryScreenMixin {
 
 	@WrapMethod(method = "lambda$renderEntityInInventory$1")
 	private static void renderEntityInInventoryFast(
-			EntityRenderDispatcher	entityrenderdispatcher,
+			EntityRenderDispatcher	entityRenderDispatcher,
 			LivingEntity			entity,
 			GuiGraphics				guiGraphics,
 			Operation<Void>			operation
 	) {
-		CoreFeature.setRenderingGui();
+		if (		!AcceleratedEntityRenderingFeature	.isEnabled						()
+				||	!AcceleratedEntityRenderingFeature	.shouldUseAcceleratedPipeline	()
+				||	!AcceleratedEntityRenderingFeature	.shouldAccelerateInGui			()
+				||	!CoreFeature						.isLoaded						()
+		) {
+			operation.call(
+					entityRenderDispatcher,
+					entity,
+					guiGraphics
+			);
+			return;
+		}
 
 		if (CoreFeature.isGuiBatching()) {
 			CoreFeature.forceSetDefaultLayer				(2);
@@ -31,8 +43,10 @@ public class InventoryScreenMixin {
 			CoreFeature.forceSetDefaultLayerAfterFunction	(Lighting::setupFor3DItems);
 		}
 
+		CoreFeature.setRenderingGui();
+
 		operation.call(
-				entityrenderdispatcher,
+				entityRenderDispatcher,
 				entity,
 				guiGraphics
 		);

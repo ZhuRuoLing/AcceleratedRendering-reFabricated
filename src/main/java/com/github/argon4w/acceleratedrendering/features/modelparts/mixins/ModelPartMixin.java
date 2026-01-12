@@ -1,6 +1,7 @@
 package com.github.argon4w.acceleratedrendering.features.modelparts.mixins;
 
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IAcceleratedVertexConsumer;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IBufferGraph;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.VertexConsumerExtension;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IAcceleratedRenderer;
@@ -26,16 +27,52 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 import java.util.Map;
 
-@ExtensionMethod(VertexConsumerExtension.class)
-@Mixin			(ModelPart				.class)
+@SuppressWarnings	("unchecked")
+@ExtensionMethod	(VertexConsumerExtension.class)
+@Mixin				(ModelPart				.class)
 public class ModelPartMixin implements IAcceleratedRenderer<Void> {
 
-	@Shadow @Final private	List<ModelPart.Cube>		cubes;
+	@Shadow @Final public	List<ModelPart.Cube>		cubes;
 
 	@Unique private final	Map<IBufferGraph,	IMesh>	meshes = new Object2ObjectOpenHashMap<>();
 	@Unique private final	Map<IMeshData,		IMesh>	merges = new Object2ObjectOpenHashMap<>();
 
 	@Inject(
+			method		= "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V",
+			at			= @At("HEAD"),
+			cancellable	= true
+	)
+	public void renderFast(
+			PoseStack		poseStack,
+			VertexConsumer	buffer,
+			int				packedLight,
+			int				packedOverlay,
+			int				color,
+			CallbackInfo	ci
+	) {
+		var extension = buffer.getAccelerated();
+
+		if (			AcceleratedEntityRenderingFeature	.isEnabled						()
+				&&		AcceleratedEntityRenderingFeature	.shouldUseAcceleratedPipeline	()
+				&&	(	CoreFeature							.isRenderingLevel				()
+				||	(	CoreFeature							.isRenderingGui					()
+				&&		AcceleratedEntityRenderingFeature	.shouldAccelerateInGui			()))
+				&&		extension							.isAccelerated					()
+		) {
+			ci.cancel();
+
+			renderFast(
+					(ModelPart) (Object) this,
+					poseStack,
+					extension,
+					packedLight,
+					packedOverlay,
+					color
+			);
+		}
+	}
+
+	/*@Inject(
 			method		= "compile",
 			at			= @At("HEAD"),
 			cancellable	= true
@@ -68,7 +105,7 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
 					pColor
 			);
 		}
-	}
+	}*/
 
 	@Unique
 	@Override
@@ -151,5 +188,54 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
 		);
 
 		extension.endTransform();
+	}
+
+	@Unique
+	private static void renderFast(
+			ModelPart					modelPart,
+			PoseStack					poseStack,
+			IAcceleratedVertexConsumer	extension,
+			int							packedLight,
+			int							packedOverlay,
+			int							packedColor
+	) {
+		if (!modelPart.visible) {
+			return;
+		}
+
+		if (		modelPart.cubes		.isEmpty()
+				&&	modelPart.children	.isEmpty()
+		) {
+			return;
+		}
+
+		poseStack.pushPose();
+
+		modelPart.translateAndRotate(poseStack);
+
+		if (!modelPart.skipDraw) {
+			extension.doRender(
+					(IAcceleratedRenderer<Void>) (Object) modelPart,
+					null,
+					poseStack.last().pose(),
+					poseStack.last().normal(),
+					packedLight,
+					packedOverlay,
+					packedColor
+			);
+		}
+
+		for(var child : modelPart.children.values()) {
+			renderFast(
+					child,
+					poseStack,
+					extension,
+					packedLight,
+					packedOverlay,
+					packedColor
+			);
+		}
+
+		poseStack.popPose();
 	}
 }
