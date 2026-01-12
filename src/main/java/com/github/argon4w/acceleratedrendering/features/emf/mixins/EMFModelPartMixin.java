@@ -19,6 +19,7 @@ import net.minecraft.util.FastColor;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,6 +28,7 @@ import traben.entity_model_features.models.parts.EMFModelPart;
 
 import java.util.Map;
 
+@Pseudo
 @ExtensionMethod(VertexConsumerExtension.class)
 @Mixin			(EMFModelPart			.class)
 public class EMFModelPartMixin extends ModelPartMixin implements IEMFModelVariant {
