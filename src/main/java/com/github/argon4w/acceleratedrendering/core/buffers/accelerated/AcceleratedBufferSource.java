@@ -35,16 +35,20 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 
 	private					AcceleratedRingBuffers.Buffers			currentBuffer;
 	private 				boolean									used;
+	private					int										barriers;
 
 	public AcceleratedBufferSource(IBufferEnvironment bufferEnvironment) {
 		this.environment	= bufferEnvironment;
-		this.activeBuilders	= new Object2ObjectOpenHashMap<>	();
-		this.activeLayers	= new IntAVLTreeSet					();
 		this.ringBuffers	= new AcceleratedRingBuffers		(this.environment);
-		this.currentBuffer	= this.ringBuffers			.get	(false);
-		this.buffers		= ObjectLinkedOpenHashSet	.of		(this.currentBuffer);
+		this.buffers		= new ObjectLinkedOpenHashSet	<>	();
+		this.activeBuilders	= new Object2ObjectOpenHashMap	<>	();
+		this.activeLayers	= new IntAVLTreeSet					();
 
+		this.currentBuffer	= this.ringBuffers.get(false);
 		this.used			= false;
+		this.barriers		= GL_SHADER_STORAGE_BARRIER_BIT;
+
+		this.buffers.add(this.currentBuffer);
 	}
 
 	public void delete() {
@@ -128,15 +132,16 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 		for (var buffer : buffers) {
 			var builders	= buffer.getBuilders();
 			var program		= glGetInteger		(GL_CURRENT_PROGRAM);
-			var barrier		= 0;
 
 			if (builders.isEmpty()) {
 				continue;
 			}
 
-			environment.getImmediateMeshBuffer				().bindBase(GL_SHADER_STORAGE_BUFFER,	MeshUploadingProgramDispatcher.SPARSE_MESH_BUFFER_INDEX);
-			environment.selectMeshUploadingProgramDispatcher().dispatch(builders.values(),			buffer);
-			environment.selectTransformProgramDispatcher	().dispatch(builders.values());
+			environment.getImmediateMeshBuffer				().bindBase	(GL_SHADER_STORAGE_BUFFER,	MeshUploadingProgramDispatcher.SPARSE_MESH_BUFFER_INDEX);
+			environment.selectMeshUploadingProgramDispatcher().dispatch	(builders.values(),			buffer);
+			environment.selectTransformProgramDispatcher	().dispatch	(builders.values());
+
+			glMemoryBarrier(barriers);
 
 			for (var layerKey : builders.keySet()) {
 				var builder = builders.get(layerKey);
@@ -163,12 +168,11 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 						.get		(drawType)
 						.add		(drawContext);
 
-				barrier |= environment	.selectProcessingProgramDispatcher	(renderType.mode)	.dispatch(builder);
-				barrier |= builder		.getCullingProgramDispatcher		()					.dispatch(builder);
+				barriers |= builder.getPolygonProgramDispatcher().dispatch(builder);
+				barriers |= builder.getCullingProgramDispatcher().dispatch(builder);
 			}
 
-			glMemoryBarrier	(barrier);
-			glUseProgram	(program);
+			glUseProgram(program);
 		}
 	}
 
@@ -176,6 +180,11 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 		if (!used) {
 			return;
 		}
+
+		glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT
+				|		GL_ELEMENT_ARRAY_BARRIER_BIT
+				|		GL_COMMAND_BARRIER_BIT
+		);
 
 		for (		int layerIndex	: activeLayers) {
 			for (	var buffer		: buffers) {
@@ -186,7 +195,6 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 					continue;
 				}
 
-				glMemoryBarrier					(GL_ELEMENT_ARRAY_BARRIER_BIT | GL_COMMAND_BARRIER_BIT);
 				BufferUploader	.invalidate		();
 				buffer			.bindDrawBuffers();
 				contexts		.prepare		();

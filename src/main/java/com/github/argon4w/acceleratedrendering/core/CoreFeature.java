@@ -6,6 +6,7 @@ import com.github.argon4w.acceleratedrendering.core.backends.states.IBindingStat
 import com.github.argon4w.acceleratedrendering.core.backends.states.buffers.BlockBufferBindingStateType;
 import com.github.argon4w.acceleratedrendering.core.backends.states.buffers.BufferBlockType;
 import com.github.argon4w.acceleratedrendering.core.backends.states.buffers.cache.BlockBufferBindingCacheType;
+import com.github.argon4w.acceleratedrendering.core.backends.states.scissors.ScissorBindingStateType;
 import com.github.argon4w.acceleratedrendering.core.backends.states.viewports.ViewportBindingStateType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.ILayerStorage;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.LayerStorageType;
@@ -35,6 +36,10 @@ public class CoreFeature {
 
 	public static boolean isLoaded() {
 		return ComputeShaderProgramLoader.isProgramsLoaded();
+	}
+
+	public static boolean isConfigLoaded() {
+		return FeatureConfig.SPEC.isLoaded();
 	}
 
 	public static boolean isDebugContextEnabled() {
@@ -101,6 +106,10 @@ public class CoreFeature {
 		return FeatureConfig.CONFIG.coreViewportBindingType.get();
 	}
 
+	public static ScissorBindingStateType getScissorBindingStateType() {
+		return FeatureConfig.CONFIG.coreScissorBindingType.get();
+	}
+
 	public static BlockBufferBindingStateType getAtomicCounterStateType() {
 		return FeatureConfig.CONFIG.restoringAtomicCounterType.get();
 	}
@@ -127,6 +136,10 @@ public class CoreFeature {
 
 	public static IBindingState createViewportState() {
 		return getViewportBindingStateType().create();
+	}
+
+	public static IBindingState createScissorState() {
+		return getScissorBindingStateType().create();
 	}
 
 	public static IBindingState createShaderStorageState() {

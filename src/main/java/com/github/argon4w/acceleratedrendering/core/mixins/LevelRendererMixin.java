@@ -7,6 +7,7 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.L
 import com.github.argon4w.acceleratedrendering.core.meshes.ClientMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
 import com.github.argon4w.acceleratedrendering.core.programs.ComputeShaderProgramLoader;
+import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingController;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.Camera;
@@ -132,6 +133,7 @@ public class LevelRendererMixin {
 		CoreBuffers.POS_TEX_COLOR		.delete();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.delete();
 		CoreStates						.delete();
+		GuiBatchingController.INSTANCE	.delete();
 		ComputeShaderProgramLoader		.delete();
 		ServerMesh.Builder.INSTANCE		.delete();
 		ClientMesh.Builder.INSTANCE		.delete();

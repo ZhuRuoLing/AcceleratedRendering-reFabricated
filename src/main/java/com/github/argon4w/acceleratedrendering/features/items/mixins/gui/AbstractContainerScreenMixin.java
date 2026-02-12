@@ -22,7 +22,7 @@ public abstract class AbstractContainerScreenMixin {
 			float			partialTick,
 			CallbackInfo	ci
 	) {
-		GuiBatchingController.INSTANCE.startBatching();
+		GuiBatchingController.INSTANCE.startBatching(guiGraphics);
 	}
 
 	@Inject(
@@ -50,7 +50,7 @@ public abstract class AbstractContainerScreenMixin {
     private static void startRenderHighlight(
         GuiGraphics guiGraphics, int x, int y, int blitOffset, CallbackInfo ci
     ) {
-        GuiBatchingController.INSTANCE.useOverlayTarget();
+        GuiBatchingController.INSTANCE.useOverlayTarget(guiGraphics);
 	}
 
 	@Inject(

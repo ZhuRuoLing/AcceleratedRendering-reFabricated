@@ -27,7 +27,7 @@ public class EMFModelPartMixin {
 	)
 	public void compileFast(
 			PoseStack.Pose	pPose,
-			VertexConsumer pBuffer,
+			VertexConsumer	pBuffer,
 			int				pPackedLight,
 			int				pPackedOverlay,
 			int				pColor,
@@ -54,5 +54,4 @@ public class EMFModelPartMixin {
 			);
 		}
 	}
-
 }

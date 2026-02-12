@@ -103,13 +103,18 @@ config="${mod_id}.feature.simplebedrockmodel.mixins.json"
 [[mixins]]
 config="${mod_id}.feature.touhoulittlemaid.mixins.json"
 
+# FTB Library Acceleration Feature Mixins
+# Batch the rendering of items in GUI screens provided by mods like FTB Quests.
+[[mixins]]
+config="${mod_id}.feature.ftb.mixins.json"
+
 # Geckolib Acceleration Feature Mixins
-# Accelerated the entities and block entities that uses the GeoBone provided by GeckoLib.
+# Accelerated the rendering of entities and block entities that uses the GeoBone provided by GeckoLib.
 [[mixins]]
 config="${mod_id}.feature.geckolib.mixins.json"
 
 # Entity Model Feature Acceleration Feature Mixins
-# Entity Model Feature modifies and uses its own compile method same as vanilla ModelPart so it has to be injected manully to be accelerated/
+# Entity Model Feature modifies and uses its own compile method same as vanilla ModelPart so it has to be injected manully to be accelerated.
 [[mixins]]
 config="${mod_id}.feature.entitymodelfeature.mixins.json"
 

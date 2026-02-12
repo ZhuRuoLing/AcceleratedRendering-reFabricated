@@ -21,7 +21,7 @@ public class GuiMixin {
 			DeltaTracker	deltaTracker,
 			CallbackInfo	ci
 	) {
-		GuiBatchingController.INSTANCE.startBatching();
+		GuiBatchingController.INSTANCE.startBatching(guiGraphics);
 	}
 
 	@Inject(

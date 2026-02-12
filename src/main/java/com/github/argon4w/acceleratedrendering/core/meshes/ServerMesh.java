@@ -87,9 +87,23 @@ public record ServerMesh(
 				meshBuffer	= (MappedBuffer) meshBuffers.getLast();
 			}
 
-			if (		meshBuffer.getPosition	() + capacity >= GLConstants.MAX_SHADER_STORAGE_BLOCK_SIZE
-					&&	meshBufferCheck			(collector)
-			) {
+			if (meshBuffer.getPosition() + capacity >= GLConstants.MAX_SHADER_STORAGE_BLOCK_SIZE) {
+				if (CoreFeature.shouldUploadMeshImmediately()) {
+					collector
+							.getBuffer	()
+							.close		();
+
+					var crashReport	= CrashReport	.forThrowable	(new OutOfMemoryError("Mesh buffer size exceeds limits."), "Exception in building meshes.");
+					var category	= crashReport	.addCategory	("Mesh being built");
+
+					category						.setDetail		("Mesh type",					"Server side mesh");
+					category						.setDetail		("Mesh size (vertices)",		collector				.getVertexCount	());
+					category						.setDetail		("Mesh layout size (bytes)",	collector.getLayout()	.getSize		());
+					category						.setDetail		("Mesh buffer limits (bytes)",	GLConstants				.MAX_SHADER_STORAGE_BLOCK_SIZE);
+
+					throw new ReportedException(crashReport);
+				}
+
 				meshBuffer = new MappedBuffer	(64L);
 				meshBuffers.add					(meshBuffer);
 			}
@@ -126,26 +140,6 @@ public record ServerMesh(
 					buffer.delete();
 				}
 			}
-		}
-
-		public static boolean meshBufferCheck(IMeshCollector collector) {
-			if (CoreFeature.shouldUploadMeshImmediately()) {
-				collector
-						.getBuffer	()
-						.close		();
-
-				var crashReport	= CrashReport.forThrowable	(new OutOfMemoryError("Mesh buffer size exceeds limits."), "Exception in building meshes.");
-				var category	= crashReport.addCategory	("Mesh being built");
-
-				category.setDetail("Mesh type",						"Server side mesh");
-				category.setDetail("Mesh size (vertices)",			collector				.getVertexCount());
-				category.setDetail("Mesh layout size (bytes)",		collector.getLayout()	.getSize());
-				category.setDetail("Mesh buffer limits (bytes)",	GLConstants				.MAX_SHADER_STORAGE_BLOCK_SIZE);
-
-				throw new ReportedException(crashReport);
-			}
-
-			return true;
 		}
 	}
 }

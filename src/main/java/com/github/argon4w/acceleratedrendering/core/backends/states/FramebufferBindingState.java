@@ -1,5 +1,7 @@
 package com.github.argon4w.acceleratedrendering.core.backends.states;
 
+import net.minecraft.client.gui.GuiGraphics;
+
 import static org.lwjgl.opengl.GL46.*;
 
 public class FramebufferBindingState implements IBindingState {
@@ -15,12 +17,7 @@ public class FramebufferBindingState implements IBindingState {
 	}
 
 	@Override
-	public void delete() {
-
-	}
-
-	@Override
-	public void record() {
+	public void record(GuiGraphics graphics) {
 		bindingFramebuffer = glGetInteger(GL_FRAMEBUFFER_BINDING);
 
 		if (bindingFramebuffer == 0) {
@@ -37,5 +34,10 @@ public class FramebufferBindingState implements IBindingState {
 			glBindFramebuffer(GL_READ_FRAMEBUFFER, bindingReadFramebuffer);
 			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, bindingDrawFramebuffer);
 		}
+	}
+
+	@Override
+	public void delete() {
+
 	}
 }

@@ -6,8 +6,8 @@ public interface IServerBuffer {
 
 	int getBufferHandle ();
 	void delete			();
-	void bind           (int		target);
 	void data			(ByteBuffer	data);
+	void bind           (int		target);
 	void bindBase       (int		target, int index);
 	void bindRange      (int		target, int index, long offset, long size);
 }
