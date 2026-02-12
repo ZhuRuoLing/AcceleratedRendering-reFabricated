@@ -20,7 +20,7 @@ public class GuiMixin {
 			GuiGraphics		guiGraphics,
 			CallbackInfo	ci
 	) {
-		GuiBatchingController.INSTANCE.startBatching();
+		GuiBatchingController.INSTANCE.startBatching(guiGraphics);
 	}
 
 	@Inject(

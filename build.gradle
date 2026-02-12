@@ -118,6 +118,7 @@ dependencies {
     modCompileOnly "maven.modrinth:malilib:V7yLDtJV" // 0.16.3
     modCompileOnly "maven.modrinth:tweakermore:2auQS5xh" // v3.27.0-mc1.20.1
     modCompileOnly "maven.modrinth:touhoulittlemaid-orihime:a6vnKr9N"
+    modCompileOnly "curse.maven:ftb-library-fabric-438495:7296747"
 //    //implementation "com.github.tartaricacid:touhoulittlemaid-1.21.1:release-1.2.2"
 }
 processResources {

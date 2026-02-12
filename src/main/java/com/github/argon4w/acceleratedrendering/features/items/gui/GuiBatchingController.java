@@ -12,6 +12,7 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import org.lwjgl.opengl.GL46;
 
 public class GuiBatchingController {
 
@@ -19,30 +20,37 @@ public class GuiBatchingController {
 
 	private			final Window				window;
 	private			final IBindingState			viewport;
+	private			final IBindingState			scissorDraw;
+	private			final IBindingState			scissorFlush;
 	private			final IBindingState			binding;
 	private			final RenderTarget			overlay;
 
 	private GuiBatchingController() {
-		this.window		= Minecraft.getInstance()	.getWindow				();
-		this.viewport	= CoreFeature				.createViewportState	();
-		this.binding	= new FramebufferBindingState						();
-		this.overlay	= new SimpleTextureTarget							(true);
+		this.window			= Minecraft.getInstance()	.getWindow				();
+		this.viewport		= CoreFeature				.createViewportState	();
+		this.scissorDraw	= CoreFeature				.createScissorState		();
+		this.scissorFlush	= CoreFeature				.createScissorState		();
+		this.binding		= new FramebufferBindingState						();
+		this.overlay		= new SimpleTextureTarget							(true);
 	}
 
-	public void startBatching() {
+	public void startBatching(GuiGraphics graphics) {
 		if (		AcceleratedItemRenderingFeature	.isEnabled					()
 				&&	AcceleratedItemRenderingFeature	.shouldAccelerateInGui		()
 				&&	AcceleratedItemRenderingFeature	.shouldUseGuiItemBatching	()
 				&&	CoreFeature						.isLoaded					()
 		) {
-			CoreFeature.setGuiBatching();
+			CoreFeature.setGuiBatching	();
+			scissorDraw.record			(graphics);
 		}
 	}
 
 	public void flushBatching(GuiGraphics graphics) {
 		if (CoreFeature.isGuiBatching()) {
-			CoreFeature							.resetGuiBatching		();
-			((IAcceleratedGuiGraphics) graphics).flushItemBatching		();
+			scissorFlush						.record				(graphics);
+			scissorDraw							.restore			();
+			CoreFeature							.resetGuiBatching	();
+			((IAcceleratedGuiGraphics) graphics).flushItemBatching	();
 
 			RenderSystem						.setShaderTexture		(0, overlay.getColorTextureId());
 			RenderSystem						.backupProjectionMatrix	();
@@ -63,9 +71,10 @@ public class GuiBatchingController {
 			RenderSystem.restoreProjectionMatrix();
 			RenderSystem.disableBlend			();
 			RenderSystem.defaultBlendFunc		();
-			binding		.record					();
+			binding		.record					(graphics);
 			overlay		.clear					(Minecraft.ON_OSX);
 			binding		.restore				();
+			scissorFlush.restore				();
 		}
 	}
 
@@ -81,10 +90,10 @@ public class GuiBatchingController {
 		);
 	}
 
-	public void useOverlayTarget() {
+	public void useOverlayTarget(GuiGraphics graphics) {
 		if (CoreFeature.isGuiBatching()) {
-			viewport.record		();
-			binding	.record		();
+			viewport.record		(graphics);
+			binding	.record		(graphics);
 			overlay	.bindWrite	(false);
 		}
 	}
@@ -95,5 +104,13 @@ public class GuiBatchingController {
 			binding	.restore	();
 			viewport.restore	();
 		}
+	}
+
+	public void delete() {
+		viewport	.delete			();
+		scissorDraw	.delete			();
+		scissorFlush.delete			();
+		binding		.delete			();
+		overlay		.destroyBuffers	();
 	}
 }

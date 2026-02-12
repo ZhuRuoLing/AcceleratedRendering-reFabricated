@@ -2,6 +2,7 @@ package com.github.argon4w.acceleratedrendering.core.backends.states.viewports;
 
 import com.github.argon4w.acceleratedrendering.core.backends.states.IBindingState;
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class MojangViewportBindingState implements IBindingState {
 
@@ -18,12 +19,7 @@ public class MojangViewportBindingState implements IBindingState {
 	}
 
 	@Override
-	public void delete() {
-
-	}
-
-	@Override
-	public void record() {
+	public void record(GuiGraphics graphics) {
 		viewportX		= GlStateManager.Viewport.x		();
 		viewportY		= GlStateManager.Viewport.y		();
 		viewportWidth	= GlStateManager.Viewport.width	();
@@ -44,5 +40,10 @@ public class MojangViewportBindingState implements IBindingState {
 					viewportHeight
 			);
 		}
+	}
+
+	@Override
+	public void delete() {
+
 	}
 }

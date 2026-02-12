@@ -107,23 +107,23 @@ public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
 			String			text,
 			CallbackInfo	ci
 	) {
-		GuiBatchingController.INSTANCE.useOverlayTarget();
+		GuiBatchingController.INSTANCE.useOverlayTarget((GuiGraphics) (Object) this);
 	}
 
-	@Inject(
-			method	= "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
-			at		= {
-					@At(
-							value	= "INVOKE",
-							target	= "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I",
-							shift	= At.Shift.AFTER
-					),
-					@At(
-							value	= "INVOKE",
-							target	= "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V",
-							shift	= At.Shift.AFTER,
-							ordinal	= 1
-					),
+		@Inject(
+				method	= "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
+				at		= {
+						@At(
+								value	= "INVOKE",
+								target	= "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I",
+								shift	= At.Shift.AFTER
+						),
+						@At(
+								value	= "INVOKE",
+								target	= "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V",
+								shift	= At.Shift.AFTER,
+								ordinal	= 1
+						),
 					@At(
 							value	= "INVOKE",
 							target	= "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V",

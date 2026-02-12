@@ -2,6 +2,7 @@ package com.github.argon4w.acceleratedrendering.configs;
 
 import com.github.argon4w.acceleratedrendering.core.backends.states.buffers.BlockBufferBindingStateType;
 import com.github.argon4w.acceleratedrendering.core.backends.states.buffers.cache.BlockBufferBindingCacheType;
+import com.github.argon4w.acceleratedrendering.core.backends.states.scissors.ScissorBindingStateType;
 import com.github.argon4w.acceleratedrendering.core.backends.states.viewports.ViewportBindingStateType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.storage.LayerStorageType;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.MeshInfoCacheType;
@@ -33,6 +34,7 @@ public class FeatureConfig {
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					coreUploadMeshImmediately;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					coreCacheDynamicRenderType;
 	public			final	ForgeConfigSpec.ConfigValue<ViewportBindingStateType>		coreViewportBindingType;
+	public			final	ForgeConfigSpec.ConfigValue<ScissorBindingStateType>		coreScissorBindingType;
 
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					restoringFeatureStatus;
 	public			final	ForgeConfigSpec.ConfigValue<BlockBufferBindingCacheType>	restoringBindingCacheType;
@@ -57,6 +59,7 @@ public class FeatureConfig {
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingHandAcceleration;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingGuiAcceleration;
 	public 			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingGuiItemBatching;
+	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					acceleratedItemRenderingMergeGuiItemBatches;
 
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					orientationCullingFeatureStatus;
 	public			final	ForgeConfigSpec.ConfigValue<FeatureStatus>					orientationCullingDefaultCulling;
@@ -193,6 +196,14 @@ public class FeatureConfig {
 				.worldRestart			()
 				.defineEnum				("viewport_binding_state",				ViewportBindingStateType.IGNORED);
 
+		coreScissorBindingType							= builder
+				.comment				("- IGNORED: Scissor settings that will be modified by other mods will not be restored after the acceleration, which is faster but reduces compatibility with them.")
+				.comment				("- MOJANG: Scissor settings that will be modified by other mods will be recorded and restored using Mojang's GuiGraphics to work correctly with them.")
+				.comment				("- OPENGL: Scissor settings that will be modified by other mods will be recorded and restored using OpenGL to work correctly with them even if they don't set viewport using Mojang's GuiGraphics, which is slower but has most compatibility.")
+				.translation			("acceleratedrendering.configuration.core_settings.scissor_binding_state")
+				.worldRestart			()
+				.defineEnum				("scissor_binding_state",				ScissorBindingStateType.MOJANG);
+
 		builder
 				.comment				("Block Buffer Restoring Settings")
 				.comment				("A few mods and shader packs will use their on block buffers when rendering, which may introduce conflicts when working with Accelerated Rendering that also uses block buffers.")
@@ -323,10 +334,16 @@ public class FeatureConfig {
 				.defineEnum				("gui_acceleration",					FeatureStatus.ENABLED);
 
 		acceleratedItemRenderingGuiItemBatching			= builder
-				.comment				("- DISABLED: Items in the container GUI will be rendered as per item per batch if the GUI Acceleration is enabled, which is inefficient and may cause slight reduction in FPS, but it has better compatibility in modded container GUI.")
+				.comment				("- DISABLED: Items in the container GUI will be rendered as per item per batch if the GUI Acceleration is enabled, which is inefficient and may cause reduction in FPS, but it has better compatibility in modded container GUI.")
 				.comment				("- ENABLED: Items in the container will be rendered together in a single batch if the GUI Acceleration is enabled, which is much more efficient but has little compatibility in modded container GUI.")
 				.translation			("acceleratedrendering.configuration.accelerated_item_rendering.gui_item_batching")
 				.defineEnum				("gui_item_batching",					FeatureStatus.ENABLED);
+
+		acceleratedItemRenderingMergeGuiItemBatches		= builder
+				.comment				("- DISABLED: Items rendered in background and slots will be separated into two batches when accelerate container GUI, which is inefficient any may cause slight reduction in FPS, but it has better compatibility in modded container GUI.")
+				.comment				("- ENABLED: Items rendered in background and slots will be merged into a single batch when accelerate container GUI, which is much more efficient but has less compatibility in modded container GUI.")
+				.translation			("acceleratedrendering.configuration.accelerated_item_rendering.merge_gui_item_batching")
+				.defineEnum				("merge_gui_item_batching",				FeatureStatus.ENABLED);
 
 		builder.pop();
 
