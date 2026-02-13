@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Pseudo
 @Mixin(BaseScreen.class)
 public class BaseScreenMixin {
 
@@ -27,8 +26,7 @@ public class BaseScreenMixin {
 							target	= "Ldev/ftb/mods/ftblibrary/ui/ModalPanel;draw(Lnet/minecraft/client/gui/GuiGraphics;Ldev/ftb/mods/ftblibrary/ui/Theme;IIII)V",
 							shift	= At.Shift.BEFORE
 					)
-			},
-			remap	= false
+			}
 	)
 	public void startBatching(
 			GuiGraphics		graphics,
@@ -55,8 +53,7 @@ public class BaseScreenMixin {
 							target	= "Ldev/ftb/mods/ftblibrary/ui/ModalPanel;draw(Lnet/minecraft/client/gui/GuiGraphics;Ldev/ftb/mods/ftblibrary/ui/Theme;IIII)V",
 							shift	= At.Shift.AFTER
 					)
-			},
-			remap	= false
+			}
 	)
 	public void stopBatching(
 			GuiGraphics		graphics,
