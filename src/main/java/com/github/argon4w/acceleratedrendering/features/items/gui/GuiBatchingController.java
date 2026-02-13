@@ -15,8 +15,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.ItemDecoratorHandler;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
@@ -116,21 +114,21 @@ public class GuiBatchingController {
 			CoreFeature							.resetRenderingGui	();
 			((IAcceleratedGuiGraphics) graphics).flushItemBatching	();
 
-			for (var context : decoratorDrawContexts) {
-				poseStack.pushPose	();
-				poseStack.last		().pose()	.set(context.transform	());
-				poseStack.last		().normal()	.set(context.normal		());
-
-				context.handler().render(
-						graphics,
-						context.font	(),
-						context.stack	(),
-						context.xOffset	(),
-						context.yOffset	()
-				);
-
-				graphics.pose().popPose();
-			}
+//			for (var context : decoratorDrawContexts) {
+//				poseStack.pushPose	();
+//				poseStack.last		().pose()	.set(context.transform	());
+//				poseStack.last		().normal()	.set(context.normal		());
+//
+//				context.handler().render(
+//						graphics,
+//						context.font	(),
+//						context.stack	(),
+//						context.xOffset	(),
+//						context.yOffset	()
+//				);
+//
+//				graphics.pose().popPose();
+//			}
 
 			for (var context : highlightDrawContexts) {
 				poseStack.pushPose	();
@@ -141,8 +139,7 @@ public class GuiBatchingController {
 						graphics,
 						context.highlightX	(),
 						context.highlightY	(),
-						context.blitOffset	(),
-						context.color		()
+						context.blitOffset	()
 				);
 
 				graphics.pose().popPose();
@@ -208,28 +205,28 @@ public class GuiBatchingController {
 		));
 	}
 
-	public void recordDecorator(
-			GuiGraphics				graphics,
-			ItemDecoratorHandler	handler,
-			Font					font,
-			ItemStack				itemStack,
-			int						xOffset,
-			int						yOffset
-	) {
-		var last = graphics
-				.pose()
-				.last();
-
-		decoratorDrawContexts.add(new DecoratorDrawContext(
-				new Matrix4f(last.pose	()),
-				new Matrix3f(last.normal()),
-				handler,
-				font,
-				itemStack,
-				xOffset,
-				yOffset
-		));
-	}
+//	public void recordDecorator(
+//			GuiGraphics				graphics,
+//			ItemDecoratorHandler	handler,
+//			Font					font,
+//			ItemStack				itemStack,
+//			int						xOffset,
+//			int						yOffset
+//	) {
+//		var last = graphics
+//				.pose()
+//				.last();
+//
+//		decoratorDrawContexts.add(new DecoratorDrawContext(
+//				new Matrix4f(last.pose	()),
+//				new Matrix3f(last.normal()),
+//				handler,
+//				font,
+//				itemStack,
+//				xOffset,
+//				yOffset
+//		));
+//	}
 
 	public void recordHighlight(
 			GuiGraphics	graphics,

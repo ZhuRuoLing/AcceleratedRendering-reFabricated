@@ -66,3 +66,5 @@ accessible class net/minecraft/client/renderer/RenderStateShard$OffsetTexturingS
 accessible field net/minecraft/world/inventory/AbstractContainerMenu menuType Lnet/minecraft/world/inventory/MenuType;
 accessible field net/minecraft/client/gui/GuiGraphics scissorStack Lnet/minecraft/client/gui/GuiGraphics$ScissorStack;
 accessible field net/minecraft/client/gui/GuiGraphics$ScissorStack stack Ljava/util/Deque;
+accessible field net/minecraft/client/model/geom/ModelPart cubes Ljava/util/List;
+accessible field net/minecraft/client/model/geom/ModelPart children Ljava/util/Map;
