@@ -1,87 +1,43 @@
-package com.github.argon4w.acceleratedrendering.features.modelparts.mixins;
+package com.github.argon4w.acceleratedrendering.features.emf.mixins;
 
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
-import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IAcceleratedVertexConsumer;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IBufferGraph;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.VertexConsumerExtension;
-import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IAcceleratedRenderer;
 import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.CulledMeshCollector;
 import com.github.argon4w.acceleratedrendering.core.meshes.data.IMeshData;
+import com.github.argon4w.acceleratedrendering.features.emf.IEMFModelVariant;
 import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
+import com.github.argon4w.acceleratedrendering.features.modelparts.mixins.ModelPartMixin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import it.unimi.dsi.fastutil.ints.Int2ReferenceMap;
+import it.unimi.dsi.fastutil.ints.Int2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.experimental.ExtensionMethod;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.FastColor;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import traben.entity_model_features.models.parts.EMFModelPart;
 
-import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings	("unchecked")
-@ExtensionMethod	(VertexConsumerExtension.class)
-@Mixin				(ModelPart				.class)
-public class ModelPartMixin implements IAcceleratedRenderer<Void> {
+@Pseudo
+@ExtensionMethod(VertexConsumerExtension.class)
+@Mixin			(EMFModelPart			.class)
+public class EMFModelPartMixin extends ModelPartMixin implements IEMFModelVariant {
 
-	@Shadow @Final public	List<ModelPart.Cube>		cubes;
-
-	@Unique private final	Map<IBufferGraph,	IMesh>	meshes = new Object2ObjectOpenHashMap<>();
-	@Unique private final	Map<IMeshData,		IMesh>	merges = new Object2ObjectOpenHashMap<>();
+	@Unique private final	Int2ReferenceMap<Map<IBufferGraph,	IMesh>>	emfMeshes	= new Int2ReferenceOpenHashMap<>();
+	@Unique private final	Int2ReferenceMap<Map<IMeshData,		IMesh>>	emfMerges	= new Int2ReferenceOpenHashMap<>();
+	@Unique private			int											emfVariant	= Integer.MIN_VALUE;
 
 	@Inject(
-			method		= "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V",
-			at			= @At("HEAD"),
-			cancellable	= true
-	)
-	public void renderFast(
-			PoseStack		poseStack,
-			VertexConsumer	buffer,
-			int				packedLight,
-			int				packedOverlay,
-			float			red,
-			float			green,
-			float			blue,
-			float			alpha,
-			CallbackInfo	ci
-	) {
-		var extension = buffer.getAccelerated();
-
-		if (			AcceleratedEntityRenderingFeature	.isEnabled						()
-				&&		AcceleratedEntityRenderingFeature	.shouldUseAcceleratedPipeline	()
-				&&	(	CoreFeature							.isRenderingLevel				()
-				||	(	CoreFeature							.isRenderingGui					()
-				&&		AcceleratedEntityRenderingFeature	.shouldAccelerateInGui			()))
-				&&		extension							.isAccelerated					()
-		) {
-			ci.cancel();
-
-			renderFast(
-					(ModelPart) (Object) this,
-					poseStack,
-					extension,
-					packedLight,
-					packedOverlay,
-					FastColor.ARGB32.color(
-							(int) (alpha	* 255.0f),
-							(int) (red		* 255.0f),
-							(int) (green	* 255.0f),
-							(int) (blue		* 255.0f)
-					)
-			);
-		}
-	}
-
-	/*@Inject(
 			method		= "compile",
 			at			= @At("HEAD"),
 			cancellable	= true
@@ -122,19 +78,32 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
 					)
 			);
 		}
-	}*/
+	}
 
 	@Unique
 	@Override
 	public void render(
 			VertexConsumer	vertexConsumer,
 			Void			context,
-			Matrix4f		transform,
-			Matrix3f		normal,
+			Matrix4f transform,
+			Matrix3f normal,
 			int				light,
 			int				overlay,
 			int				color
 	) {
+		var meshes = emfMeshes.get(emfVariant);
+		var merges = emfMerges.get(emfVariant);
+
+		if (		meshes == null
+				||	merges == null
+		) {
+			meshes = new Object2ObjectOpenHashMap<>();
+			merges = new Object2ObjectOpenHashMap<>();
+
+			emfMeshes.put(emfVariant, meshes);
+			emfMerges.put(emfVariant, merges);
+		}
+
 		var extension	= vertexConsumer.getAccelerated	();
 		var mesh		= meshes		.get			(extension);
 
@@ -210,51 +179,8 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
 	}
 
 	@Unique
-	private static void renderFast(
-			ModelPart					modelPart,
-			PoseStack					poseStack,
-			IAcceleratedVertexConsumer	extension,
-			int							packedLight,
-			int							packedOverlay,
-			int							packedColor
-	) {
-		if (!modelPart.visible) {
-			return;
-		}
-
-		if (		modelPart.cubes		.isEmpty()
-				&&	modelPart.children	.isEmpty()
-		) {
-			return;
-		}
-
-		poseStack.pushPose();
-
-		modelPart.translateAndRotate(poseStack);
-
-		if (!modelPart.skipDraw) {
-			extension.doRender(
-					(IAcceleratedRenderer<Void>) (Object) modelPart,
-					null,
-					poseStack.last().pose(),
-					poseStack.last().normal(),
-					packedLight,
-					packedOverlay,
-					packedColor
-			);
-		}
-
-		for(var child : modelPart.children.values()) {
-			renderFast(
-					child,
-					poseStack,
-					extension,
-					packedLight,
-					packedOverlay,
-					packedColor
-			);
-		}
-
-		poseStack.popPose();
+	@Override
+	public void setCurrentVariant(int variant) {
+		emfVariant = variant;
 	}
 }

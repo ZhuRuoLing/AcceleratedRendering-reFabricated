@@ -1,0 +1,100 @@
+#version 460 core
+
+struct Vertex {
+    float   x;
+    float   y;
+    float   z;
+    uint    color;
+};
+
+struct VaryingData {
+    int     offset;
+    int     sharing;
+    int     mesh;
+    int     noCull;
+};
+
+struct SharingData {
+    mat4    transform;
+    mat3    normal;
+};
+
+struct MeshInfo {
+    int     sharing;
+    int     noCull;
+    uint    color;
+    uint    uv1;
+    uint    uv2;
+};
+
+layout(local_size_x = 128) in;
+
+layout(binding=1, std430) restrict writeonly buffer Vertices {
+    Vertex vertices[];
+};
+
+layout(binding=2, std430) restrict readonly buffer Sharings {
+    SharingData sharings[];
+};
+
+layout(binding=4, std430) restrict writeonly buffer Varyings {
+    VaryingData varyings[];
+};
+
+layout(binding=7, std430) restrict readonly buffer Meshes {
+    Vertex meshVertices[];
+};
+
+layout(binding=8, std430) restrict readonly buffer MeshInfos {
+    MeshInfo meshInfos[];
+};
+
+layout(location=0) uniform uint meshCount;
+layout(location=1) uniform uint meshSize;
+layout(location=2) uniform uint vertexOffset;
+layout(location=3) uniform uint varyingOffset;
+layout(location=4) uniform uint meshOffset;
+
+void main() {
+    uint        indexIn         = gl_GlobalInvocationID.x;
+    uint        meshIndex       = indexIn / meshSize;
+    uint        index           = indexIn % meshSize;
+
+    if (meshIndex >= meshCount) {
+        return;
+    }
+
+    Vertex      vertex          = meshVertices  [meshOffset + index];
+    MeshInfo    meshInfo        = meshInfos     [meshIndex];
+    SharingData sharingData     = sharings      [meshInfo.sharing];
+    uint        vertexIndex     = index + meshIndex * meshSize + vertexOffset;
+    uint        varyingIndex    = index + meshIndex * meshSize + varyingOffset;
+
+    vec4        colorIn         = unpackUnorm4x8    (meshInfo   .color);
+    vec4        colorMesh       = unpackUnorm4x8    (vertex     .color);
+    // uvec2       uv2In           = floatBitsToUint   (unpackSnorm2x16(meshInfo   .uv2));
+    // uvec2       uv2Mesh         = floatBitsToUint   (unpackSnorm2x16(vertex     .uv2));
+
+    vec4        colorOut        = colorIn * colorMesh;
+    // uvec2       uv2Out          = max(uv2In, uv2Mesh);
+
+    vec4        posOut          = sharingData.transform * vec4          (vertex.x, vertex.y, vertex.z, 1.0);
+    // vec3        normalOut       = sharingData.normal    * unpackSnorm4x8(vertex.normal).xyz;
+
+    vertices[vertexIndex].x         = posOut.x;
+    vertices[vertexIndex].y         = posOut.y;
+    vertices[vertexIndex].z         = posOut.z;
+
+    vertices[vertexIndex].color     = packUnorm4x8(colorOut);
+
+    // vertices[vertexIndex].u0        = vertex.u0;
+    // vertices[vertexIndex].v0        = vertex.v0;
+
+    // vertices[vertexIndex].uv1       = meshInfo  .uv1;
+    // vertices[vertexIndex].uv2       = packSnorm2x16 (uintBitsToFloat(uv2Out));
+    // vertices[vertexIndex].normal    = packSnorm4x8  (vec4           (normalize(normalOut), 0.0));
+
+    varyings[varyingIndex].offset   = 0;
+    varyings[varyingIndex].sharing  = meshInfo.sharing;
+    varyings[varyingIndex].noCull   = meshInfo.noCull;
+}

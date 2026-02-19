@@ -10,6 +10,7 @@ public class CoreBuffers {
 	public static final AcceleratedBufferSource BLOCK					= new AcceleratedBufferSource(IBufferEnvironment.Presets.BLOCK);
 	public static final AcceleratedBufferSource ENTITY					= new AcceleratedBufferSource(IBufferEnvironment.Presets.ENTITY);
 	public static final AcceleratedBufferSource	POS						= new AcceleratedBufferSource(IBufferEnvironment.Presets.POS);
+	public static final AcceleratedBufferSource POS_COLOR				= new AcceleratedBufferSource(IBufferEnvironment.Presets.POS_COLOR);
 	public static final AcceleratedBufferSource POS_TEX					= new AcceleratedBufferSource(IBufferEnvironment.Presets.POS_TEX);
 	public static final AcceleratedBufferSource POS_TEX_COLOR			= new AcceleratedBufferSource(IBufferEnvironment.Presets.POS_TEX_COLOR);
 	public static final AcceleratedBufferSource POS_COLOR_TEX_LIGHT		= new AcceleratedBufferSource(IBufferEnvironment.Presets.POS_COLOR_TEX_LIGHT);
@@ -20,6 +21,7 @@ public class CoreBuffers {
 			.source	(CoreBuffers		.BLOCK)
 			.source	(CoreBuffers		.ENTITY)
 			.source	(CoreBuffers		.POS)
+			.source	(CoreBuffers		.POS_COLOR)
 			.source	(CoreBuffers		.POS_TEX)
 			.source	(CoreBuffers		.POS_TEX_COLOR)
 			.source	(CoreBuffers		.POS_COLOR_TEX_LIGHT)

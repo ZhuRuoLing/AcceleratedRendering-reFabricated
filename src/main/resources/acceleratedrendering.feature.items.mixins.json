@@ -9,7 +9,6 @@
     "accessors.BlockColorsAccessor",
     "accessors.ItemColorsAccessor",
     "gui.AbstractContainerScreenMixin",
-    "gui.GameRendererMixin",
     "gui.GuiGraphicsMixin",
     "gui.GuiMixin",
     "models.BakedModelMixin",
