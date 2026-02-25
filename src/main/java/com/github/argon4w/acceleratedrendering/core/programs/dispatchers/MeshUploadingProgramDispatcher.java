@@ -39,6 +39,7 @@ public class MeshUploadingProgramDispatcher {
 		this.lastBarriers		= GL_SHADER_STORAGE_BARRIER_BIT;
 	}
 
+	// 发生崩溃的函数
 	public void dispatch(Collection<AcceleratedBufferBuilder> builders, AcceleratedRingBuffers.Buffers buffer) {
 		glMemoryBarrier(lastBarriers);
 
