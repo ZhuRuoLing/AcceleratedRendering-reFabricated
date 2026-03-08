@@ -1,4 +1,4 @@
-package com.github.argon4w.acceleratedrendering.features.touhoulittlemaid.mixins;
+package com.github.argon4w.acceleratedrendering.features.tlm.mixins;
 
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IBufferGraph;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.VertexConsumerExtension;

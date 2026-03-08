@@ -1,6 +1,7 @@
 package net.neoforged.fml;
 
 import lombok.Getter;
+import net.neoforged.bus.api.BusBuilder;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
@@ -16,7 +17,10 @@ public class ModContainer {
     @Getter
     private final IModInfo modInfo;
     @Getter
-    private final IEventBus modEventBus = IEventBus.create();
+    private final IEventBus modEventBus = BusBuilder.builder()
+        .allowPerPhasePost()
+        .markerType(IModBusEvent.class)
+        .build();
 
     public ModContainer(String modid) {
         this.modid = modid;

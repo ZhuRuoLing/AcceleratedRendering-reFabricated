@@ -1,5 +1,6 @@
 package net.neoforged.fml;
 
+import net.neoforged.bus.api.BusBuilder;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
@@ -12,7 +13,9 @@ import java.util.Map;
 
 public class ModLoader {
     private static final Logger logger = LoggerFactory.getLogger("ModLoader");
-    private static final IEventBus eventBus = IEventBus.create();
+    private static final IEventBus eventBus = BusBuilder.builder()
+        .allowPerPhasePost()
+        .build();
     private static final Map<String, ModContainer> modContainerMap = new HashMap<>();
 
     public static void postEvent(Event event) {
