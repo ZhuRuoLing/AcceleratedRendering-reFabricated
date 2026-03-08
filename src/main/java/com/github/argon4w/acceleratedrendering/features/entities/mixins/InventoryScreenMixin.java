@@ -19,7 +19,7 @@ public class InventoryScreenMixin {
 
 	@WrapMethod(method = "method_29977")
 	private static void startRenderingGui(
-        EntityRenderDispatcher	entityrenderdispatcher,
+        EntityRenderDispatcher	entityRenderDispatcher,
         LivingEntity			entity,
         GuiGraphics				guiGraphics,
         Operation<Void> operation

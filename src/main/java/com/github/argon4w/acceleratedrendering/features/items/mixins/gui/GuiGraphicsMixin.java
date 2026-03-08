@@ -19,12 +19,9 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.ItemDecoratorHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @SuppressWarnings	("UnstableApiUsage")
 @Mixin				(GuiGraphics.class)
@@ -112,43 +109,43 @@ public class GuiGraphicsMixin implements IAcceleratedGuiGraphics {
 		);
 	}
 
-	@WrapOperation(
-			method	= "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
-			at		= @At(
-					value	= "INVOKE",
-					target	= "Lnet/neoforged/neoforge/client/ItemDecoratorHandler;render(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V"
-			)
-	)
-	public void renderDecorationCustomFast(
-			ItemDecoratorHandler	instance,
-			GuiGraphics				guiGraphics,
-			Font					font,
-			ItemStack				stack,
-			int						xOffset,
-			int						yOffset,
-			Operation<Void>			original
-	) {
-		if (!CoreFeature.isGuiBatching()) {
-			original.call(
-					instance,
-					guiGraphics,
-					font,
-					stack,
-					xOffset,
-					yOffset
-			);
-			return;
-		}
-
-		GuiBatchingController.INSTANCE.recordDecorator(
-				guiGraphics,
-				instance,
-				font,
-				stack,
-				xOffset,
-				yOffset
-		);
-	}
+//	@WrapOperation(
+//			method	= "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
+//			at		= @At(
+//					value	= "INVOKE",
+//					target	= "Lnet/neoforged/neoforge/client/ItemDecoratorHandler;render(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V"
+//			)
+//	)
+//	public void renderDecorationCustomFast(
+//			ItemDecoratorHandler	instance,
+//			GuiGraphics				guiGraphics,
+//			Font					font,
+//			ItemStack				stack,
+//			int						xOffset,
+//			int						yOffset,
+//			Operation<Void>			original
+//	) {
+//		if (!CoreFeature.isGuiBatching()) {
+//			original.call(
+//					instance,
+//					guiGraphics,
+//					font,
+//					stack,
+//					xOffset,
+//					yOffset
+//			);
+//			return;
+//		}
+//
+//		GuiBatchingController.INSTANCE.recordDecorator(
+//				guiGraphics,
+//				instance,
+//				font,
+//				stack,
+//				xOffset,
+//				yOffset
+//		);
+//	}
 
 	@WrapOperation(
 			method	= "renderItem(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;IIII)V",

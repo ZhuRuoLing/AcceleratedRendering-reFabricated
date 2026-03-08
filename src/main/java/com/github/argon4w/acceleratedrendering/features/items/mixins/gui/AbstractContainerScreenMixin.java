@@ -69,7 +69,7 @@ public abstract class AbstractContainerScreenMixin {
             x,
             y,
             blitOffset,
-            color
+			-2130706433
         );
     }
 }
