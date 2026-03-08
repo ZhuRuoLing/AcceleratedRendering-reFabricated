@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import traben.entity_model_features.models.parts.EMFModelPartWithState;
 
-@Mixin(EMFModelPartWithState.class)
+@Mixin(value = EMFModelPartWithState.class, remap = false)
 public class EMFModelPartWithStateMixin {
 
 	@Shadow public int currentModelVariant;

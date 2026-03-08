@@ -30,7 +30,6 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.ItemDecoratorHandler;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
@@ -222,21 +221,21 @@ public class GuiBatchingController {
 
 			CoreFeature.resetRenderingGui	();
 			flushBatching					();
-
-			for (var context : decoratorDrawContexts) {
-				poseStack.pushPose	();
-				poseStack.setPose	(context.transform(), context.normal());
-
-				context.handler().render(
-						graphics,
-						context.font	(),
-						context.stack	(),
-						context.xOffset	(),
-						context.yOffset	()
-				);
-
-				graphics.pose().popPose();
-			}
+            //TODO IMPLEMENT FOR FABRIC
+//			for (var context : decoratorDrawContexts) {
+//				poseStack.pushPose	();
+//				poseStack.setPose	(context.transform(), context.normal());
+//
+//				context.handler().render(
+//						graphics,
+//						context.font	(),
+//						context.stack	(),
+//						context.xOffset	(),
+//						context.yOffset	()
+//				);
+//
+//				graphics.pose().popPose();
+//			}
 
 			for (var context : highlightDrawContexts) {
 				poseStack.pushPose	();
@@ -246,8 +245,7 @@ public class GuiBatchingController {
 						graphics,
 						context.highlightX	(),
 						context.highlightY	(),
-						context.blitOffset	(),
-						context.color		()
+						context.blitOffset	()
 				);
 
 				graphics.pose().popPose();
@@ -488,35 +486,35 @@ public class GuiBatchingController {
 		}
 	}
 
-	@SuppressWarnings("UnstableApiUsage")
-	public void submitCustomDecorator(
-			Matrix4f				transform,
-			Matrix3f				normal,
-			ItemDecoratorHandler	handler,
-			Font					font,
-			ItemStack				itemStack,
-			int						xOffset,
-			int						yOffset
-	) {
-		var layer = getLayer(getGlobalDepth(
-				transform.m22(),
-				transform.m32(),
-				10.0f
-		));
-
-		var context = new DecoratorDrawContext(
-				new Matrix4f(transform),
-				new Matrix3f(normal),
-				handler,
-				font,
-				itemStack,
-				xOffset,
-				yOffset
-		);
-
-		decoratorDrawContexts	.add(context);
-		layer					.add(context);
-	}
+//	@SuppressWarnings("UnstableApiUsage")
+//	public void submitCustomDecorator(
+//			Matrix4f				transform,
+//			Matrix3f				normal,
+//			ItemDecoratorHandler	handler,
+//			Font					font,
+//			ItemStack				itemStack,
+//			int						xOffset,
+//			int						yOffset
+//	) {
+//		var layer = getLayer(getGlobalDepth(
+//				transform.m22(),
+//				transform.m32(),
+//				10.0f
+//		));
+//
+//		var context = new DecoratorDrawContext(
+//				new Matrix4f(transform),
+//				new Matrix3f(normal),
+//				handler,
+//				font,
+//				itemStack,
+//				xOffset,
+//				yOffset
+//		);
+//
+//		decoratorDrawContexts	.add(context);
+//		layer					.add(context);
+//	}
 
 	public void submitHighlight(
 			Matrix4f	transform,
