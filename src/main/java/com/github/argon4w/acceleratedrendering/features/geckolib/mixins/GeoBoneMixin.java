@@ -23,12 +23,11 @@ import software.bernie.geckolib.util.RenderUtils;
 import java.util.List;
 import java.util.Map;
 
-@Pseudo
 @ExtensionMethod(VertexConsumerExtension.class)
 @Mixin			(GeoBone				.class)
 public class GeoBoneMixin implements IAcceleratedRenderer<Void> {
 
-	@Shadow(remap = false) @Final private	List<GeoCube>				cubes;
+	@Shadow @Final private	List<GeoCube>				cubes;
 
 	@Unique private	final					Map<IBufferGraph,	IMesh>	meshes = new Object2ObjectOpenHashMap<>();
 	@Unique private final					Map<IMeshData,		IMesh>	merges = new Object2ObjectOpenHashMap<>();

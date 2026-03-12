@@ -16,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoRenderer;
 
-@Pseudo
 @ExtensionMethod(VertexConsumerExtension.class)
 @Mixin			(GeoRenderer			.class)
 public interface GeoRendererMixin {
@@ -29,8 +28,7 @@ public interface GeoRendererMixin {
 					value	= "INVOKE",
 					target	= "Lsoftware/bernie/geckolib/cache/object/GeoBone;getCubes()Ljava/util/List;",
 					shift	= At.Shift.BEFORE
-			),
-			remap		= false
+			)
 	)
 	default void renderCubesOfBoneFast(
 			PoseStack		poseStack,

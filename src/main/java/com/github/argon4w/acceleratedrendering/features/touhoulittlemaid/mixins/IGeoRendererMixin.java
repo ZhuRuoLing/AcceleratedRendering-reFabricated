@@ -16,7 +16,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Pseudo
 @ExtensionMethod(VertexConsumerExtension.class)
 @Mixin			(IGeoRenderer			.class)
 public interface IGeoRendererMixin {
@@ -27,8 +26,7 @@ public interface IGeoRendererMixin {
 			at			= @At(
 					value	= "INVOKE",
 					target	= "Lcom/github/tartaricacid/touhoulittlemaid/compat/sodium/SodiumCompat;sodiumRenderCubesOfBone(Lcom/github/tartaricacid/touhoulittlemaid/geckolib3/geo/animated/AnimatedGeoBone;Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)Z"
-			),
-			remap		= false
+			)
 	)
 	default boolean renderBoneFast(
 			AnimatedGeoBone		bone,

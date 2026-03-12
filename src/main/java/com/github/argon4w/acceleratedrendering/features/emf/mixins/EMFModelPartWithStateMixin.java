@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import traben.entity_model_features.models.parts.EMFModelPartWithState;
 
-@Pseudo
 @Mixin(EMFModelPartWithState.class)
 public class EMFModelPartWithStateMixin {
 
@@ -18,7 +17,7 @@ public class EMFModelPartWithStateMixin {
 	@Inject(
 			method	= "resetState",
 			at		= @At("RETURN"),
-			remap	= false
+			remap 	= false
 	)
 	public void resetEmfVariant(CallbackInfo ci) {
 		((IEMFModelVariant) this).setCurrentVariant(currentModelVariant);
@@ -27,7 +26,7 @@ public class EMFModelPartWithStateMixin {
 	@Inject(
 			method	= "setVariantStateTo",
 			at		= @At("RETURN"),
-			remap	= false
+			remap 	= false
 	)
 	public void setEmfVariant(int newVariant, CallbackInfo ci) {
 		((IEMFModelVariant) this).setCurrentVariant(newVariant);

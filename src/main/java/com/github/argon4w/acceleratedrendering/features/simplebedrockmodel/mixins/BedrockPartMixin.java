@@ -26,7 +26,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 
-@Pseudo
 @ExtensionMethod(VertexConsumerExtension.class)
 @Mixin			(BedrockPart			.class)
 public class BedrockPartMixin implements IAcceleratedRenderer<Void> {
@@ -41,7 +40,7 @@ public class BedrockPartMixin implements IAcceleratedRenderer<Void> {
 			new Vector3f(+1.0f, +0.0f, +0.0f)
 	};
 
-	@Shadow(remap = false) @Final public			ObjectList<BedrockCube>		cubes;
+	@Shadow @Final public			ObjectList<BedrockCube>		cubes;
 
 	@Unique private final							Map<IBufferGraph,	IMesh>	meshes = new Object2ObjectOpenHashMap<>();
 	@Unique private final							Map<IMeshData,		IMesh>	merges = new Object2ObjectOpenHashMap<>();
@@ -49,8 +48,7 @@ public class BedrockPartMixin implements IAcceleratedRenderer<Void> {
 	@Inject(
 			method		= "compile",
 			at			= @At("HEAD"),
-			cancellable	= true,
-			remap		= false
+			cancellable	= true
 	)
 	public void compileFast(
 			PoseStack.Pose	pose,

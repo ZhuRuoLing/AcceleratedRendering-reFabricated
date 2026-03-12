@@ -20,12 +20,11 @@ import org.spongepowered.asm.mixin.*;
 
 import java.util.Map;
 
-@Pseudo
 @ExtensionMethod(VertexConsumerExtension.class)
 @Mixin			(GeoBone				.class)
 public class GeoBoneMixin implements IAcceleratedRenderer<Void> {
 
-	@Shadow(remap = false) @Final private	GeoMesh						cubes;
+	@Shadow @Final private	GeoMesh						cubes;
 
 	@Unique private final					Map<IBufferGraph,	IMesh>	meshes = new Object2ObjectOpenHashMap<>();
 	@Unique private final					Map<IMeshData,		IMesh>	merges = new Object2ObjectOpenHashMap<>();

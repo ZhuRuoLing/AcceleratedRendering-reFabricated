@@ -28,7 +28,7 @@ import traben.entity_model_features.models.parts.EMFModelPart;
 
 import java.util.Map;
 
-@Pseudo
+
 @ExtensionMethod(VertexConsumerExtension.class)
 @Mixin			(EMFModelPart			.class)
 public class EMFModelPartMixin extends ModelPartMixin implements IEMFModelVariant {
