@@ -29,7 +29,7 @@ public class IBufferEnvironmentPresetsMixin {
 					opcode	= Opcodes.PUTSTATIC
 			)
 	)
-	private static void useIrisBloockEnvironment(IBufferEnvironment value, Operation<Void> original) {
+	private static void useIrisBlockEnvironment(IBufferEnvironment value, Operation<Void> original) {
 		original.call(new IrisBufferEnvironment(
 				value,
 				DefaultVertexFormat	.BLOCK,

@@ -105,6 +105,7 @@ public class FeatureConfig {
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				modsTlmFeatureStatus;
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				modsSbmFeatureStatus;
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				modsFtbFeatureStatus;
+	public 			final	ModConfigSpec.ConfigValue<FeatureStatus>				modsSophisticatedFeatureStatus;
 
 	static {
 		Pair<FeatureConfig, ModConfigSpec> pair	= new ModConfigSpec.Builder()	.configure	(FeatureConfig::new);
@@ -658,6 +659,12 @@ public class FeatureConfig {
 				.comment				("- ENABLED: Accelerations of UI driven by FTB Library will be enabled.")
 				.translation			("acceleratedrendering.configuration.mods_compatibility.ftb_feature_status")
 				.defineEnum				("ftb_feature_status",					FeatureStatus.ENABLED);
+
+		modsSophisticatedFeatureStatus					= builder
+				.comment				("- DISABLED: Accelerations of UI driven by Sophisticated Core will be disabled.")
+				.comment				("- ENABLED: Accelerations of UI driven by Sophisticated Core will be enabled.")
+				.translation			("acceleratedrendering.configuration.mods_compatibility.sophisticated_feature_status")
+				.defineEnum				("sophisticated_feature_status",					FeatureStatus.ENABLED);
 
 		builder.pop();
 	}
