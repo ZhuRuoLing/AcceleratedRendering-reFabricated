@@ -276,26 +276,26 @@ public class GuiBatchingController {
 	public void flushBatching() {
 		CoreStates						.recordBuffers	();
 		CoreBuffers.POS					.prepareBuffers	();
-		CoreBuffers.POS_COLOR			.prepareBuffers	();
 		CoreBuffers.POS_TEX_COLOR		.prepareBuffers	();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.prepareBuffers	();
+		CoreBuffers.POS_COLOR			.prepareBuffers	();
 		CoreBuffers.ENTITY				.prepareBuffers	();
 		CoreBuffers.BLOCK				.prepareBuffers	();
 		CoreBuffers.POS_TEX				.prepareBuffers	();
 		CoreStates						.restoreBuffers	();
 
 		CoreBuffers.POS					.drawBuffers	(LayerDrawType.ALL);
-		CoreBuffers.POS_COLOR			.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS_TEX_COLOR		.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.drawBuffers	(LayerDrawType.ALL);
+		CoreBuffers.POS_COLOR			.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.ENTITY				.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.BLOCK				.drawBuffers	(LayerDrawType.ALL);
 		CoreBuffers.POS_TEX				.drawBuffers	(LayerDrawType.ALL);
 
 		CoreBuffers.POS					.clearBuffers	();
-		CoreBuffers.POS_COLOR			.clearBuffers	();
 		CoreBuffers.POS_TEX_COLOR		.clearBuffers	();
 		CoreBuffers.POS_COLOR_TEX_LIGHT	.clearBuffers	();
+		CoreBuffers.POS_COLOR			.clearBuffers	();
 		CoreBuffers.ENTITY				.clearBuffers	();
 		CoreBuffers.BLOCK				.clearBuffers	();
 		CoreBuffers.POS_TEX				.clearBuffers	();

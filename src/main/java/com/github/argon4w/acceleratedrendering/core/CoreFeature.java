@@ -213,6 +213,10 @@ public class CoreFeature {
 		DEFAULT_LAYER_CONTROLLER_STACK.push(defaultLayer);
 	}
 
+	public static void forceIncrementDefaultLayer() {
+		DEFAULT_LAYER_CONTROLLER_STACK.push(getDefaultLayer() + 1);
+	}
+
 	public static void forceSetDefaultLayerBeforeFunction(Runnable runnable) {
 		DEFAULT_LAYER_BEFORE_FUNCTION_CONTROLLER_STACK.push(runnable);
 	}

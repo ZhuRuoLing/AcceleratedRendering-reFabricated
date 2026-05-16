@@ -73,6 +73,11 @@ config="${mod_id}.compat.iris.mixins.json"
 [[mixins]]
 config="${mod_id}.compat.sophisticated.mixins.json"
 
+# Accelerated Rendering Compatibility Feature Mixins
+# Provides GUI Batching compatibility to some Vanilla Minecraft render layers.
+[[mixins]]
+config="${mod_id}.compat.vanilla.mixins.json"
+
 # Accelerated Entity Rendering Feature Mixins
 # Provides basic entity acceleration feature controllers and entity shadows acceleration.
 [[mixins]]
