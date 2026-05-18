@@ -33,7 +33,7 @@ public class LivingEntityRendererMixin {
 			CallbackInfo				ci,
 			@Share("layer") LocalIntRef	layer
 	) {
-		layer.set(0);
+		layer.set(CoreFeature.getDefaultLayer() + 1);
 	}
 
 	@SuppressWarnings	("rawtypes")

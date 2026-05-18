@@ -38,7 +38,10 @@ public class GuiGraphicsMixin {
 			int				color,
 			Operation<Void>	original
 	) {
-		if (!CoreFeature.isGuiBatching()) {
+		if (		!	CoreFeature.isLoaded				()
+				||	!	CoreFeature.isGuiBatching			()
+				||		CoreFeature.shouldByPassGuiBatching	()
+		) {
 			original.call(
 					minX,
 					minY,
@@ -75,7 +78,10 @@ public class GuiGraphicsMixin {
 			int				color,
 			Operation<Void>	original
 	) {
-		if (!CoreFeature.isGuiBatching()) {
+		if (		!	CoreFeature.isLoaded				()
+				||	!	CoreFeature.isGuiBatching			()
+				||		CoreFeature.shouldByPassGuiBatching	()
+		) {
 			original.call(
 					renderType,
 					minX,
@@ -115,7 +121,10 @@ public class GuiGraphicsMixin {
 			int				blitOffset,
 			Operation<Void>	original
 	) {
-		if (!CoreFeature.isGuiBatching()) {
+		if (		!	CoreFeature.isLoaded				()
+				||	!	CoreFeature.isGuiBatching			()
+				||		CoreFeature.shouldByPassGuiBatching	()
+		) {
 			original.call(
 					renderType,
 					minX,
@@ -155,7 +164,10 @@ public class GuiGraphicsMixin {
 			int				blitOffset,
 			Operation<Void>	original
 	) {
-		if (!CoreFeature.isGuiBatching()) {
+		if (		!	CoreFeature.isLoaded				()
+				||	!	CoreFeature.isGuiBatching			()
+				||		CoreFeature.shouldByPassGuiBatching	()
+		) {
 			original.call(
 					renderType,
 					minX,
@@ -197,7 +209,10 @@ public class GuiGraphicsMixin {
 			float				maxV,
 			Operation<Void>		original
 	) {
-		if (!CoreFeature.isGuiBatching()) {
+		if (		!	CoreFeature.isLoaded				()
+				||	!	CoreFeature.isGuiBatching			()
+				||		CoreFeature.shouldByPassGuiBatching	()
+		) {
 			original.call(
 					atlasLocation,
 					minX,
@@ -250,7 +265,10 @@ public class GuiGraphicsMixin {
 			float				alpha,
 			Operation<Void>		original
 	) {
-		if (!CoreFeature.isGuiBatching()) {
+		if (		!	CoreFeature.isLoaded				()
+				||	!	CoreFeature.isGuiBatching			()
+				||		CoreFeature.shouldByPassGuiBatching	()
+		) {
 			original.call(
 					atlasLocation,
 					minX,
@@ -311,7 +329,10 @@ public class GuiGraphicsMixin {
 			int						yOffset,
 			Operation<Void>			original
 	) {
-		if (!CoreFeature.isGuiBatching()) {
+		if (		!	CoreFeature.isLoaded				()
+				||	!	CoreFeature.isGuiBatching			()
+				||		CoreFeature.shouldByPassGuiBatching	()
+		) {
 			original.call(
 					instance,
 					guiGraphics,

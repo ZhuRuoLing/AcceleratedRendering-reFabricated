@@ -53,6 +53,8 @@ public class MeshUploads {
 				each.remove();
 			}
 		}
+
+		usages.clear();
 	}
 
 	@Getter
