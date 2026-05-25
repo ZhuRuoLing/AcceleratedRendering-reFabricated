@@ -16,6 +16,7 @@ import com.mojang.blaze3d.vertex.VertexFormatElement;
 import net.irisshaders.batchedentityrendering.impl.WrappableRenderType;
 import net.irisshaders.iris.uniforms.CapturedRenderingState;
 import net.irisshaders.iris.vertices.IrisVertexFormats;
+import net.minecraft.client.renderer.RenderType;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,16 +39,16 @@ public class AcceleratedBufferBuilderMixin implements IIrisAcceleratedBufferBuil
 		method = "<init>",
 		at = @At(
 			value = "INVOKE",
-			target = "Lit/unimi/dsi/fastutil/objects/Reference2ObjectLinkedOpenHashMap;<init>()V"
+			target = "Lit/unimi/dsi/fastutil/objects/Int2ObjectOpenHashMap;<init>()V"
 		)
 	)
 	public void unwrapIrisRenderType(
 								StagingBufferPool		.StagingBuffer			vertexBuffer,
 								StagingBufferPool		.StagingBuffer			varyingBuffer,
-								ElementBufferPool		.ElementSegment			elementSegment,
+								IElementPool			.IElementSegment			elementSegment,
 								AcceleratedRingBuffers	.Buffers				buffers,
 								ILayerFunction									layerFunction,
-								RenderType										renderType,
+								RenderType renderType,
 								CallbackInfo									ci,
 		@Local(argsOnly = true) LocalRef<RenderType> 							renderTypeLocalRef
     ) {

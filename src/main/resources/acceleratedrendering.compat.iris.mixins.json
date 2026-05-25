@@ -9,8 +9,6 @@
     "acceleratedrendering.AcceleratedBufferSourceMixin",
     "acceleratedrendering.AcceleratedRenderingModEntryMixin",
     "acceleratedrendering.CoreBuffersProviderMixin",
-    "acceleratedrendering.FlattenMeshInfoCacheMixin",
-    "acceleratedrendering.CoreBuffersMixin",
     "acceleratedrendering.IBufferEnvironmentPresetsMixin",
     "acceleratedrendering.MeshUploaderMixin",
     "acceleratedrendering.MeshUploadingProgramDispatcherMixin",
