@@ -13,7 +13,6 @@
     "gui.FontMixin",
     "gui.GuiGraphicsMixin",
     "gui.GuiMixin",
-    "models.BakedCompositeModelMixin",
     "models.BakedModelMixin",
     "models.BakedQuadMixin",
     "models.MultipartBakedModelMixin",

@@ -1,6 +1,6 @@
 plugins {
     id 'idea'
-    id 'fabric-loom' version '1.11-SNAPSHOT'
+    id 'fabric-loom' version '1.16-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -89,9 +89,10 @@ dependencies {
     modImplementation "dev.emi:trinkets:3.10.0"
     modCompileOnly "maven.modrinth:malilib:xTezyq2N"
     modCompileOnly "maven.modrinth:tweakermore:vQdcjuSM" // v3.27.0-mc1.21.1
-    modCompileOnly("cn.sh1rocu:touhoulittlemaid-fabric-1.21.1:0.4.0-neo1.4.5") {
-        transitive = false
-    }
+//    modCompileOnly("cn.sh1rocu:touhoulittlemaid-fabric-1.21.1:0.7.0-neo1.5.2") {
+//        transitive = false
+//    }
+    modCompileOnly("maven.modrinth:touhoulittlemaid-orihime:0.8.2-neo1.5.3+mc1.21.1")
 
     modCompileOnly "curse.maven:ftb-library-fabric-438495:7312255"
 
