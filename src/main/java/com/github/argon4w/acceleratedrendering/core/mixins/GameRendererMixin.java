@@ -46,7 +46,11 @@ public class GameRendererMixin {
 			Matrix4f		projectionMatrix,
 			CallbackInfo	ci
 	) {
-		CoreFeature						.resetRenderingHand	();
+		CoreFeature.resetRenderingHand();
+
+		if (!CoreFeature.isLoaded()) {
+			return;
+		}
 
 		CoreStates						.recordBuffers		();
 		CoreBuffers.ENTITY				.prepareBuffers		();

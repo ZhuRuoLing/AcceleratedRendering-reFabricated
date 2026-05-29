@@ -47,7 +47,8 @@ public interface IGeoRendererMixin {
 	) {
 		var extension = buffer.getAccelerated();
 
-		if (			AcceleratedEntityRenderingFeature	.isEnabled						()
+		if (			CoreFeature							.isLoaded						()
+				&&		AcceleratedEntityRenderingFeature	.isEnabled						()
 				&&		AcceleratedEntityRenderingFeature	.shouldUseAcceleratedPipeline	()
 				&&		ModsFeature							.isEnabled						()
 				&&		ModsFeature							.shouldAccelerateTlm			()
@@ -96,7 +97,8 @@ public interface IGeoRendererMixin {
 	) {
 		var extension = buffer.getAccelerated();
 
-		if (			AcceleratedEntityRenderingFeature	.isEnabled						()
+		if (			CoreFeature							.isLoaded						()
+				&&		AcceleratedEntityRenderingFeature	.isEnabled						()
 				&&		AcceleratedEntityRenderingFeature	.shouldUseAcceleratedPipeline	()
 				&&		ModsFeature							.isEnabled						()
 				&&		ModsFeature							.shouldAccelerateTlm			()

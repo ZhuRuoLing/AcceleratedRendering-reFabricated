@@ -147,14 +147,16 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html54
     implementation "maven.modrinth:sodium:mc1.21.1-0.6.13-neoforge"
     implementation "maven.modrinth:iris:1.8.8+1.21.1-neoforge"
+    implementation "maven.modrinth:create:6.0.10+mc1.21.1"
 
     compileOnly "maven.modrinth:sophisticated-core:1.21.1-1.4.38.1847"
-    compileOnly "maven.modrinth:entity-model-features:3.0.17-neoforge-1.21"
+    implementation "maven.modrinth:entitytexturefeatures:7.1-neoforge-1.21"
+    compileOnly "maven.modrinth:entity-model-features:3.2.4-neoforge-1.21"
     compileOnly "maven.modrinth:touhou-little-maid:1.5.0-neoforge+mc1.21.1"
     compileOnly "maven.modrinth:geckolib:QEqpUJ1G"
     compileOnly "maven.modrinth:immediatelyfast:1.6.8+1.21.1-neoforge"
     compileOnly "maven.modrinth:curios:9.5.1+1.21.1"
-    compileOnly "curse.maven:ftb-library-forge-404465:7420412"
+    compileOnly "curse.maven:ftb-library-forge-404465:7746959"
     compileOnly "org.projectlombok:lombok:1.18.38"
 
     annotationProcessor "org.projectlombok:lombok:1.18.38"
