@@ -380,6 +380,7 @@ public class GuiGraphicsMixin {
 				||	!AcceleratedItemRenderingFeature.shouldUseAcceleratedPipeline	()
 				||	!AcceleratedItemRenderingFeature.shouldAccelerateInGui			()
 				||	!CoreFeature					.isLoaded						()
+				||	!CoreFeature					.isGuiBatching					()
 		) {
 			original.call(
 					instance,
@@ -395,38 +396,18 @@ public class GuiGraphicsMixin {
 			return;
 		}
 
-		if (CoreFeature.isGuiBatching()) {
-			var last = pose.last();
+		var last = pose.last();
 
-			GuiBatchingController.INSTANCE.submitItem(
-					last.pose	(),
-					last.normal	(),
-					itemStack,
-					displayContext,
-					leftHand,
-					combinedLight,
-					combinedOverlay,
-					bakedModel,
-					bakedModel.usesBlockLight()
-			);
-			return;
-		}
-
-		CoreFeature.setRenderingGui();
-
-		original.call(
-				instance,
+		GuiBatchingController.INSTANCE.submitItem(
+				last.pose	(),
+				last.normal	(),
 				itemStack,
 				displayContext,
 				leftHand,
-				poseStack,
-				bufferSource,
 				combinedLight,
 				combinedOverlay,
-				bakedModel
+				bakedModel,
+				bakedModel.usesBlockLight()
 		);
-
-		CoreFeature						.resetRenderingGui	();
-		GuiBatchingController.INSTANCE	.flushBatching		();
 	}
 }

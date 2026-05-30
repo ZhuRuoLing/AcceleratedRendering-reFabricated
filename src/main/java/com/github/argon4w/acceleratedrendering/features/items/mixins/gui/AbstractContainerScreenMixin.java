@@ -6,6 +6,8 @@ import com.github.argon4w.acceleratedrendering.features.items.gui.GuiBatchingCon
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Share;
+import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,12 +43,14 @@ public abstract class AbstractContainerScreenMixin {
 			at		= @At("HEAD")
 	)
 	public void startBackgroundBatching(
-			GuiGraphics		guiGraphics,
-			int				mouseX,
-			int				mouseY,
-			float			partialTick,
-			CallbackInfo	ci
+			GuiGraphics						guiGraphics,
+			int								mouseX,
+			int								mouseY,
+			float							partialTick,
+			CallbackInfo					ci,
+			@Share("depth") LocalFloatRef	depth
 	) {
+		depth.set(0.0f);
 		GuiBatchingController.INSTANCE.startBatching(guiGraphics);
 	}
 
@@ -59,14 +63,15 @@ public abstract class AbstractContainerScreenMixin {
 			)
 	)
 	public void flushBackgroundBatching(
-			GuiGraphics		guiGraphics,
-			int				mouseX,
-			int				mouseY,
-			float			partialTick,
-			CallbackInfo	ci
+			GuiGraphics						guiGraphics,
+			int								mouseX,
+			int								mouseY,
+			float							partialTick,
+			CallbackInfo					ci,
+			@Share("depth") LocalFloatRef	depth
 	) {
 		if (!AcceleratedItemRenderingFeature.shouldMergeGuiItemBatches()) {
-			GuiBatchingController.INSTANCE.flushBatching(guiGraphics);
+			depth.set(depth.get() + GuiBatchingController.INSTANCE.flushBatching(guiGraphics));
 		}
 	}
 
@@ -99,13 +104,33 @@ public abstract class AbstractContainerScreenMixin {
 			)
 	)
 	public void flushItemBatching(
-			GuiGraphics		guiGraphics,
-			int				mouseX,
-			int				mouseY,
-			float			partialTick,
-			CallbackInfo	ci
+			GuiGraphics						guiGraphics,
+			int								mouseX,
+			int								mouseY,
+			float							partialTick,
+			CallbackInfo					ci,
+			@Share("depth") LocalFloatRef	depth
 	) {
-		GuiBatchingController.INSTANCE.flushBatching(guiGraphics);
+		depth.set(depth.get() + GuiBatchingController.INSTANCE.flushBatching(guiGraphics));
+	}
+
+	@Inject(
+			method	= "render",
+			at		= @At("TAIL")
+	)
+	public void liftGlobalLayer(
+			GuiGraphics						guiGraphics,
+			int								mouseX,
+			int								mouseY,
+			float							partialTick,
+			CallbackInfo					ci,
+			@Share("depth") LocalFloatRef	depth
+	) {
+		guiGraphics.pose().last().pose().translateLocal(
+				0.0f,
+				0.0f,
+				depth.get()
+		);
 	}
 
 	@WrapMethod(method = "renderSlotHighlight(Lnet/minecraft/client/gui/GuiGraphics;IIII)V")
