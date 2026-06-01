@@ -44,7 +44,8 @@ public class StorageScreenBaseMixin {
 			at		= @At(
 					value	= "INVOKE",
 					target	= "Lcom/mojang/blaze3d/vertex/PoseStack;translate(DDD)V",
-					shift	= At.Shift.BEFORE
+					shift	= At.Shift.BEFORE,
+					ordinal	= 0
 			)
 	)
 	public void flushBackgroundBatching(
@@ -69,7 +70,8 @@ public class StorageScreenBaseMixin {
 			at		= @At(
 					value	= "INVOKE",
 					target	= "Lcom/mojang/blaze3d/vertex/PoseStack;translate(DDD)V",
-					shift	= At.Shift.AFTER
+					shift	= At.Shift.AFTER,
+					ordinal	= 0
 			)
 	)
 	public void startItemBatching(
