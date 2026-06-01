@@ -11,7 +11,7 @@ import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 
 @EventBusSubscriber(
 		modid	= AcceleratedRenderingModEntry	.MOD_ID,
-		bus		= EventBusSubscriber.Bus		.MOD,
+		bus		= EventBusSubscriber.Bus		.GAME,
 		value	= Dist							.CLIENT
 )
 public class CoreEvents {
