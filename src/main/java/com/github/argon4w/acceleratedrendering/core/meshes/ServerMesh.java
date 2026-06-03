@@ -20,9 +20,11 @@ import org.lwjgl.system.MemoryUtil;
 import java.util.List;
 
 public record ServerMesh(
+		long			meshKey,
+		int				meshLayer,
 		int				meshId,
 		int				size,
-		long			offset,
+		int				offset,
 		boolean			forceDense,
 		IServerBuffer	meshBuffer
 ) implements IMesh {
@@ -63,7 +65,11 @@ public record ServerMesh(
 		}
 
 		@Override
-		public IMesh build(IMeshCollector collector, boolean forceDense) {
+		public IMesh build(
+				IMeshCollector	collector,
+				boolean			forceDense,
+				int				meshLayer
+		) {
 			var vertexCount	= collector.getVertexCount();
 
 			if (vertexCount == 0) {
@@ -140,10 +146,15 @@ public record ServerMesh(
 			builder.discard	();
 			builder.close	();
 
+			var meshId	= COUNTER ++;
+			var meshKey	= (meshLayer & 0xFFFFFFFFL) << 32 | (meshId & 0xFFFFFFFFL);
+
 			mesh = new ServerMesh(
-					COUNTER ++,
+					meshKey,
+					meshLayer,
+					meshId,
 					vertexCount,
-					position / layout.getSize(),
+					(int) (position / layout.getSize()),
 					forceDense,
 					meshBuffer
 			);
@@ -155,6 +166,11 @@ public record ServerMesh(
 			);
 
 			return mesh;
+		}
+
+		@Override
+		public IMesh build(IMeshCollector collector, boolean forceDense) {
+			return build(collector, forceDense, 0);
 		}
 
 		@Override
