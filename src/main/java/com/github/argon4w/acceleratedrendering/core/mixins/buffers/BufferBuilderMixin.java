@@ -23,14 +23,16 @@ public class BufferBuilderMixin implements IAccelerationHolder, IAcceleratedVert
 	@Unique private IAcceleratedBufferSource	bufferSources = EmptyAcceleratedBufferSources.INSTANCE;
 	@Unique private RenderType					renderType;
 	@Unique private AcceleratedBufferBuilder	acceleration;
+	@Unique private boolean						init = false;
 
 	@Unique
 	@Override
 	public VertexConsumer initAcceleration(RenderType renderType, Supplier<IAcceleratedBufferSource> bufferSource) {
-		if (CoreFeature.isLoaded()) {
+		if (CoreFeature.isLoaded() && !init) {
 			this.bufferSources	= bufferSource.get();
 			this.renderType		= renderType;
 			this.acceleration	= null;
+			this.init			= true;
 		}
 
 		return (VertexConsumer) this;

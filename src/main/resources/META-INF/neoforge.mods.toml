@@ -93,6 +93,11 @@ config="${mod_id}.feature.entities.mixins.json"
 [[mixins]]
 config="${mod_id}.feature.modelparts.mixins.json"
 
+# ModernUI Text Acceleration Feature Mixins
+# Accelerates the text rendering of ModernUI's modern text engine.
+[[mixins]]
+config="${mod_id}.feature.modernui.mixins.json"
+
 # Accelerated Item Rendering Feature Mixins
 # Accelerates the rendering of simple item models that use BakedModel/BakedQuads and provides acceleration feature controller of them.
 [[mixins]]

@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.github.argon4w.acceleratedrendering.features.modernui.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "FormattedTextWrapperMixin",
+    "ModernTextRendererMixin",
+    "TextLayoutAccessor",
+    "TextLayoutMixin",
+    "TextRenderEffectMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -30,7 +30,7 @@ import org.lwjgl.system.MemoryUtil;
 import java.nio.ByteBuffer;
 import java.util.function.LongSupplier;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, cacheStrategy = EqualsAndHashCode.CacheStrategy.LAZY)
 public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, VertexConsumer, LongSupplier {
 
 	public static								final	long											SHARING_SIZE		= 4L * 4L * 4L + 4L * 3L * 4L;
@@ -68,20 +68,13 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 	@Getter private								final	IMemoryInterface								uv2Offset;
 	private										final	IMemoryInterface								normalOffset;
 
-	private 									final	Matrix4f										cachedTransformValue;
-	private										final	Matrix3f										cachedNormalValue;
-
 	private												int												elementCount;
 	@Getter private										int												meshVertexCount;
 	@Getter private										int												vertexCount;
 	private												long											vertexAddress;
 	private												long											sharingAddress;
 	private												int												activeSharing;
-	private												int												cachedSharing;
 	@Getter private		 								boolean											outdated;
-
-	private												Matrix4f										cachedTransform;
-	private												Matrix3f										cachedNormal;
 
 	public AcceleratedBufferBuilder(
 			StagingBufferPool		.StagingBuffer		vertexBuffer,
@@ -125,19 +118,12 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 		this.uv2Offset					= this.layout.getElement(VertexFormatElement.UV2);
 		this.normalOffset				= this.layout.getElement(VertexFormatElement.NORMAL);
 
-		this.cachedTransformValue		= new Matrix4f();
-		this.cachedNormalValue			= new Matrix3f();
-
 		this.elementCount				= 0;
 		this.meshVertexCount			= 0;
 		this.vertexCount				= 0;
 		this.vertexAddress				= -1;
 		this.sharingAddress				= -1;
 		this.activeSharing				= -1;
-		this.cachedSharing				= -1;
-
-		this.cachedTransform			= null;
-		this.cachedNormal				= null;
 	}
 
 	@Override
@@ -255,8 +241,6 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 			float			pNormalY,
 			float			pNormalZ
 	) {
-		var normal = pPose.normal();
-
 		if (activeSharing == -1) {
 			return VertexConsumer.super.setNormal(
 					pPose,
@@ -264,10 +248,6 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 					pNormalY,
 					pNormalZ
 			);
-		}
-
-		if (!normal.equals(cachedNormal)) {
-			SHARING_NORMAL.putMatrix3f(sharingAddress, normal);
 		}
 
 		return setNormal(
@@ -342,20 +322,8 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 
 	@Override
 	public void beginTransform(Matrix4f transform, Matrix3f normal) {
-		if (		CoreFeature	.shouldCacheIdenticalPose	()
-				&&	transform	.equals						(cachedTransform)
-				&&	normal		.equals						(cachedNormal)
-		) {
-			activeSharing = cachedSharing;
-			return;
-		}
-
-		cachedTransform	= cachedTransformValue	.set(transform);
-		cachedNormal	= cachedNormalValue		.set(normal);
-
 		sharingAddress	= buffer.reserveSharing	();
-		cachedSharing	= buffer.getSharing		();
-		activeSharing	= cachedSharing;
+		activeSharing	= buffer.getSharing		();
 
 		SHARING_TRANSFORM	.putMatrix4f(sharingAddress, transform);
 		SHARING_NORMAL		.putMatrix3f(sharingAddress, normal);
@@ -363,10 +331,8 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 
 	@Override
 	public void endTransform() {
-		cachedTransform	= null;
-		cachedNormal	= null;
+		sharingAddress	= -1;
 		activeSharing	= -1;
-		cachedSharing	= -1;
 	}
 
 	@Override
@@ -396,8 +362,12 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 		varyingShouldCull	.putInt			(varyingAddress, cullingProgramDispatcher.shouldCull() ? 1 : 0);
 		programOverride		.uploadVarying	(varyingAddress, 0);
 
-		for (var i = 0; i < size; i ++) {
-			varyingOffset.at(i).putInt(varyingAddress, i);
+		for (var index = 0; index < size; index ++) {
+			varyingOffset.putIntAt(
+					varyingAddress,
+					index,
+					index
+			);
 		}
 
 		elementSegment.count(mode.indexCount(size));
@@ -427,8 +397,12 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 			varyingShouldCull	.putInt			(varyingAddress, shouldCull);
 			programOverride		.uploadVarying	(varyingAddress, 0);
 
-			for (var i = 0; i < meshSize; i ++) {
-				varyingOffset.at(i).putInt(varyingAddress, i);
+			for (var index = 0; index < meshSize; index ++) {
+				varyingOffset.putIntAt(
+						varyingAddress,
+						index,
+						index
+				);
 			}
 
 			elementSegment.count(mode.indexCount(meshSize));

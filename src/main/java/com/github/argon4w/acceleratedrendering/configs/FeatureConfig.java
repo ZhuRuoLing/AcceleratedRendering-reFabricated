@@ -31,7 +31,6 @@ public class FeatureConfig {
 	public			final	ModConfigSpec.ConfigValue<MeshCollectorType>			coreMeshCollectorType;
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				coreDebugContextEnabled;
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				coreForceTranslucentAcceleration;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				coreCacheIdenticalPose;
 	public			final	ModConfigSpec.ConfigValue<MeshInfoCacheType>			coreMeshInfoCacheType;
 	public			final	ModConfigSpec.ConfigValue<LayerStorageType>				coreLayerStorageType;
 	public			final	ModConfigSpec.ConfigValue<MeshDataCacheType>			coreMeshMergeType;
@@ -106,6 +105,7 @@ public class FeatureConfig {
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				modsSbmFeatureStatus;
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				modsFtbFeatureStatus;
 	public 			final	ModConfigSpec.ConfigValue<FeatureStatus>				modsSophisticatedFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				modsModernUIFeatureStatus;
 
 	static {
 		Pair<FeatureConfig, ModConfigSpec> pair	= new ModConfigSpec.Builder()	.configure	(FeatureConfig::new);
@@ -178,12 +178,6 @@ public class FeatureConfig {
 				.comment				("- ENABLED: Translucent RenderType will still be rendered in accelerated pipeline even if the pipeline does not support translucent sorting unless mods explicitly disable force translucent acceleration temporarily when rendering their own faces.")
 				.translation			("acceleratedrendering.configuration.core_settings.force_translucent_acceleration")
 				.defineEnum				("force_translucent_acceleration",		FeatureStatus.ENABLED);
-
-		coreCacheIdenticalPose							= builder
-				.comment				("- DISABLED: Poses with identical transform matrix and normal matrix that used to transform vertices will not be cached in buffer which slightly decreases CPU pressure but increase VRAM usage unless mods explicitly disable it when rendering.")
-				.comment				("- ENABLED: Poses with identical transform matrix and normal matrix that used to transform vertices will be cached in buffer which save VRAM but slightly increase CPU pressure unless mods explicitly disable it when rendering.")
-				.translation			("acceleratedrendering.configuration.core_settings.cache_identical_pose")
-				.defineEnum				("cache_identical_pose",				FeatureStatus.ENABLED);
 
 		coreMeshInfoCacheType							= builder
 				.comment				("- SIMPLE: The most basic implementation of cache. Usually used for testing if other cache types are working correctly.")
@@ -671,6 +665,12 @@ public class FeatureConfig {
 				.comment				("- ENABLED: Accelerations of UI driven by Sophisticated Core will be enabled.")
 				.translation			("acceleratedrendering.configuration.mods_compatibility.sophisticated_feature_status")
 				.defineEnum				("sophisticated_feature_status",		FeatureStatus.ENABLED);
+
+		modsModernUIFeatureStatus					= builder
+				.comment				("- DISABLED: Accelerations of text driven by ModernUI's modern text engine will be disabled.")
+				.comment				("- ENABLED: Accelerations of text driven by by ModernUI's modern text engine will be enabled.")
+				.translation			("acceleratedrendering.configuration.mods_compatibility.modernui_feature_status")
+				.defineEnum				("modernui_feature_status",		FeatureStatus.ENABLED);
 
 		builder.pop();
 	}
