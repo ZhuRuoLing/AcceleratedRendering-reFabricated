@@ -165,9 +165,9 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
                     float normalZ = ((byte) ((packedNormal >> 16) & 0xFF)) / 127.0f;
 
                     if (normalX == 0 && normalY == 0 && normalZ == 0) {
-                        normalX = quad.getDirection().getNormal().getX();
-                        normalY = quad.getDirection().getNormal().getY();
-                        normalZ = quad.getDirection().getNormal().getZ();
+                        normalX = bakedQuad.getDirection().getNormal().getX();
+                        normalY = bakedQuad.getDirection().getNormal().getY();
+                        normalZ = bakedQuad.getDirection().getNormal().getZ();
                     }
 
 					meshBuilder.addVertex(

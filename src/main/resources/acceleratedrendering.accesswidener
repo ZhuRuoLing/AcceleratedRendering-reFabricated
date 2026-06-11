@@ -77,3 +77,7 @@ accessible field net/minecraft/client/renderer/RenderType$CompositeState outline
 accessible field net/minecraft/client/gui/Font filterFishyGlyphs Z
 accessible method net/minecraft/client/gui/Font getFontSet (Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/gui/font/FontSet;
 accessible field net/minecraft/client/renderer/RenderStateShard$WriteMaskStateShard writeColor Z
+
+accessible class net/minecraft/client/gui/Font$StringRenderOutput
+#EMF
+accessible method net/minecraft/client/model/geom/ModelPart compile (Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V

@@ -330,7 +330,7 @@ public class FontMixin implements IAcceleratedFont {
 	}
 
 	@Inject(
-			method		= "drawInBatch8xOutline",
+			method		= "drawInBatch8xOutline(Lnet/minecraft/util/FormattedCharSequence;FFIILorg/joml/Matrix4f;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
 			at			= @At(
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/gui/Font$StringRenderOutput;<init>(Lnet/minecraft/client/gui/Font;Lnet/minecraft/client/renderer/MultiBufferSource;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/gui/Font$DisplayMode;I)V",
@@ -351,8 +351,8 @@ public class FontMixin implements IAcceleratedFont {
 			MultiBufferSource								bufferSource,
 			int												packedLight,
 			CallbackInfo									ci,
-			@Local(ordinal = 0) 	Font.StringRenderOutput	sink,
-			@Local(name = "i")		int						adjustedBackgroundColor,
+			@Local(index = 10) 		Font.StringRenderOutput	sink,
+			@Local(index = 9)		int						adjustedBackgroundColor,
 			@Share("accelerated")	LocalBooleanRef			accelerated
 	) {
 		if (			CoreFeature						.isLoaded						()
@@ -467,8 +467,8 @@ public class FontMixin implements IAcceleratedFont {
 			MultiBufferSource								bufferSource,
 			int												packedLight,
 			CallbackInfo									ci,
-			@Local(ordinal = 0) 	Font.StringRenderOutput	sink,
-			@Local(name = "i")		int						adjustedBackgroundColor,
+			@Local(index = 10) 		Font.StringRenderOutput	sink,
+			@Local(index = 9)		int						adjustedBackgroundColor,
 			@Share("accelerated")	LocalBooleanRef			accelerated
 	) {
 		if (accelerated.get()) {

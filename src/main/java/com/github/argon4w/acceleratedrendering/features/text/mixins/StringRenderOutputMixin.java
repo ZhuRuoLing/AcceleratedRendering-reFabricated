@@ -34,10 +34,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Font.StringRenderOutput.class)
 public class StringRenderOutputMixin implements IAcceleratedStringRenderOutput {
 
-	@Shadow							float						x;
-	@Shadow							float						y;
-	@Shadow @Final					Font						this$0;
-	@Shadow @Final					MultiBufferSource			bufferSource;
+	@Shadow										float						x;
+	@Shadow										float						y;
+	@Shadow(aliases = "field_24240") 	@Final	Font						this$0;
+	@Shadow 							@Final	MultiBufferSource			bufferSource;
 
 	@Shadow @Final @Mutable private	Font.DisplayMode			mode;
 	@Shadow @Final private			Matrix4f					pose;
