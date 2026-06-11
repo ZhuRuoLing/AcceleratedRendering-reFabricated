@@ -2,6 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.github.argon4w.acceleratedrendering.features.text.mixins",
+  "plugin": "com.github.argon4w.acceleratedrendering.features.text.mixins.ARTextFeatureMixinPlugin",
   "compatibilityLevel": "JAVA_21",
   "client": [
     "BakedGlyphEffectMixin",

@@ -75,14 +75,18 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modRuntimeOnly "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modImplementation fabricApi.module("fabric-resource-loader-v0", project.fabric_version)
+    modImplementation fabricApi.module("fabric-networking-api-v1", project.fabric_version)
     modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
     modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:21.1.3")
+
     modCompileOnly "maven.modrinth:sodium:mc1.21-0.6.0-beta.1-fabric"
     modCompileOnly "maven.modrinth:iris:1.8.8+1.21.1-fabric"
     modCompileOnly "maven.modrinth:geckolib:aHSu8jaP"
     modCompileOnly "maven.modrinth:entity-model-features:3.2.4-fabric-1.21"
     modCompileOnly "maven.modrinth:immediatelyfast:1.6.6+1.21.1-fabric"
     modCompileOnly "maven.modrinth:axiom:6BFd0w5s"
+    modCompileOnly "maven.modrinth:modern-ui:ZNr1nosu" //3.13.0.1
+
     compileOnly("com.moulberry:mixinconstraints:1.0.9")
     compileOnly("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
