@@ -7,14 +7,16 @@ import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 
-@EventBusSubscriber(
+@SuppressWarnings	("removal")
+@EventBusSubscriber	(
 		modid	= AcceleratedRenderingModEntry	.MOD_ID,
-		bus		= EventBusSubscriber.Bus		.GAME,
-		value	= Dist							.CLIENT
+		value	= Dist							.CLIENT,
+		bus		= Bus							.GAME
 )
-public class CoreEvents {
+public class CoreGameEvents {
 
 	@SubscribeEvent
 	public static void onClientPlayerLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {

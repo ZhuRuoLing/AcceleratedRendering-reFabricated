@@ -12,7 +12,8 @@ public class ModelToEntityVertexSerializerMixin {
 
 	@ModifyConstant(
 			method		= "serialize",
-			constant	= @Constant(longValue = 42L)
+			constant	= @Constant(longValue = 42L),
+			require		= 0
 	)
 	public long modifyMidU(long constant) {
 		return 44L;
@@ -20,7 +21,8 @@ public class ModelToEntityVertexSerializerMixin {
 
 	@ModifyConstant(
 			method		= "serialize",
-			constant	= @Constant(longValue = 46L)
+			constant	= @Constant(longValue = 46L),
+			require		= 0
 	)
 	public long modifyMidV(long constant) {
 		return 48L;
@@ -28,7 +30,8 @@ public class ModelToEntityVertexSerializerMixin {
 
 	@ModifyConstant(
 			method		= "serialize",
-			constant	= @Constant(longValue = 50L)
+			constant	= @Constant(longValue = 50L),
+			require		= 0
 	)
 	public long modifyTangent(long constant) {
 		return 52L;

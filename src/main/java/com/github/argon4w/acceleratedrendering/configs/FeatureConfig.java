@@ -34,7 +34,6 @@ public class FeatureConfig {
 	public			final	ModConfigSpec.ConfigValue<MeshInfoCacheType>			coreMeshInfoCacheType;
 	public			final	ModConfigSpec.ConfigValue<LayerStorageType>				coreLayerStorageType;
 	public			final	ModConfigSpec.ConfigValue<MeshDataCacheType>			coreMeshMergeType;
-	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				coreUploadMeshImmediately;
 	public			final	ModConfigSpec.ConfigValue<FeatureStatus>				coreCacheDynamicRenderType;
 	public			final	ModConfigSpec.ConfigValue<ViewportBindingStateType>		coreViewportBindingType;
 	public			final	ModConfigSpec.ConfigValue<ScissorBindingStateType>		coreScissorBindingType;
@@ -200,12 +199,6 @@ public class FeatureConfig {
 				.translation			("acceleratedrendering.configuration.core_settings.mesh_merge_type")
 				.gameRestart			()
 				.defineEnum				("mesh_merge_type",						MeshDataCacheType.MERGED);
-
-		coreUploadMeshImmediately						= builder
-				.comment				("- DISABLED: Meshes that is going to be accelerated will be collected and uploaded together at the end for choosing better uploading method and increasing memory access efficiency to reach the best performance. Also this method allows mesh cache with bigger capacity (up to VRAM limit), but it may not follow the correct draw order.")
-				.comment				("- ENABLED: Meshes that is going to be accelerated will be uploaded immediately after the draw command. It is less efficient and only have about 2GB mesh cache (generally enough) but will follow the original draw order to get the most compatibility.")
-				.translation			("acceleratedrendering.configuration.core_settings.upload_mesh_immediately")
-				.defineEnum				("upload_mesh_immediately",				FeatureStatus.DISABLED);
 
 		coreCacheDynamicRenderType						= builder
 				.comment				("- DISABLED: Dynamic render types like lightning on charged creepers and winds on breezes will not be accelerated for less VRAM usage and smoother animations, but may exceptionally skip acceleration in modded geometries using these render types.")

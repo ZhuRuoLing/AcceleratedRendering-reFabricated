@@ -88,10 +88,16 @@ public class AcceleratedBakedGlyphRenderer implements IAcceleratedRenderer<Void>
 					.setLight	(0);
 		}
 
-		mesh = AcceleratedTextRenderingFeature
+		var builder = AcceleratedTextRenderingFeature
 				.getMeshType()
-				.getBuilder	()
-				.build		(meshCollector);
+				.getBuilder	();
+
+		mesh = builder.build(
+				meshCollector,
+				false,
+				true,
+				0
+		);
 
 		meshes	.put	(extension, mesh);
 		mesh	.write	(

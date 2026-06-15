@@ -36,14 +36,21 @@ public class ClientMesh implements IMesh {
 
 		public static	final Builder					INSTANCE = new Builder();
 
-		private			final Set<ByteBufferBuilder>	builders;
+		private			final Set<ByteBufferBuilder>	normalBuilders;
+		private			final Set<ByteBufferBuilder>	reloadBuilders;
 
 		private Builder() {
-			this.builders = new ReferenceLinkedOpenHashSet<>();
+			this.normalBuilders = new ReferenceLinkedOpenHashSet<>();
+			this.reloadBuilders = new ReferenceLinkedOpenHashSet<>();
 		}
 
 		@Override
-		public IMesh build(IMeshCollector collector) {
+		public IMesh build(
+				IMeshCollector	collector,
+				boolean			forceDense,
+				boolean			reloadSensitive,
+				int				meshLayer
+		) {
 			var vertexCount = collector.getVertexCount();
 
 			if (vertexCount == 0) {
@@ -71,6 +78,10 @@ public class ClientMesh implements IMesh {
 				return EmptyMesh.INSTANCE;
 			}
 
+			var builders = reloadSensitive
+					? reloadBuilders
+					: normalBuilders;
+
 			builders.add(builder);
 
 			mesh = new ClientMesh(vertexCount, result.byteBuffer());
@@ -85,22 +96,45 @@ public class ClientMesh implements IMesh {
 		}
 
 		@Override
-		public IMesh build(IMeshCollector collector, boolean forceDense) {
-			return build(collector);
-		}
-
-		@Override
 		public IMesh build(
 				IMeshCollector	collector,
 				boolean			forceDense,
 				int				meshLayer
 		) {
-			return build(collector);
+			return build(
+					collector,
+					forceDense,
+					false,
+					meshLayer
+			);
+		}
+
+		@Override
+		public IMesh build(IMeshCollector collector, boolean forceDense) {
+			return build(collector, forceDense, 0);
+		}
+
+		@Override
+		public IMesh build(IMeshCollector collector) {
+			return build(collector, false);
 		}
 
 		@Override
 		public void delete() {
-			for (var builder : builders) {
+			for (var builder : normalBuilders) {
+				builder.discard	();
+				builder.close	();
+			}
+
+			for (var builder : reloadBuilders) {
+				builder.discard	();
+				builder.close	();
+			}
+		}
+
+		@Override
+		public void reload() {
+			for (var builder : reloadBuilders) {
 				builder.discard	();
 				builder.close	();
 			}

@@ -7,12 +7,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 
-@EventBusSubscriber(
+@SuppressWarnings	("removal")
+@EventBusSubscriber	(
 		modid	= AcceleratedRenderingModEntry	.MOD_ID,
-		bus		= EventBusSubscriber.Bus		.MOD,
-		value	= Dist							.CLIENT
+		value	= Dist							.CLIENT,
+		bus		= Bus							.MOD
 )
 public class ComputeShaderPrograms {
 

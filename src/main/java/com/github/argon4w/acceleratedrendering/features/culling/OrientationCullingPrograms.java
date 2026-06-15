@@ -11,11 +11,13 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.EventBusSubscriber.Bus;
 
-@EventBusSubscriber(
+@SuppressWarnings	("removal")
+@EventBusSubscriber	(
 		modid	= AcceleratedRenderingModEntry	.MOD_ID,
-		bus		= EventBusSubscriber.Bus		.MOD,
-		value	= Dist							.CLIENT
+		value	= Dist							.CLIENT,
+		bus		= Bus							.MOD
 )
 public class OrientationCullingPrograms {
 
