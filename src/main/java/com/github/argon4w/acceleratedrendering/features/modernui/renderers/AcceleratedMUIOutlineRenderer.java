@@ -36,10 +36,10 @@ public class AcceleratedMUIOutlineRenderer implements IAcceleratedRenderer<Accel
 
 		extension.beginTransform(transform, normal);
 
-		vertexConsumer.addVertex(glyphX			- sBloat,	glyphY			- sBloat, 0.0F, color, glyph.u1 - uBloat, glyph.v1 - vBloat, overlay, light, 0.0F, 0.0F, 0.0F);
-		vertexConsumer.addVertex(glyphX			- sBloat,	glyphY + height	+ sBloat, 0.0F, color, glyph.u1 - uBloat, glyph.v2 + vBloat, overlay, light, 0.0F, 0.0F, 0.0F);
-		vertexConsumer.addVertex(glyphX + width	+ sBloat,	glyphY + height	+ sBloat, 0.0F, color, glyph.u2 + uBloat, glyph.v2 + vBloat, overlay, light, 0.0F, 0.0F, 0.0F);
-		vertexConsumer.addVertex(glyphX + width	+ sBloat,	glyphY			- sBloat, 0.0F, color, glyph.u2 + uBloat, glyph.v1 - vBloat, overlay, light, 0.0F, 0.0F, 0.0F);
+		vertexConsumer.addVertex(glyphX			- sBloat,	glyphY			- sBloat, 0.001F,	color, glyph.u1 - uBloat, glyph.v1 - vBloat, overlay, light, 0.0F, 0.0F, 0.0F);
+		vertexConsumer.addVertex(glyphX			- sBloat,	glyphY + height	+ sBloat, 0.001F,	color, glyph.u1 - uBloat, glyph.v2 + vBloat, overlay, light, 0.0F, 0.0F, 0.0F);
+		vertexConsumer.addVertex(glyphX + width	+ sBloat,	glyphY + height	+ sBloat, 0.0F,		color, glyph.u2 + uBloat, glyph.v2 + vBloat, overlay, light, 0.0F, 0.0F, 0.0F);
+		vertexConsumer.addVertex(glyphX + width	+ sBloat,	glyphY			- sBloat, 0.0F,		color, glyph.u2 + uBloat, glyph.v1 - vBloat, overlay, light, 0.0F, 0.0F, 0.0F);
 
 		extension.endTransform();
 	}

@@ -25,7 +25,7 @@ public class SimpleMeshCollector implements IMeshCollector {
 
 	private					MeshData			meshData;
 	@Getter private			long				vertexAddress;
-	@Getter private			int					vertexCount;
+	@Getter private			long				vertexCount;
 
 	public SimpleMeshCollector(VertexLayout layout) {
 		this.layout			= layout;
@@ -40,7 +40,7 @@ public class SimpleMeshCollector implements IMeshCollector {
 		this.builder		= MeshData		.builder		(layout);
 
 		this.vertexAddress	= -1L;
-		this.vertexCount	= 0;
+		this.vertexCount	= 0L;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class SimpleMeshCollector implements IMeshCollector {
 			float pY,
 			float pZ
 	) {
-		if (vertexCount != 0) {
+		if (vertexCount != 0L) {
 			builder.addVertex();
 		}
 
@@ -170,7 +170,7 @@ public class SimpleMeshCollector implements IMeshCollector {
 			float	pNormalY,
 			float	pNormalZ
 	) {
-		vertexCount++;
+		vertexCount ++;
 		vertexAddress = buffer.reserve((int) vertexSize);
 
 		posOffset	.putFloat	(vertexAddress + 0L,	pX);
