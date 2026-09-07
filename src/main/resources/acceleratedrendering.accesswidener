@@ -81,3 +81,6 @@ accessible field net/minecraft/client/renderer/RenderStateShard$WriteMaskStateSh
 accessible class net/minecraft/client/gui/Font$StringRenderOutput
 #EMF
 accessible method net/minecraft/client/model/geom/ModelPart compile (Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V
+
+#Text
+accessible method net/minecraft/client/gui/Font renderChar (Lnet/minecraft/client/gui/font/glyphs/BakedGlyph;ZZFFFLorg/joml/Matrix4f;Lcom/mojang/blaze3d/vertex/VertexConsumer;FFFFI)V
